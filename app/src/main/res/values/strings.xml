@@ -8,6 +8,7 @@
     <string name="btnNewGame">New Game</string>
     <string name="btnShowGames">Show Games</string>
     <string name="editGameDescription">Game Description</string>
+    <string name="editGameNumPlayers">Number of players</string>
     <string name="btnOK">OK</string>
 
 </resources>
