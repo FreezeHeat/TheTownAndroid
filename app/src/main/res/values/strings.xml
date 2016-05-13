@@ -3,5 +3,9 @@
     <string name="txtUser">Username</string>
     <string name="txtPass">Password</string>
     <string name="btnLogin">Login</string>
-    <string name="btnLogin">Login</string>
+    <string name="txtWelcome">Welcome</string>
+    <string name="btnExit">Exit</string>
+    <string name="btnNewGame">New Game</string>
+    <string name="btnShowGames">Show Games</string>
+
 </resources>
