@@ -17,6 +17,13 @@
         android:layout_gravity="center_horizontal"
         android:hint="@string/editGameDescription"/>
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editNumPlayers"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/editGameNumPlayers" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
