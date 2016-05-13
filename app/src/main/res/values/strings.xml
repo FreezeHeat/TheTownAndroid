@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TheTownProject</string>
+    <string name="txtUser">Username</string>
+    <string name="txtPass">Password</string>
+    <string name="btnLogin">Login</string>
+    <string name="btnLogin">Login</string>
 </resources>
