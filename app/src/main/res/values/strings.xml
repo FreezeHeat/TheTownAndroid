@@ -7,5 +7,7 @@
     <string name="btnExit">Exit</string>
     <string name="btnNewGame">New Game</string>
     <string name="btnShowGames">Show Games</string>
+    <string name="editGameDescription">Game Description</string>
+    <string name="btnOK">OK</string>
 
 </resources>

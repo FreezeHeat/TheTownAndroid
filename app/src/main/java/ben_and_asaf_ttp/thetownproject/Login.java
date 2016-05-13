@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 public class Login extends AppCompatActivity {
-    TextView welcome;
+    private TextView welcome;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,30 +22,25 @@ public class Login extends AppCompatActivity {
         welcome.setText(R.string.txtWelcome + " " + MainActivity.myPrefs.getString("username", ""));
     }
 
-    public void exit(View v){
-        onBackPressed();
-    }
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to exit?");
+    public void buildExitDialog(){
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure?");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id) {
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
                 Login.this.finish();
-                System.exit(0);
             }
         });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
                 dialog.cancel();
             }
         });
-        AlertDialog alert = builder.create();
-        alert.show();
+    }
+
+    @Override
+    public void onBackPressed(){
+        builder.create().show();
     }
 
     public void newGame(View v){
@@ -55,5 +51,9 @@ public class Login extends AppCompatActivity {
     public void showGames(View v){
         Intent myIntent = new Intent(this, ShowGames.class);
         startActivity(myIntent);
+    }
+
+    public void exit(View v){
+        onBackPressed();
     }
 }
