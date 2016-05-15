@@ -25,7 +25,7 @@ public class NewGame extends AppCompatActivity {
         gameNumPlayers = (EditText)findViewById((R.id.editNumPlayers));
     }
 
-    public void addBook(View v)
+    public void addGame(View v)
     {
         Game game = new Game();
         game.setDescription(gameDescription.getText().toString());

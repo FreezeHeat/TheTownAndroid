@@ -37,7 +37,35 @@ public class DBHandler {
 
         // when result is -1 it means the insert has failed, so when NOT -1 it was successful
         return (result != -1);
+    }
 
+    public boolean deleteGame(Game deleteGame){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String [] args = {deleteGame.getDescription()};
+        int result =
+                db.delete(DBConstants.GAME_TABLE_NAME,
+                        "GAME_DESCRIPTION LIKE ?",
+                        args);
+
+        return (result >= 1 );
+    }
+
+    public boolean editGame(String newValue, Game editGame){
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        ContentValues newValues = new ContentValues();
+        newValues.put("GAME_DESCRIPTION", newValue);
+
+        String [] args = {editGame.getDescription()};
+        int result =
+                db.update(DBConstants.GAME_TABLE_NAME,
+                        newValues,
+                        "GAME_DESCRIPTION LIKE ?",
+                        args);
+
+       return (result >= 1 );
     }
 
     public ArrayList<Game> getAllGames()
