@@ -33,7 +33,7 @@ public class ShowGames extends AppCompatActivity implements AdapterView.OnItemCl
 
     public void refreshCrap(){
 
-
+/////check
     }
 
 
