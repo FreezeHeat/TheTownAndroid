@@ -3,6 +3,7 @@ package ben_and_asaf_ttp.thetownproject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,9 +18,11 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         welcome = (TextView)findViewById(R.id.txtWelcome);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         //Welcome with the username
-        welcome.setText(R.string.txtWelcome + " " + MainActivity.myPrefs.getString("username", ""));
+        welcome.setText(getResources().getString(R.string.txtWelcome) + " "
+                + MainActivity.myPrefs.getString("username", ""));
     }
 
     public void buildExitDialog(){
@@ -40,6 +43,7 @@ public class Login extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
+        buildExitDialog();
         builder.create().show();
     }
 

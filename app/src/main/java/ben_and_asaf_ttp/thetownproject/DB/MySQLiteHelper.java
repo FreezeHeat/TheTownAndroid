@@ -18,7 +18,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + DBConstants.GAME_TABLE_NAME +
                 "( " + DBConstants.GAME_DESCRIPTION + " TEXT, " +
-                DBConstants.GAME_NUM_PLAYERS + " INTEGER");
+                DBConstants.GAME_NUM_PLAYERS + " INTEGER)");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
