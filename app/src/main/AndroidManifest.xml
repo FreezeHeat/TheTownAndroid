@@ -15,6 +15,7 @@
         <activity android:name=".NewGame" />
         <activity android:name=".ShowGames" />
         <activity android:name=".SplashActivity">
+            <activity android:name=".Lobby" android:screenOrientation="landscape"  />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
