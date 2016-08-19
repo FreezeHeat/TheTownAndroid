@@ -3,6 +3,7 @@
     <string name="txtUser">Username</string>
     <string name="txtPass">Password</string>
     <string name="btnLogin">Login</string>
+    <string name="btnLogin2">Sign in</string>
     <string name="txtWelcome">Welcome</string>
     <string name="btnExit">Exit</string>
     <string name="btnNewGame">New Game</string>
@@ -12,11 +13,28 @@
     <string name="btnOK">OK</string>
     <string name="btnRegister">Register</string>
     <string name="checkboxRemember">Remember Username ?</string>
-    <string name="btnForgot">Forgot Password</string>
+    <string name="btnForgot">Forgot Pass</string>
     <string name="btnOptions">Options</string>
+    <string name="txtReg">Please enter the following:</string>
+    <string name="txtReg1">Confirmation has been sent to your Email address.</string>
+    <string name="txtRepass">Re-type Password</string>
+    <string name="txtEmail">Email</string>
+    <string name="btnReLogin">Confirm</string>
+    <string name="btnClear">Clear</string>
+    <string name="btnBack">Back</string>
 
-
-
-
-
+    
+    
+    <string-array name="friends_list_name">
+        <item>Meme 1</item>
+        <item>Meme 2</item>
+        <item>Meme 3</item>
+        <item>Meme 4</item>
+    </string-array>
+    <string-array name="friends_list_status">
+        <item>Online</item>
+        <item>Offline</item>
+        <item>Meme 3</item>
+        <item>Meme 4</item>
+    </string-array>
 </resources>
