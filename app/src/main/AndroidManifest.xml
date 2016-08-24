@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".Login" />
         <activity android:name=".NewGame" />
         <activity android:name=".ShowGames" />
@@ -32,6 +32,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ben_and_asaf_ttp.thetownproject.MainActivity" />
         </activity>
+        <activity android:name=".forgotpass"></activity>
     </application>
 
 </manifest>

@@ -23,7 +23,7 @@
     <string name="btnClear">Clear</string>
     <string name="btnBack">Back</string>
     <string name="friendslist">Friends List</string>
-
+    <string name="txtForgot_1">Please enter your Email</string>
 
     <string-array name="friends_list_name">
         <item>Meme 1</item>
