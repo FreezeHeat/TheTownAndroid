@@ -21,17 +21,17 @@ public class DBHandler {
     }
 
     // returns true/false if the addition was successful
-    public boolean addGame(Game newGame)
+    public boolean savePlayer(/*Player class */)
     {
 
         // this opens the connection to the DB
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues columnValues = new ContentValues();
-        columnValues.put(DBConstants.GAME_DESCRIPTION, newGame.getDescription());
-        columnValues.put(DBConstants.GAME_NUM_PLAYERS, newGame.getNumPlayers());
+        columnValues.put(DBConstants.PLAYER_USERNAME, /*Player class - username*/);
+        columnValues.put(DBConstants.PLAYER_PASSWORD, /*Player class - password*/);
 
-        long result = db.insert(DBConstants.GAME_TABLE_NAME, null, columnValues);
+        long result = db.insert(DBConstants.PLAYER_TABLE_NAME, null, columnValues);
 
         db.close();
 
@@ -39,54 +39,33 @@ public class DBHandler {
         return (result != -1);
     }
 
-    public boolean deleteGame(Game deleteGame){
+    public boolean deletePlayer(/*Player class */){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String [] args = {deleteGame.getDescription()};
+        String [] args = {/*Player class - username*/};
         int result =
-                db.delete(DBConstants.GAME_TABLE_NAME,
-                        "GAME_DESCRIPTION LIKE ?",
+                db.delete(DBConstants.PLAYER_TABLE_NAME,
+                        DBConstants.PLAYER_USERNAME + " LIKE ?",
                         args);
 
         return (result >= 1 );
     }
 
-    public boolean editGame(String newValue, Game editGame){
+    public boolean editPlayer(/*Player class */){
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         ContentValues newValues = new ContentValues();
-        newValues.put("GAME_DESCRIPTION", newValue);
+        newValues.put(DBConstants.PLAYER_USERNAME, /*Player class - username*/);
+        newValues.put(DBConstants.PLAYER_PASSWORD, /*Player class - password*/);
 
-        String [] args = {editGame.getDescription()};
+        String [] args = {/*Player class - username*/};
         int result =
-                db.update(DBConstants.GAME_TABLE_NAME,
+                db.update(DBConstants.PLAYER_TABLE_NAME,
                         newValues,
-                        "GAME_DESCRIPTION LIKE ?",
+                        DBConstants.PLAYER_USERNAME + " LIKE ?",
                         args);
 
        return (result >= 1 );
     }
-
-    public ArrayList<Game> getAllGames()
-    {
-        ArrayList<Game> gamesList = new ArrayList<Game>();
-        // this opens the connection to the DB
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        // select * from BOOKS table
-        Cursor gameCursor = db.query(DBConstants.GAME_TABLE_NAME, null, null, null, null, null, null);
-        // each round in the loop is a record in the DB
-        while(gameCursor.moveToNext()) {
-            String gameDescription = gameCursor.getString(0);
-            int gameNumPlayers= gameCursor.getInt(1);
-
-            Game g = new Game(gameDescription, gameNumPlayers);
-            gamesList.add(g);
-        }
-
-        return gamesList;
-
-    }
-
 }

@@ -16,9 +16,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // execute all create statements
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + DBConstants.GAME_TABLE_NAME +
-                "( " + DBConstants.GAME_DESCRIPTION + " TEXT, " +
-                DBConstants.GAME_NUM_PLAYERS + " INTEGER)");
+        db.execSQL("CREATE TABLE " + DBConstants.PLAYER_TABLE_NAME +
+                "( " + DBConstants.PLAYER_USERNAME + " TEXT, " +
+                DBConstants.PLAYER_PASSWORD + " TEXT)");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

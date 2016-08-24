@@ -92,4 +92,13 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(this, Login.class);
         startActivity(myIntent);
     }
+
+    public void register(View v){
+        Intent myIntent = new Intent(this, Register.class);
+        startActivity(myIntent);
+    }
+
+    public void options(View v){
+
+    }
 }
