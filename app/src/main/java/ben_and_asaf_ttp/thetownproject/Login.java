@@ -3,6 +3,7 @@ package ben_and_asaf_ttp.thetownproject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class Login extends AppCompatActivity {
@@ -45,7 +47,26 @@ public class Login extends AppCompatActivity {
         return true;
     }
 
+    public void login(View v)
+    {
+        EditText editUser = (EditText)findViewById(R.id.editUser);
+        EditText editPassword = (EditText)findViewById(R.id.editPass);
 
+        /* Player class - set username */ =  editUser.toString();
+        /* Player class - set password */ =  editPassword.toString();
+
+        /*TODO: Method that checks if login is valid or not */
+        /* Player p,
+
+        if(/* if login is valid: */){
+            SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
+            editor.putString("username", /* Player class - username*/;
+            editor.putString("password", /* Player class - password*/);
+            editor.commit();
+            Intent myIntent = new Intent(this, Login.class);
+            startActivity(myIntent);
+        }
+    }
 
     public void buildExitDialog(){
         builder = new AlertDialog.Builder(this);
