@@ -22,9 +22,9 @@
     <string name="btnReLogin">Confirm</string>
     <string name="btnClear">Clear</string>
     <string name="btnBack">Back</string>
+    <string name="friendslist">Friends List</string>
 
-    
-    
+
     <string-array name="friends_list_name">
         <item>Meme 1</item>
         <item>Meme 2</item>
@@ -37,4 +37,13 @@
         <item>Meme 3</item>
         <item>Meme 4</item>
     </string-array>
+    <string name="title_activity_navigation">navigation</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
