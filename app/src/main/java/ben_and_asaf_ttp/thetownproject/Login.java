@@ -21,12 +21,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        welcome = (TextView)findViewById(R.id.txtWelcome);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        //Welcome with the username
-        welcome.setText(getResources().getString(R.string.txtWelcome) + " "
-                + MainActivity.myPrefs.getString("username", ""));
     }
 
     @Override
