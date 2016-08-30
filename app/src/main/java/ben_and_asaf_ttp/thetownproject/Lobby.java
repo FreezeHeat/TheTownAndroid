@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
-public class Lobby extends AppCompatActivity implements DrawerLayout.DrawerListener{
+public class Lobby extends AppCompatActivity{
 
     String[] friendsListName = {"Ben","Asaf"};
     int images[];
@@ -27,47 +27,11 @@ public class Lobby extends AppCompatActivity implements DrawerLayout.DrawerListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        // Set the adapter for the list view
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.friends_list_single_row, friendsListName));
-        // Resources res = getResources();
-        //friendsListName = res.getStringArray(R.array.friends_list_name);
-        //friendsListStatus = res.getStringArray(R.array.friends_list_status);
-
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Lobby.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-            }
-        });    }
-    private void addDrawerItems() {
-        String[] osArray = {"Android", "IOS", "Windows"};
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
+                android.R.layout.simple_list_item_1, friendsListName));
     }
-
-
-    @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {
-
-    }
-
-    @Override
-    public void onDrawerOpened(View drawerView) {
-
-        Toast.makeText(this,"hello asafi, good job!",Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDrawerClosed(View drawerView) {
-        Toast.makeText(this,"closed",Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {
-
-    }
-
 }
