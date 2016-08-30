@@ -9,7 +9,9 @@
 
     </style>
 
-
+    <style name="myBackgroundSmall">
+        <item name="android:background">@drawable/bgsmall</item>
+    </style>
     <style name="myBackground">
         <item name="android:background">@drawable/bgs</item>
 
