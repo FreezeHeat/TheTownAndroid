@@ -24,7 +24,7 @@ public class NewGame extends AppCompatActivity {
         gameDescription = (EditText)findViewById(R.id.editGameDescription);
         gameNumPlayers = (EditText)findViewById((R.id.editNumPlayers));
     }
-
+/*
     public void addGame(View v)
     {
         Game game = new Game();
@@ -37,4 +37,5 @@ public class NewGame extends AppCompatActivity {
             Toast.makeText(this, "Game wasn't added", Toast.LENGTH_SHORT).show();
 
     }
+    */
 }

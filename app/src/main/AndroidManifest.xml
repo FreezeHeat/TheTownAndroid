@@ -12,11 +12,9 @@
         <activity android:name=".Login" />
         <activity android:name=".Register" />
         <activity android:name=".NewGame" />
-        <activity android:name=".ShowGames" />
-        <activity android:name=".SplashActivity">
-            <activity
-                android:name=".Lobby"
-                android:screenOrientation="landscape" />
+        <activity android:name=".forgotpass"/>
+        <activity android:name=".SplashActivity"/>
+        <activity android:name=".Lobby" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,16 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".navigation"
-            android:label="@string/title_activity_navigation"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ben_and_asaf_ttp.thetownproject.MainActivity" />
-        </activity>
-        <activity android:name=".forgotpass"></activity>
+
     </application>
 
 </manifest>

@@ -52,21 +52,21 @@ public class Login extends AppCompatActivity {
         EditText editUser = (EditText)findViewById(R.id.editUser);
         EditText editPassword = (EditText)findViewById(R.id.editPass);
 
-        /* Player class - set username */ =  editUser.toString();
-        /* Player class - set password */ =  editPassword.toString();
+      //  /* Player class - set username */ =  editUser.toString();
+     //   /* Player class - set password */ =  editPassword.toString();
 
         /*TODO: Method that checks if login is valid or not */
         /* Player p,
 
-        if(/* if login is valid: */){
+       if(/* if login is valid: */   //    ){
             SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
-            editor.putString("username", /* Player class - username*/;
-            editor.putString("password", /* Player class - password*/);
+       //     editor.putString("username", /* Player class - username*/;
+       //     editor.putString("password", /* Player class - password*/);
             editor.commit();
             Intent myIntent = new Intent(this, Login.class);
             startActivity(myIntent);
         }
-    }
+   // }
 
     public void buildExitDialog(){
         builder = new AlertDialog.Builder(this);
@@ -92,11 +92,6 @@ public class Login extends AppCompatActivity {
 
     public void newGame(View v){
         Intent myIntent = new Intent(this, NewGame.class);
-        startActivity(myIntent);
-    }
-
-    public void showGames(View v){
-        Intent myIntent = new Intent(this, ShowGames.class);
         startActivity(myIntent);
     }
 

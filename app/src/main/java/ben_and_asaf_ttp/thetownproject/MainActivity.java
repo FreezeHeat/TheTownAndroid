@@ -76,22 +76,7 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    public void login(View v)
-    {
-        EditText editUser = (EditText)findViewById(R.id.editUser);
-        EditText editPassword = (EditText)findViewById(R.id.editPass);
 
-        account.setUsername(editUser.getText().toString());
-        account.setPassword(editPassword.getText().toString());
-
-        SharedPreferences.Editor editor = myPrefs.edit();
-            editor.putString("username", account.getUsername());
-            editor.putString("password", account.getPassword());
-        editor.commit();
-
-        Intent myIntent = new Intent(this, Login.class);
-        startActivity(myIntent);
-    }
 
     public void register(View v){
         Intent myIntent = new Intent(this, Register.class);

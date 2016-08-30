@@ -28,8 +28,8 @@ public class DBHandler {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues columnValues = new ContentValues();
-        columnValues.put(DBConstants.PLAYER_USERNAME, /*Player class - username*/);
-        columnValues.put(DBConstants.PLAYER_PASSWORD, /*Player class - password*/);
+       // columnValues.put(DBConstants.PLAYER_USERNAME, /*Player class - username*/);
+        //columnValues.put(DBConstants.PLAYER_PASSWORD, /*Player class - password*/);
 
         long result = db.insert(DBConstants.PLAYER_TABLE_NAME, null, columnValues);
 
@@ -56,8 +56,8 @@ public class DBHandler {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         ContentValues newValues = new ContentValues();
-        newValues.put(DBConstants.PLAYER_USERNAME, /*Player class - username*/);
-        newValues.put(DBConstants.PLAYER_PASSWORD, /*Player class - password*/);
+       // newValues.put(DBConstants.PLAYER_USERNAME, /*Player class - username*/);
+       // newValues.put(DBConstants.PLAYER_PASSWORD, /*Player class - password*/);
 
         String [] args = {/*Player class - username*/};
         int result =
