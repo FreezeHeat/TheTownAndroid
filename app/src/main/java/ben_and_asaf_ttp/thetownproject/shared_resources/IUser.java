@@ -15,12 +15,12 @@ public interface IUser {
      * @return <code>True/False</code> Equal/Different
      */
     @Override
-    public abstract boolean equals(Object o);
+    boolean equals(Object o);
     
     /**
      * toString method, prints information about this {@code User}
      * @return The formatted string
      */
     @Override
-    public abstract String toString();
+    String toString();
 }

@@ -154,18 +154,18 @@ public class Player extends User{
 	/**
 	 * Get the player's role
 	 * @return the player's role
-	 * @see Roles
+	 * @see Role
 	 */
-	public Roles getRole() {
+	public Role getRole() {
 		return role;
 	}
 
 	/**
 	 * Set the player's role
 	 * @param role the role to be set
-	 * @see Roles
+	 * @see Role
 	 */
-	public void setRole(Roles role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 
@@ -183,6 +183,22 @@ public class Player extends User{
 	 */
 	public void setGameHistory(List<Game> gameHistory) {
 		this.gameHistory = gameHistory;
+	}
+
+	/**
+	 * Check if the player is alive
+	 * @return true\false if alive
+	 */
+	public boolean isAlive() {
+		return alive;
+	}
+
+	/**
+	 * Set the player's status
+	 * @param alive The player's status
+	 */
+	public void setAlive(boolean alive) {
+		this.alive = alive;
 	}
 
 	@Override

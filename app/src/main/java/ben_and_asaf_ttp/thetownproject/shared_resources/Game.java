@@ -47,10 +47,10 @@ public class Game implements Serializable{
 	/**
 	 * The role bank({@code ArrayList} format) for this game based on {@code maxPlayers}
 	 * (<b>Note:</b> this role bank is given by the server)
-	 * @see Roles
+	 * @see Role
 	 */
 	@Transient
-	private ArrayList<Roles> rolesBank;
+	private ArrayList<Role> rolesBank;
 	
 	/**
 	 * This {@code ArrayList} holds all the players that are in the game
@@ -62,7 +62,7 @@ public class Game implements Serializable{
 	 * The game's creation date
 	 */
 	@Column(nullable=false, name="DateCreated")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
     /**
@@ -70,6 +70,7 @@ public class Game implements Serializable{
      */
 	public Game(){
 		this.date = new Date();
+		this.players = new ArrayList<Player>();
 	}
 
 	/**
@@ -92,7 +93,7 @@ public class Game implements Serializable{
 	 * Get the game's role bank
 	 * @return the game's role bank
 	 */
-	public ArrayList<Roles> getRolesBank() {
+	public ArrayList<Role> getRolesBank() {
 		return rolesBank;
 	}
 	
@@ -100,7 +101,7 @@ public class Game implements Serializable{
 	 * Set the game's role bank({@code ArrayList} format)
 	 * @param rolesBank the game's role bank to be set
 	 */
-	public void setRolesBank(ArrayList<Roles> rolesBank) {
+	public void setRolesBank(ArrayList<Role> rolesBank) {
 		this.rolesBank = rolesBank;
 	}
 	
@@ -131,7 +132,7 @@ public class Game implements Serializable{
 	/**
 	 * Get the game's creation date
 	 * @return game's creation date
-	 * @see java.util.Date
+	 * @see Date
 	 */
 	public Date getDate() {
 		return date;
@@ -140,7 +141,6 @@ public class Game implements Serializable{
 	/**
 	 * Get how many player slots are left in the game player's list
 	 * <p><b>NOTE:</b><i> Used when a player wants to join an available game</i></p>
-	 * @return
 	 */
 	public int getPlayerSlotsLeft(){
 		return maxPlayers - players.size();
@@ -151,7 +151,7 @@ public class Game implements Serializable{
 	 * @return the game's date (String format)
 	 */
 	public String getDateString(){
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		return dateFormat.format(this.date);
 	}
 	
@@ -164,7 +164,7 @@ public class Game implements Serializable{
 		Collections.shuffle(this.rolesBank);
 		int i = 0;
 		for(Player p : this.players){
-			p.setRole(rolesBank.get(i));
+			p.setRole(rolesBank.get(i++));
 		}
 	}
 }

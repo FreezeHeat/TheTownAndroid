@@ -50,6 +50,12 @@ public class Stats implements Serializable{
      */
 	@Column(name="Heals")
     private long heals;
+	
+    /**
+     * <i>Rating</i>, the player's rating, used for match-making
+     */
+    @Column(name="Rating")
+    private int rating;
     
     /**
      * Constructor for the {@code Stats} class, creates an empty, initialized object
@@ -66,6 +72,7 @@ public class Stats implements Serializable{
     	this.setLost(0);
     	this.setKills(0);
     	this.setHeals(0);
+    	this.setRating(0);
     }
 
     /**
@@ -147,9 +154,26 @@ public class Stats implements Serializable{
     public void setHeals(long heales) {
         this.heals = heales;
     }
+    
+	/**
+	 * Get the player's rating for matchmaking
+	 * @return The player's rating for matchmaking
+	 */
+	public int getRating() {
+		return rating;
+	}
 
+	/**
+	 * Set the player's rating for matchmaking
+	 * @param rating The player's rating for matchmaking
+	 */
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+    
     /**
      * Gets the Win / Lose ration from the player's stats, used for comparison
+     * @see User
      * @return Win / Lose ratio
      */
     public long getWinLoseRatio(){
@@ -162,7 +186,8 @@ public class Stats implements Serializable{
     
     @Override
     public String toString(){
-    	return "W: " + this.getWon() + " L: " + this.getLost() + " W\\L Ratio: " +
-    	this.getWinLoseRatio() + " Kill / Heal: " + this.getKills() + "/" + this.getHeals();
+    	return "Wins: " + this.getWon() + "\nLoses: " + this.getLost() + "\nWin / Lose Ratio: " + 
+    	this.getWinLoseRatio() + "\nKill / Heal: " + this.getKills() + "/" + this.getHeals() +
+    	"\nRating: " + this.rating;
     }
 }

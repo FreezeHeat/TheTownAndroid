@@ -2,14 +2,7 @@ package ben_and_asaf_ttp.thetownproject.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.view.View;
-
-import java.util.ArrayList;
-
-import ben_and_asaf_ttp.thetownproject.Game;
 
 public class DBHandler {
 
