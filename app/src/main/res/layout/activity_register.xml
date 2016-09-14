@@ -118,7 +118,7 @@
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:hint="@string/btnReLogin"
-        android:id="@+id/btnReLogin"
+        android:id="@+id/btnConfirm"
         android:onClick="login"
         android:layout_marginRight="10dp" />
 
@@ -131,7 +131,7 @@
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:hint="@string/btnClear"
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnClear"
             android:onClick="login"
             android:layout_marginRight="10dp" />
 

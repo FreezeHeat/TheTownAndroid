@@ -11,19 +11,32 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class Login extends AppCompatActivity {
+import ben_and_asaf_ttp.thetownproject.shared_resources.User;
+
+public class Login extends AppCompatActivity implements View.OnClickListener {
     private TextView welcome;
     AlertDialog.Builder builder;
     static final int MENU_EXIT = -1;
+    User user = null;
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        EditText editUser = (EditText)findViewById(R.id.editUser);
+        EditText editPassword = (EditText)findViewById(R.id.editPass);
+        Button signIn = (Button) findViewById(R.id.btnSignIn);
+
+        signIn.setOnClickListener(this);
+
+
+
     }
 
     @Override
@@ -97,5 +110,19 @@ public class Login extends AppCompatActivity {
 
     public void exit(View v){
         onBackPressed();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+
+            case R.id.btnSignIn:
+                
+                break;
+            default:
+                break;
+        }
+
     }
 }
