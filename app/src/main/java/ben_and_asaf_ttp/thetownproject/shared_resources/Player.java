@@ -1,8 +1,10 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
@@ -18,7 +20,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="Players")
-public class Player extends User {
+public class Player extends User{
 	
 	/**
      * {@code Stats} that hold the statistics of the player
@@ -36,10 +38,10 @@ public class Player extends User {
     
     /**
      * {@code Role} holds information about the player's role in the game
-     * @see Roles
+     * @see Role
      */
     @Transient
-    private Roles role;
+    private Role role;
 	
     /**
      * This list holds all the games the players has played (Game history)
@@ -49,8 +51,14 @@ public class Player extends User {
     private List<Game> gameHistory;
     
     /**
-     * This constructor creates an empty <code>Player</code>
+     * The player's status, alive or not
      */
+    @Transient
+    private boolean alive;
+    
+    /**
+     * This constructor creates an empty <code>Player</code>
+     */    
     public Player(){}
     
     /**
@@ -62,11 +70,11 @@ public class Player extends User {
      * @param role Player's role
      * @see Stats
      * @see PlayerStatus
-     * @see Roles
+     * @see Role
      */
     public Player(
     		String username, String password,
-    		Stats stats, PlayerStatus status, Roles role){
+    		Stats stats, PlayerStatus status, Role role){
     	this.setUsername(username);
     	this.setPassword(password);
     	this.setStats(stats);
@@ -82,7 +90,7 @@ public class Player extends User {
      * @param password the Player's password
      */
     public Player(String username, String password){
-    	this(username, password, new Stats(), PlayerStatus.OFFLINE, Roles.NONE);
+    	this(username, password, new Stats(), PlayerStatus.OFFLINE, null);
     }
     
 	@Override

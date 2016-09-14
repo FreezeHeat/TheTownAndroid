@@ -147,7 +147,7 @@ public class Stats implements Serializable{
     public void setHeals(long heales) {
         this.heals = heales;
     }
-    
+
     /**
      * Gets the Win / Lose ration from the player's stats, used for comparison
      * @return Win / Lose ratio
@@ -162,7 +162,7 @@ public class Stats implements Serializable{
     
     @Override
     public String toString(){
-    	return "W: " + this.getWon() + " L: " + this.getLost() + " W\\L Ratio: " + 
+    	return "W: " + this.getWon() + " L: " + this.getLost() + " W\\L Ratio: " +
     	this.getWinLoseRatio() + " Kill / Heal: " + this.getKills() + "/" + this.getHeals();
     }
 }
