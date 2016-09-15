@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 MainActivity.this.finish();
+                ClientConnection.getConnection().exit();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
+        buildExitDialog();
         builder.create().show();
     }
 

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
         myTask.execute();
     }
 
-    class MyLoaderTask extends AsyncTask<Void, Integer, Boolean>
+    class MyLoaderTask extends AsyncTask<Void, String, Boolean>
     {
 
         @Override
@@ -42,22 +43,25 @@ public class SplashActivity extends AppCompatActivity {
 
         // this method runs on UI - so Toast is ok here
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            //Toast.makeText(SplashActivity.this, "Progress round " + values[0], Toast.LENGTH_SHORT).show();
-            pbSplashScreen.setProgress(values[0]);
-            txtSplashScreen.setText(values[0] + " %");
+        protected void onProgressUpdate(String... values) {
+
+            //failed to connect to socket
+            if(values[0].equals("-1")){
+                txtSplashScreen.setText(values[1]);
+            }else {
+                pbSplashScreen.setProgress(Integer.decode(values[0]));
+                txtSplashScreen.setText(values[1]);
+            }
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
-            for (int i = 0; i < 5; i++){
-                try {
-                    Thread.sleep(1000);
-                    publishProgress(i*20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            publishProgress("0", getResources().getString(R.string.splash_socket_connection));
+            if(!ClientConnection.getConnection().startConnection()){
+                publishProgress("-1", getResources().getString(R.string.splash_socket_failed));
+                return false;
+            }else{
+                publishProgress("50", getResources().getString(R.string.splash_socket_success));
             }
 
             return true;
@@ -69,15 +73,26 @@ public class SplashActivity extends AppCompatActivity {
             if(result)
             {
                 pbSplashScreen.setProgress(100);
-                txtSplashScreen.setText("100 %");
+                txtSplashScreen.setText("Successful - starting the game");
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 finish();   // finish the activity of the splash so it will not be in the history
                 Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(myIntent);
+            }
+            else{
+
+                //in case starting up the socket failed
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Log.e(this.getClass().getName(), "Error connecting to socket");
+                finish();
             }
         }
     }

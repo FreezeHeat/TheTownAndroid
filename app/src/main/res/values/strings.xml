@@ -24,6 +24,9 @@
     <string name="btnBack">Back</string>
     <string name="friendslist">Friends List</string>
     <string name="txtForgot_1">Please enter your Email</string>
+    <string name="splash_socket_connection">Starting Socket Connection</string>
+    <string name="splash_socket_failed">Failed to connect, Shutting down</string>
+    <string name="splash_socket_success">Connection Established</string>
 
     <string-array name="friends_list_name">
         <item>Meme 1</item>

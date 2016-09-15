@@ -1,9 +1,12 @@
 package ben_and_asaf_ttp.thetownproject;
 
+import android.util.Log;
+
 import java.io.*;
 import java.net.Socket;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
+import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 
 /**
  * Created by user on 12/09/2016.
@@ -13,12 +16,12 @@ public class ClientConnection {
     /**
      * Output stream for data
      */
-    public ObjectOutputStream out;
+    private ObjectOutputStream out;
 
     /**
      * Input stream for data
      */
-    public ObjectInputStream in;
+    private ObjectInputStream in;
 
     /**
      * States if the user is online or not
@@ -27,7 +30,7 @@ public class ClientConnection {
      * <li>false = offline</li>
      * </ul>
      */
-    public Boolean online = false;
+    private Boolean online = false;
 
     /**
      * {@code Socket} used for Input and Output streams
@@ -37,7 +40,10 @@ public class ClientConnection {
     /**
      * Specifies the hostname to connect to (Server IP)
      */
-    private String hostname = "5.102.197.111";
+
+    //10.0.2.2 - is the IP for the external localhost, because the VIRTUAL MACHINE of the android device
+    //already is the 127.0.0.1 - the external IP to the "real" localhost is 10.0.2.2
+    private String hostname = "10.0.2.2";
 
     /**
      * Port number, used with hostname <i>e.g. (127.0.0.1:5555)</i>
@@ -47,7 +53,7 @@ public class ClientConnection {
     /**
      * Create a <b>Singleton</b> connection of the class
      */
-    public static ClientConnection client = new ClientConnection();
+    private static ClientConnection client = new ClientConnection();
 
     /**
      * Create a singleton connection
@@ -56,16 +62,49 @@ public class ClientConnection {
     }
 
     /**
+     * Get the singleton connection of the socket
+     * @return The singleton connection of the socket
+     */
+    public static ClientConnection getConnection(){
+        return client;
+    }
+
+    public ObjectOutputStream getOutput(){
+        return this.out;
+    }
+
+    public ObjectInputStream getInput(){
+        return this.in;
+    }
+    /**
+     * Get the status of the socket, online or not (true / false)
+     * @return The status of the socket(true/false -- online/offline)
+     */
+    public boolean isOnline(){
+        return this.online;
+    }
+
+    /**
      * Retry the connection to the server
      * @throws java.io.IOException
+     * @return If the connection was succesful or not
      */
-    public void startConnection() throws IOException {
+    public boolean startConnection(){
         if (online == false) {
-            connection = new Socket(hostname, port);
-            out = new ObjectOutputStream(connection.getOutputStream());
-            in = new ObjectInputStream(connection.getInputStream());
-            online = true;
+            try {
+                connection = new Socket(hostname, port);
+                out = new ObjectOutputStream(connection.getOutputStream());
+                in = new ObjectInputStream(connection.getInputStream());
+                online = true;
+                Log.i(this.getClass().getName(), "Socket connection successful " +
+                        this.hostname+ ":" + this.port);
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Failed to start connection with the socket");
+            }
         }
+        return false;
     }
 
     /**
@@ -74,13 +113,17 @@ public class ClientConnection {
     public void exit() {
         if (online == true) {
             try {
-                out.writeObject(Commands.DISCONNECT);
+                DataPacket dp = new DataPacket();
+                dp.setCommand(Commands.DISCONNECT);
+                out.writeObject(dp);
                 online = false;
                 out.close();
                 in.close();
                 connection.close();
+                Log.i(this.getClass().getName(), "Socket connection was closed");
             } catch (IOException ex) {
                 ex.printStackTrace();
+                Log.e(this.getClass().getName(), "Socket disconnect has failed");
             }
         }
     }
