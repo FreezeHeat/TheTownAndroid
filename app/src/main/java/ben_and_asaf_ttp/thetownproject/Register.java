@@ -3,6 +3,7 @@ package ben_and_asaf_ttp.thetownproject;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,7 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class Register extends AppCompatActivity implements View.OnClickListener{
-
+    private SharedPreferences myPrefs;
     private Player player;
     private DataPacket dp;
     private EditText editUser;
@@ -30,7 +31,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        player = new Player();
+        myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        player = new Player("", "");
         dp = new DataPacket();
 
         editUser = (EditText)findViewById(R.id.register_editUser);
@@ -83,7 +85,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                                 Register.this.player = dataPacket.getPlayer();
 
                                 //Save the information
-                                SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
+                                SharedPreferences.Editor editor = myPrefs.edit();
+                                player.getUsername();
+                                myPrefs.getString("username", "");
                                 editor.putString("username", player.getUsername());
                                 editor.putString("password", player.getPassword());
                                 editor.apply();
@@ -103,7 +107,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                     }
                 }.execute(this.dp);
             }else{
-                Toast.makeText(Register.this, getResources().getText(R.string.register_user_already_exists), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Register.this, getResources().getText(R.string.register_passwords_do_not_match), Toast.LENGTH_SHORT).show();
             }
         }else{
             Toast.makeText(Register.this, getResources().getText(R.string.general_empty_details), Toast.LENGTH_SHORT).show();

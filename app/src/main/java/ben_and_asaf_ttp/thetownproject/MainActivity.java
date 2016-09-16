@@ -17,7 +17,7 @@ import android.widget.Toast;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    public static SharedPreferences myPrefs;
+    private SharedPreferences myPrefs;
     private Player player;
     private AlertDialog.Builder builder;
 

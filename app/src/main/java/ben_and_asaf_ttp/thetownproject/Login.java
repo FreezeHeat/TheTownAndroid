@@ -21,11 +21,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private TextView welcome;
     private AlertDialog.Builder builder;
     private static final int MENU_EXIT = -1;
-    private Player player = null;
-    private DataPacket dp;
     private EditText editUser;
     private EditText editPassword;
     private CheckBox checkBox;
+    private Player player = null;
+    private DataPacket dp;
+    private SharedPreferences myPrefs;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +77,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                             //check if user checked the checkbox to remember details
                             if (checkBox.isChecked()) {
-                                SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
+                                SharedPreferences.Editor editor = myPrefs.edit();
                                 editor.putString("username", player.getUsername());
                                 editor.putString("password", player.getPassword());
                                 editor.apply();
                             } else {
-                                SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
+                                SharedPreferences.Editor editor = myPrefs.edit();
                                 editor.putString("username", "");
                                 editor.putString("password", "");
                                 editor.apply();
@@ -94,7 +95,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             Toast.makeText(Login.this, getResources().getText(R.string.login_already_connected), Toast.LENGTH_SHORT).show();
                             break;
                         case WRONG_DETAILS:
-                            Toast.makeText(Login.this, getResources().getText(R.string.general_empty_details), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, getResources().getText(R.string.login_wrong_details), Toast.LENGTH_SHORT).show();
                             break;
                     }
 
