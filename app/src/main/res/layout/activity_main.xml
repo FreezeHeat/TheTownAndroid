@@ -30,7 +30,7 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:background="@drawable/round_button"
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_button"
                 android:textStyle="bold"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/btnRegister"
                 android:id="@+id/main_btnRegister"

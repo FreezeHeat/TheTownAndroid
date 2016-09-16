@@ -51,54 +51,61 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         this.player.setUsername(this.editUser.getText().toString());
         this.player.setPassword(this.editPassword.getText().toString());
 
-        new AsyncTask<DataPacket, Void, DataPacket>(){
+        //check if strings are empty
+        if(this.player.getUsername() != null && (!this.player.getUsername().equals("")) &&
+            this.player.getPassword() != null && (!this.player.getPassword().equals(""))) {
 
-            @Override
-            protected DataPacket doInBackground(DataPacket... params) {
-                //login to server
-                DataPacket dp = params[0];
-                dp.setCommand(Commands.LOGIN);
-                dp.setPlayer(player);
-                ClientConnection.getConnection().sendDataPacket(dp);
-                dp = ClientConnection.getConnection().receiveDataPacket();
-                return dp;
-            }
+            new AsyncTask<DataPacket, Void, DataPacket>() {
 
-            @Override
-            protected void onPostExecute(DataPacket dataPacket) {
-                switch(dataPacket.getCommand()){
-                    case LOGIN:
-                        Login.this.player = dataPacket.getPlayer();
-
-                        //check if user checked the checkbox to remember details
-                        if(checkBox.isChecked()){
-                            SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
-                            editor.putString("username", player.getUsername());
-                            editor.putString("password", player.getPassword());
-                            editor.apply();
-                        }else{
-                            SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
-                            editor.putString("username", "");
-                            editor.putString("password", "");
-                            editor.apply();
-                        }
-                        Login.this.finish();
-                        Intent myIntent = new Intent(Login.this, Lobby.class);
-                        startActivity(myIntent);
-                        return;
-                    case ALREADY_CONNECTED:
-                        Toast.makeText(Login.this, getResources().getText(R.string.login_already_connected),Toast.LENGTH_SHORT).show();
-                        break;
-                    case WRONG_DETAILS:
-                        Toast.makeText(Login.this, getResources().getText(R.string.login_wrong_details),Toast.LENGTH_SHORT).show();
-                        break;
+                @Override
+                protected DataPacket doInBackground(DataPacket... params) {
+                    //login to server
+                    DataPacket dp = params[0];
+                    dp.setCommand(Commands.LOGIN);
+                    dp.setPlayer(player);
+                    ClientConnection.getConnection().sendDataPacket(dp);
+                    dp = ClientConnection.getConnection().receiveDataPacket();
+                    return dp;
                 }
 
-                //reset password and focus on the password component
-                editPassword.setText("");
-                editPassword.requestFocus();
-            }
-        }.execute(this.dp);
+                @Override
+                protected void onPostExecute(DataPacket dataPacket) {
+                    switch (dataPacket.getCommand()) {
+                        case LOGIN:
+                            Login.this.player = dataPacket.getPlayer();
+
+                            //check if user checked the checkbox to remember details
+                            if (checkBox.isChecked()) {
+                                SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
+                                editor.putString("username", player.getUsername());
+                                editor.putString("password", player.getPassword());
+                                editor.apply();
+                            } else {
+                                SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
+                                editor.putString("username", "");
+                                editor.putString("password", "");
+                                editor.apply();
+                            }
+                            Login.this.finish();
+                            Intent myIntent = new Intent(Login.this, Lobby.class);
+                            startActivity(myIntent);
+                            return;
+                        case ALREADY_CONNECTED:
+                            Toast.makeText(Login.this, getResources().getText(R.string.login_already_connected), Toast.LENGTH_SHORT).show();
+                            break;
+                        case WRONG_DETAILS:
+                            Toast.makeText(Login.this, getResources().getText(R.string.general_empty_details), Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+
+                    //reset password and focus on the password component
+                    editPassword.setText("");
+                    editPassword.requestFocus();
+                }
+            }.execute(this.dp);
+        }else{
+            Toast.makeText(Login.this, getResources().getText(R.string.general_empty_details), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void checkboxClicked(View v){

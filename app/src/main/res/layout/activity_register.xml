@@ -2,94 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/myBackground">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:textColorHint="#FFC10101"
-        android:id="@+id/register_txtReg"
-        android:hint="@string/txtReg"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:textColorHint="#FFC10101"
-        android:id="@+id/register_txtUser"
-        android:hint="@string/txtUser"
-        android:layout_gravity="center_horizontal" />
+    style="@style/myBackground"
+    android:weightSum="1">
 
     <EditText
+        android:hint="Username"
+        android:textColorHint="@android:color/holo_red_dark"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:textColor="#FFFFFF"
-        android:id="@+id/register_editUser"
-        android:layout_gravity="right" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/register_txtPass"
-        android:hint="@string/txtPass"
-        android:textSize="25dp"
-        android:textColorHint="#FFC10101"
-        android:layout_gravity="center_horizontal" />
+        android:layout_height="60dp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:id="@+id/register_editUser"/>
 
     <EditText
+        android:hint="Password"
+        android:textColorHint="@android:color/holo_red_dark"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:textColor="#FFFFFF"
+        android:layout_height="60dp"
+        android:textColor="@android:color/white"
         android:inputType="textPassword"
-        android:ems="10"
         android:id="@+id/register_editPass"
-        android:layout_gravity="center_horizontal" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/register_txtRepass"
-        android:hint="@string/txtRepass"
-        android:textSize="25dp"
-        android:textColorHint="#FFC10101"
-        android:layout_gravity="center_horizontal" />
+        android:gravity="center" />
 
     <EditText
+        android:hint="Re-Type Password"
+        android:textColorHint="@android:color/holo_red_dark"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:textColor="#FFFFFF"
+        android:layout_height="60dp"
+        android:textColor="@android:color/white"
         android:inputType="textPassword"
-        android:ems="10"
         android:id="@+id/register_editRePass"
-        android:layout_gravity="center_horizontal" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/register_txtEmail1"
-        android:hint="@string/txtEmail"
-        android:textSize="25dp"
-        android:textColorHint="#FFC10101"
-        android:layout_gravity="center_horizontal" />
+        android:gravity="center"/>
 
     <EditText
+        android:hint="Email Address"
+        android:textColorHint="@android:color/holo_red_dark"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:textColor="#FFFFFF"
+        android:layout_height="60dp"
+        android:textColor="@android:color/white"
         android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/register_txtEmail2"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/register_txtEmail"
+        android:gravity="center" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColorHint="#FFC10101"
         android:id="@+id/register_txtEmailResponse"
         android:hint="@string/txtReg1"
@@ -102,31 +60,30 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="0.73">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="17dp"
+        android:textSize="17sp"
         android:background="@drawable/round_button"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:hint="@string/btnReLogin"
         android:id="@+id/register_btnConfirm"
-        android:onClick="login"
         android:layout_marginRight="10dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="17dp"
-            android:background="@drawable/round_button"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
-            android:hint="@string/btnClear"
-            android:id="@+id/register_btnClear"
-            android:onClick="login"
-            android:layout_marginRight="10dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:background="@drawable/round_button"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/btnClear"
+        android:id="@+id/register_btnClear"
+        android:layout_marginRight="10dp" />
 
     </LinearLayout>
 

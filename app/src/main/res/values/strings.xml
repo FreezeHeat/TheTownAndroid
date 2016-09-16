@@ -29,6 +29,9 @@
     <string name="splash_socket_success">Connection Established</string>
     <string name="login_wrong_details">Details sent do not match</string>
     <string name="login_already_connected">This user is already connected</string>
+    <string name="general_empty_details">Nothing was entered</string>
+    <string name="register_user_already_exists">This username already exists</string>
+    <string name="register_passwords_do_not_match">Passwords do not match</string>
 
     <string-array name="friends_list_name">
         <item>Meme 1</item>

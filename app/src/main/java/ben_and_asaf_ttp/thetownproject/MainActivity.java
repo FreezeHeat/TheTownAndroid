@@ -112,12 +112,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.main_btnForgot:
-                // do your code
+                // TODO: actual something to happen
                 Toast.makeText(this, "In development", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.main_btnOptions:
-                // do your code
+                // TODO: actual something to happen
                 Toast.makeText(this, "TODO!", Toast.LENGTH_SHORT).show();
                 break;
             default:
