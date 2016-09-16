@@ -27,6 +27,8 @@
     <string name="splash_socket_connection">Starting Socket Connection</string>
     <string name="splash_socket_failed">Failed to connect, Shutting down</string>
     <string name="splash_socket_success">Connection Established</string>
+    <string name="login_wrong_details">Details sent do not match</string>
+    <string name="login_already_connected">This user is already connected</string>
 
     <string-array name="friends_list_name">
         <item>Meme 1</item>
@@ -34,17 +36,17 @@
         <item>Meme 3</item>
         <item>Meme 4</item>
     </string-array>
+
     <string-array name="friends_list_status">
         <item>Online</item>
         <item>Offline</item>
         <item>Meme 3</item>
         <item>Meme 4</item>
     </string-array>
-    <string name="title_activity_navigation">navigation</string>
 
+    <string name="title_activity_navigation">navigation</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->

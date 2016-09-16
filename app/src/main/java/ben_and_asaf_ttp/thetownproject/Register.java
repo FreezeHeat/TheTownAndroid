@@ -15,39 +15,27 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        EditText editUser = (EditText)findViewById(R.id.editUser);
-        EditText editPassword = (EditText)findViewById(R.id.editPass);
-        EditText editPassword2 = (EditText)findViewById(R.id.editRePass);
-        EditText editEmail = (EditText)findViewById(R.id.txtEmail2);
-        TextView confText = (TextView)findViewById(R.id.txtEmailResponse);
-        Button confirm = (Button) findViewById(R.id.btnConfirm);
-        Button clear = (Button) findViewById(R.id.btnConfirm);
-        Button back = (Button) findViewById(R.id.btnConfirm);
-
-
-
+        EditText editUser = (EditText)findViewById(R.id.register_editUser);
+        EditText editPassword = (EditText)findViewById(R.id.register_editPass);
+        EditText editPassword2 = (EditText)findViewById(R.id.register_editRePass);
+        EditText editEmail = (EditText)findViewById(R.id.register_txtEmail2);
+        TextView confText = (TextView)findViewById(R.id.register_txtEmailResponse);
+        Button confirm = (Button) findViewById(R.id.register_btnConfirm);
+        Button clear = (Button) findViewById(R.id.register_btnConfirm);
+        Button back = (Button) findViewById(R.id.register_btnConfirm);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
-            case R.id.btnConfirm:
-
-                break;
-
-            case R.id.btnClear:
+            case R.id.register_btnConfirm:
 
                 break;
+            case R.id.register_btnClear:
 
-            case R.id.btnBack:
-                // do your code
                 break;
-
-
             default:
                 break;
         }
-
     }
 }

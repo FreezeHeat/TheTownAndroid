@@ -32,6 +32,11 @@ import javax.persistence.Transient;
 public class Game implements Serializable{
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6729644780337659239L;
+
+	/**
 	 * An auto generated ID for a game, used to identify a {@code Game} instance
 	 */
 	@Column(nullable=false, name="GameID")

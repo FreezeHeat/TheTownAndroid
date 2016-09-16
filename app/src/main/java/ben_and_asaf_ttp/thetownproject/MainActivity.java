@@ -12,11 +12,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Toast;
+
+import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static SharedPreferences myPrefs;
-    private Account account = new Account();
+    private Player player;
     private AlertDialog.Builder builder;
 
 
@@ -25,28 +27,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
-        Button btnRegister = (Button) findViewById(R.id.btnRegister);
-        Button btnForgot = (Button) findViewById(R.id.btnForgot);
-        Button btnOptions = (Button) findViewById(R.id.btnOptions);
-
+        Button btnLogin = (Button) findViewById(R.id.main_btnLogin);
+        Button btnRegister = (Button) findViewById(R.id.main_btnRegister);
+        Button btnForgot = (Button) findViewById(R.id.main_btnForgot);
+        Button btnOptions = (Button) findViewById(R.id.main_btnOptions);
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
         btnForgot.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
 
-
-
-        /*
+        //check if user already exists
         myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        account.setUsername(myPrefs.getString("username", ""));
-        buildExitDialog();
+        player = new Player(myPrefs.getString("username", ""), myPrefs.getString("password", ""));
 
-        if(account.getUsername() != null && !account.getUsername().equals("")){
+        //If user already exists, get right into lobby activity
+        if(player.getUsername() != null && (!player.getUsername().equals("")) &&
+                player.getPassword() != null && (!player.getPassword().equals(""))) {
             finish();
-            Intent myIntent = new Intent(this, Login.class);
+            Intent myIntent = new Intent(this, Lobby.class);
             startActivity(myIntent);
-        }*/
+        }
     }
 
     @Override
@@ -61,27 +61,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.exitApp:
+                buildExitDialog();
                 builder.create().show();
                 break;
+
+            //TODO: add case for OPTIONS, instead of the main window
         }
         return true;
     }
 
     public void buildExitDialog() {
-        builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure?");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                MainActivity.this.finish();
-                ClientConnection.getConnection().exit();
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure?");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    MainActivity.this.finish();
+                    ClientConnection.getConnection().exit();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+        }
     }
 
     @Override
@@ -94,26 +99,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.btnLogin:
+            case R.id.main_btnLogin:
                 Intent btnLogin = new Intent(MainActivity.this, Login.class);
                 MainActivity.this.startActivity(btnLogin);
+                finish();
                 break;
 
-            case R.id.btnRegister:
+            case R.id.main_btnRegister:
                 Intent btnRegister = new Intent(MainActivity.this, Register.class);
                 MainActivity.this.startActivity(btnRegister);
+                finish();
                 break;
 
-            case R.id.btnForgot:
+            case R.id.main_btnForgot:
                 // do your code
+                Toast.makeText(this, "In development", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.btnOptions:
+            case R.id.main_btnOptions:
                 // do your code
+                Toast.makeText(this, "TODO!", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
         }
-
     }
 }

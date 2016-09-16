@@ -21,6 +21,11 @@ import javax.persistence.Table;
 public class Stats implements Serializable{
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2158903355581354700L;
+
+	/**
 	 * The ID of the statistics, unique to each {@code Player}
 	 */
 	@Column(nullable=false, name="StatsID")

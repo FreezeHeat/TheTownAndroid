@@ -1,10 +1,8 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
@@ -22,6 +20,11 @@ import javax.persistence.Transient;
 @Table(name="Players")
 public class Player extends User{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3801056084500193179L;
+
 	/**
      * {@code Stats} that hold the statistics of the player
      * @see Stats

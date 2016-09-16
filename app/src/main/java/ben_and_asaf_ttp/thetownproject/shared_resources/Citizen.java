@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class Citizen extends Role implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3887658621324343712L;
+
 	@Override
 	public void action(DataPacket dp) {}
 	

@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class Snitch extends Role implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8778306669588000877L;
+
 	@Override
 	public void action(DataPacket dp) {
 		dp.setCommand(Commands.SNITCH);

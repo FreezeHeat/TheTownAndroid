@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 public class SplashActivity extends AppCompatActivity {
 
-    TextView txtSplashScreen;
-    ProgressBar pbSplashScreen;
-    ImageView imgSplashScreen;
+    private TextView txtSplashScreen;
+    private ProgressBar pbSplashScreen;
+    private ImageView imgSplashScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +57,22 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             publishProgress("0", getResources().getString(R.string.splash_socket_connection));
-            if(!ClientConnection.getConnection().startConnection()){
+            ClientConnection.getConnection().startConnection();
+            if(!ClientConnection.getConnection().isOnline()){
                 publishProgress("-1", getResources().getString(R.string.splash_socket_failed));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 return false;
             }else{
                 publishProgress("50", getResources().getString(R.string.splash_socket_success));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             return true;
@@ -75,7 +86,7 @@ public class SplashActivity extends AppCompatActivity {
                 pbSplashScreen.setProgress(100);
                 txtSplashScreen.setText("Successful - starting the game");
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -87,7 +98,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 //in case starting up the socket failed
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

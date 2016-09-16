@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class DataPacket implements Serializable{
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -7061618694917478644L;
 	private Commands command;
 	private Game game;
 	private List<Game> games;
@@ -12,11 +16,11 @@ public class DataPacket implements Serializable{
 	private String message;
 	private String server_message;
 	private int number;
-	
+
 	public DataPacket(){};
-	
-	public DataPacket(Commands command, Game game, List<Game> games, Player player, List<Player> players, 
-			String message,String server_message, int number) {
+
+	public DataPacket(Commands command, Game game, List<Game> games, Player player, List<Player> players,
+					  String message,String server_message, int number) {
 		this.command = command;
 		this.game = game;
 		this.games = games;
@@ -42,7 +46,7 @@ public class DataPacket implements Serializable{
 	public void setGame(Game game) {
 		this.game = game;
 	}
-	
+
 	public List<Game> getGames() {
 		return games;
 	}
@@ -96,6 +100,4 @@ public class DataPacket implements Serializable{
 		return "DataPacket [command=" + command + ", game=" + game + ", player=" + player + ", players=" + players
 				+ ", message=" + message + ", server_message=" + server_message + "]";
 	}
-	
-	
 }

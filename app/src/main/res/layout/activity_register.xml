@@ -4,29 +4,24 @@
     android:layout_height="match_parent"
     style="@style/myBackground">
 
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30dp"
         android:textColorHint="#FFC10101"
-        android:id="@+id/txtReg"
+        android:id="@+id/register_txtReg"
         android:hint="@string/txtReg"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
-
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp" />
-
-
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:textColorHint="#FFC10101"
-        android:id="@+id/txtUser"
+        android:id="@+id/register_txtUser"
         android:hint="@string/txtUser"
         android:layout_gravity="center_horizontal" />
 
@@ -34,13 +29,13 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:textColor="#FFFFFF"
-        android:id="@+id/editUser"
+        android:id="@+id/register_editUser"
         android:layout_gravity="right" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtPass"
+        android:id="@+id/register_txtPass"
         android:hint="@string/txtPass"
         android:textSize="25dp"
         android:textColorHint="#FFC10101"
@@ -52,13 +47,13 @@
         android:textColor="#FFFFFF"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editPass"
+        android:id="@+id/register_editPass"
         android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtRepass"
+        android:id="@+id/register_txtRepass"
         android:hint="@string/txtRepass"
         android:textSize="25dp"
         android:textColorHint="#FFC10101"
@@ -70,13 +65,13 @@
         android:textColor="#FFFFFF"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editRePass"
+        android:id="@+id/register_editRePass"
         android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtEmail1"
+        android:id="@+id/register_txtEmail1"
         android:hint="@string/txtEmail"
         android:textSize="25dp"
         android:textColorHint="#FFC10101"
@@ -88,7 +83,7 @@
         android:textColor="#FFFFFF"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/txtEmail2"
+        android:id="@+id/register_txtEmail2"
         android:layout_gravity="center_horizontal" />
 
     <TextView
@@ -96,11 +91,10 @@
         android:layout_height="wrap_content"
         android:textSize="15dp"
         android:textColorHint="#FFC10101"
-        android:id="@+id/txtEmailResponse"
+        android:id="@+id/register_txtEmailResponse"
         android:hint="@string/txtReg1"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
-
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp" />
 
@@ -109,8 +103,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
-    <Button
 
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="17dp"
@@ -118,12 +112,11 @@
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:hint="@string/btnReLogin"
-        android:id="@+id/btnConfirm"
+        android:id="@+id/register_btnConfirm"
         android:onClick="login"
         android:layout_marginRight="10dp" />
 
         <Button
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17dp"
@@ -131,26 +124,9 @@
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:hint="@string/btnClear"
-            android:id="@+id/btnClear"
+            android:id="@+id/register_btnClear"
             android:onClick="login"
             android:layout_marginRight="10dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
-
-        <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="17dp"
-        android:background="@drawable/round_button"
-        android:textStyle="bold" android:hint="@string/btnBack"
-        android:id="@+id/btnBack"
-        android:onClick="" android:layout_gravity="right" />
 
     </LinearLayout>
 

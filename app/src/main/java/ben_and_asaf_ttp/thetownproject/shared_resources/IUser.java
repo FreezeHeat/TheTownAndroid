@@ -7,7 +7,7 @@ package ben_and_asaf_ttp.thetownproject.shared_resources;
  * @see User
  * @since 1.0
  */
-public interface IUser {
+public interface IUser{
 	/**
      * Checks equality by comparing username AND password
      *

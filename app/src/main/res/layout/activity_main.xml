@@ -8,28 +8,26 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:background="@drawable/bgs"
+    android:background="@drawable/bgsmall"
     tools:context="ben_and_asaf_ttp.thetownproject.MainActivity">
 
     <ImageView
-        android:id="@+id/phone_icon"
-
+        android:id="@+id/main_phone_icon"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="130dp"
-
         android:src="@drawable/login"
         android:layout_marginBottom="50dp" />
 
-
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:weightSum="100"
+        android:layout_marginBottom="5dp">
 
         <Button
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
@@ -37,29 +35,29 @@
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/btnLogin"
-                android:id="@+id/btnLogin"
-                android:onClick="login"
-                android:layout_marginRight="10dp" />
+                android:id="@+id/main_btnLogin"
+                android:layout_marginRight="5dp"
+                android:layout_weight="50"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_button"
                 android:textStyle="bold"
-            android:textSize="17dp"
+                android:textSize="17dp"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/btnRegister"
-                android:id="@+id/btnRegister"
-                android:onClick="register"
-                android:layout_marginBottom="10dp" />
+                android:id="@+id/main_btnRegister"
+                android:layout_weight="50"/>
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_marginBottom="5dp">
 
         <Button
                 android:layout_width="wrap_content"
@@ -68,10 +66,9 @@
                 android:layout_gravity="center_horizontal"
                 android:textStyle="bold"
                 android:hint="@string/btnForgot"
-                android:id="@+id/btnForgot"
-                android:onClick="forgotPass"
-                android:layout_marginRight="10dp"
-                android:layout_weight="2.15" />
+                android:id="@+id/main_btnForgot"
+                android:layout_marginRight="4dp"
+                android:layout_weight="0.5" />
 
         <Button
                 android:layout_width="wrap_content"
@@ -80,24 +77,24 @@
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/btnOptions"
-                android:id="@+id/btnOptions"
-                android:onClick="options"/>
+                android:id="@+id/main_btnOptions"
+                android:layout_weight="0.5"/>
     </LinearLayout>
-
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp">
 
         <ImageButton
                 android:scaleType="fitXY"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/imgbtnInfo"
+                android:id="@+id/main_imgbtnInfo"
                 android:src="@drawable/info"
-            android:layout_marginTop="100dp" />
+                android:layout_marginTop="100dp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -87,9 +87,8 @@ public class ClientConnection {
     /**
      * Retry the connection to the server
      * @throws java.io.IOException
-     * @return If the connection was succesful or not
      */
-    public boolean startConnection(){
+    public void startConnection(){
         if (online == false) {
             try {
                 connection = new Socket(hostname, port);
@@ -98,13 +97,36 @@ public class ClientConnection {
                 online = true;
                 Log.i(this.getClass().getName(), "Socket connection successful " +
                         this.hostname+ ":" + this.port);
-                return true;
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Failed to start connection with the socket");
             }
         }
-        return false;
+    }
+
+    public void sendDataPacket(DataPacket dp){
+        try {
+            this.getOutput().writeObject(dp);
+            Log.i(this.getClass().getName(), "DataPacket sent: " + dp.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "writeObject failed with this DataPacket: " + dp.toString());
+        }
+    }
+
+    public DataPacket receiveDataPacket(){
+        DataPacket dp = null;
+        try {
+            dp = (DataPacket)this.getInput().readObject();
+            Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "readObject failed - class not found exception");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "readObject failed - IO exception - probably socket");
+        }
+        return dp;
     }
 
     /**

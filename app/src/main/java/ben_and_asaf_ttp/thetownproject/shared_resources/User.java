@@ -16,6 +16,11 @@ import javax.persistence.MappedSuperclass;
 public abstract class User implements Serializable, IUser{
 	
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 527244186457481622L;
+
+	/**
      * The user's username
      * <p><b>Note:</b> PK in the database, so it's unique</p>
      */
