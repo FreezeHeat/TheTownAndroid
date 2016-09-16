@@ -2,13 +2,6 @@ package ben_and_asaf_ttp.thetownproject.shared_resources;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
  * {@code Stats} class, holds the information about each user's stats in the database
  * @author Ben Gilad and Asaf Yeshayahu
@@ -16,50 +9,36 @@ import javax.persistence.Table;
  * @see Player
  * @since 1.0
  */
-@Entity
-@Table(name="Stats")
 public class Stats implements Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2158903355581354700L;
 
 	/**
 	 * The ID of the statistics, unique to each {@code Player}
 	 */
-	@Column(nullable=false, name="StatsID")
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	int statsId;
 	
 	/**
      * <i>Statistics</i>, how many games the user has won
      */
-	@Column(name="Won")
     private long won;
     
      /**
      * <i>Statistics</i>, how many games the user has lost
      */
-	@Column(name="Lost")
     private long lost;
     
      /**
      * <i>Statistics</i>, how many players the user has killed
      */
-	@Column(name="Kills")
     private long kills;
     
      /**
      * <i>Statistics</i>, how many players the user has healed
      */
-	@Column(name="Heals")
     private long heals;
 	
     /**
      * <i>Rating</i>, the player's rating, used for match-making
      */
-    @Column(name="Rating")
     private int rating;
     
     /**
@@ -102,7 +81,7 @@ public class Stats implements Serializable{
      *
      * @param won Games won
      */
-    public void setWon(long won) {
+    public void setWon(final long won) {
         this.won = won;
     }
 
@@ -120,7 +99,7 @@ public class Stats implements Serializable{
      *
      * @param lost Games lost
      */
-    public void setLost(long lost) {
+    public void setLost(final long lost) {
         this.lost = lost;
     }
 
@@ -138,7 +117,7 @@ public class Stats implements Serializable{
      *
      * @param kills Kills done
      */
-    public void setKills(long kills) {
+    public void setKills(final long kills) {
         this.kills = kills;
     }
 
@@ -156,7 +135,7 @@ public class Stats implements Serializable{
      *
      * @param heales Heals done
      */
-    public void setHeals(long heales) {
+    public void setHeals(final long heales) {
         this.heals = heales;
     }
     
@@ -172,7 +151,7 @@ public class Stats implements Serializable{
 	 * Set the player's rating for matchmaking
 	 * @param rating The player's rating for matchmaking
 	 */
-	public void setRating(int rating) {
+	public void setRating(final int rating) {
 		this.rating = rating;
 	}
     

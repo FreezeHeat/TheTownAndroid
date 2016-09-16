@@ -8,17 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 /**
  * {@code Game} class, holds the information about each game in the database
  * which includes the players currently playing the game
@@ -27,26 +16,16 @@ import javax.persistence.Transient;
  * @see Player
  * @since 1.0
  */
-@Entity
-@Table(name="Games")
 public class Game implements Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6729644780337659239L;
 
 	/**
 	 * An auto generated ID for a game, used to identify a {@code Game} instance
 	 */
-	@Column(nullable=false, name="GameID")
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int gameId;
 	
 	/**
 	 * The maximum amount of players to play the game
 	 */
-	@Column(name="MaxPlayers", nullable=true)
 	private int maxPlayers;
 	
 	/**
@@ -54,20 +33,16 @@ public class Game implements Serializable{
 	 * (<b>Note:</b> this role bank is given by the server)
 	 * @see Role
 	 */
-	@Transient
 	private ArrayList<Role> rolesBank;
 	
 	/**
 	 * This {@code ArrayList} holds all the players that are in the game
 	 */
-	@ManyToMany(targetEntity=Player.class)
 	private List<Player> players;
 	
 	/**
 	 * The game's creation date
 	 */
-	@Column(nullable=false, name="DateCreated")
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
     /**
@@ -90,7 +65,7 @@ public class Game implements Serializable{
 	 * Set the maximum allowed number of players
 	 * @param maxPlayers maximum allowed number of players to be set
 	 */
-	public void setMaxPlayers(int maxPlayers) {
+	public void setMaxPlayers(final int maxPlayers) {
 		this.maxPlayers = maxPlayers;
 	}
 	
@@ -106,7 +81,7 @@ public class Game implements Serializable{
 	 * Set the game's role bank({@code ArrayList} format)
 	 * @param rolesBank the game's role bank to be set
 	 */
-	public void setRolesBank(ArrayList<Role> rolesBank) {
+	public void setRolesBank(final ArrayList<Role> rolesBank) {
 		this.rolesBank = rolesBank;
 	}
 	
@@ -122,7 +97,7 @@ public class Game implements Serializable{
 	 * Set a list of all the players in the game
 	 * @param players the list of players to be set
 	 */
-	public void setPlayers(ArrayList<Player> players) {
+	public void setPlayers(final ArrayList<Player> players) {
 		this.players = players;
 	}
 

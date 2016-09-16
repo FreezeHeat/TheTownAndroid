@@ -106,7 +106,7 @@ public class ClientConnection {
 
     public void sendDataPacket(DataPacket dp){
         try {
-            this.getOutput().writeObject(dp);
+            this.getOutput().writeObject(dp.toJson());
             Log.i(this.getClass().getName(), "DataPacket sent: " + dp.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,9 +115,9 @@ public class ClientConnection {
     }
 
     public DataPacket receiveDataPacket(){
-        DataPacket dp = null;
+        DataPacket dp = new DataPacket();
         try {
-            dp = (DataPacket)this.getInput().readObject();
+            dp = dp.fromJson((String)this.getInput().readObject());
             Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -137,7 +137,7 @@ public class ClientConnection {
             try {
                 DataPacket dp = new DataPacket();
                 dp.setCommand(Commands.DISCONNECT);
-                out.writeObject(dp);
+                out.writeObject(dp.toJson());
                 online = false;
                 out.close();
                 in.close();
@@ -154,7 +154,8 @@ public class ClientConnection {
      * Finalize the object and also exit from the server;
      */
     @Override
-    protected void finalize() {
+    protected void finalize() throws Throwable {
+        super.finalize();
         exit();
     }
 }

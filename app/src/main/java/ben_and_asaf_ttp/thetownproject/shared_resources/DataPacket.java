@@ -3,11 +3,9 @@ package ben_and_asaf_ttp.thetownproject.shared_resources;
 import java.io.Serializable;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class DataPacket implements Serializable{
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -7061618694917478644L;
 	private Commands command;
 	private Game game;
 	private List<Game> games;
@@ -16,11 +14,11 @@ public class DataPacket implements Serializable{
 	private String message;
 	private String server_message;
 	private int number;
-
-	public DataPacket(){};
-
-	public DataPacket(Commands command, Game game, List<Game> games, Player player, List<Player> players,
-					  String message,String server_message, int number) {
+	
+	public DataPacket(){}
+	
+	public DataPacket(final Commands command, final Game game, final List<Game> games, final Player player, final List<Player> players, 
+			final String message,final String server_message, final int number) {
 		this.command = command;
 		this.game = game;
 		this.games = games;
@@ -35,7 +33,7 @@ public class DataPacket implements Serializable{
 		return command;
 	}
 
-	public void setCommand(Commands command) {
+	public void setCommand(final Commands command) {
 		this.command = command;
 	}
 
@@ -43,15 +41,15 @@ public class DataPacket implements Serializable{
 		return game;
 	}
 
-	public void setGame(Game game) {
+	public void setGame(final Game game) {
 		this.game = game;
 	}
-
+	
 	public List<Game> getGames() {
 		return games;
 	}
 
-	public void setGames(List<Game> games) {
+	public void setGames(final List<Game> games) {
 		this.games = games;
 	}
 
@@ -59,7 +57,7 @@ public class DataPacket implements Serializable{
 		return player;
 	}
 
-	public void setPlayer(Player player) {
+	public void setPlayer(final Player player) {
 		this.player = player;
 	}
 
@@ -67,7 +65,7 @@ public class DataPacket implements Serializable{
 		return players;
 	}
 
-	public void setPlayers(List<Player> players) {
+	public void setPlayers(final List<Player> players) {
 		this.players = players;
 	}
 
@@ -75,7 +73,7 @@ public class DataPacket implements Serializable{
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 
@@ -83,7 +81,7 @@ public class DataPacket implements Serializable{
 		return server_message;
 	}
 
-	public void setServer_message(String server_message) {
+	public void setServer_message(final String server_message) {
 		this.server_message = server_message;
 	}
 
@@ -91,13 +89,22 @@ public class DataPacket implements Serializable{
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(final int number) {
 		this.number = number;
+	}
+	
+	public String toJson(){
+		return new Gson().toJson(this, DataPacket.class);
+	}
+	
+	public DataPacket fromJson(final String json){
+		return new Gson().fromJson(json, DataPacket.class);
 	}
 
 	@Override
 	public String toString() {
-		return "DataPacket [command=" + command + ", game=" + game + ", player=" + player + ", players=" + players
-				+ ", message=" + message + ", server_message=" + server_message + "]";
+		return "DataPacket [command=" + command + ", game=" + game + ", games=" + games + ", player=" + player
+				+ ", players=" + players + ", message=" + message + ", server_message=" + server_message + ", number="
+				+ number + "]";
 	}
 }

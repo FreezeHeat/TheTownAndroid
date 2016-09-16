@@ -9,7 +9,8 @@ import java.io.Serializable;
  * @see Player
  * @since 1.0
  */
-public enum PlayerStatus implements Serializable{
+public enum PlayerStatus implements Serializable
+{
 	
 	/**
 	 * Indicates the {@code User} is offline

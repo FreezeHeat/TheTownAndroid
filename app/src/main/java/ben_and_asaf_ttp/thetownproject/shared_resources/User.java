@@ -2,36 +2,24 @@ package ben_and_asaf_ttp.thetownproject.shared_resources;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-
 /**
  * {@code User} <i>abstract</i> class, holds the information about each user in the database
  * @author Ben Gilad and Asaf Yeshayahu
  * @version %I%
  * @since 1.0
  */
-@MappedSuperclass
-public abstract class User implements Serializable, IUser{
-	
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 527244186457481622L;
+
+public abstract class User implements IUser, Serializable{
 
 	/**
      * The user's username
      * <p><b>Note:</b> PK in the database, so it's unique</p>
      */
-	@Id
-	@Column(name="Username", length=30)
     protected String username;
     
     /**
      * The user's password
      */
-	@Column(name="Password", length=30, nullable=false)
 	protected String password;
     
     /**

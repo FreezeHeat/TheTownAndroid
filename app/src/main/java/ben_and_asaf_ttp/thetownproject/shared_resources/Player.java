@@ -2,13 +2,6 @@ package ben_and_asaf_ttp.thetownproject.shared_resources;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 /**
  * {@code Player} class, holds the information about each player in the database
  * @author Ben Gilad and Asaf Yeshayahu
@@ -16,47 +9,35 @@ import javax.persistence.Transient;
  * @since 1.0
  */
 
-@Entity
-@Table(name="Players")
 public class Player extends User{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3801056084500193179L;
-
 	/**
      * {@code Stats} that hold the statistics of the player
      * @see Stats
      */
-	@OneToOne(cascade=CascadeType.ALL)
     private Stats stats;
 
     /**
      * {@code PlayerStatus} holds information about the player's status in the server
      * @see PlayerStatus
      */
-    @Transient
     private PlayerStatus status;
     
     /**
      * {@code Role} holds information about the player's role in the game
      * @see Role
      */
-    @Transient
     private Role role;
 	
     /**
      * This list holds all the games the players has played (Game history)
      * @see Game
      */
-    @ManyToMany(targetEntity=Game.class)
     private List<Game> gameHistory;
     
     /**
      * The player's status, alive or not
      */
-    @Transient
     private boolean alive;
     
     /**
@@ -76,8 +57,8 @@ public class Player extends User{
      * @see Role
      */
     public Player(
-    		String username, String password,
-    		Stats stats, PlayerStatus status, Role role){
+    		final String username, final String password,
+    		final Stats stats, final PlayerStatus status, final Role role){
     	this.setUsername(username);
     	this.setPassword(password);
     	this.setStats(stats);
@@ -92,7 +73,7 @@ public class Player extends User{
      * @param username the Player's username
      * @param password the Player's password
      */
-    public Player(String username, String password){
+    public Player(final String username, final String password){
     	this(username, password, new Stats(), PlayerStatus.OFFLINE, null);
     }
     
@@ -103,7 +84,7 @@ public class Player extends User{
 	}
 
 	@Override
-	public void setUsername(String username) {
+	public void setUsername(final String username) {
 		// TODO Auto-generated method stub
 		this.username = username;
 	}
@@ -115,7 +96,7 @@ public class Player extends User{
 	}
 
 	@Override
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		// TODO Auto-generated method stub
 		this.password = password;
 	}
@@ -132,7 +113,7 @@ public class Player extends User{
      * Set the {@code Stats} of the player
      * @param stats The player's statistics
      */
-	public void setStats(Stats stats){
+	public void setStats(final Stats stats){
 		this.stats = stats;
 	}
 	
@@ -150,7 +131,7 @@ public class Player extends User{
 	 * @param status the player's status to be set
 	 * @see PlayerStatus
 	 */
-	public void setStatus(PlayerStatus status){
+	public void setStatus(final PlayerStatus status){
 		this.status = status;
 	}
 	
@@ -168,7 +149,7 @@ public class Player extends User{
 	 * @param role the role to be set
 	 * @see Role
 	 */
-	public void setRole(Role role) {
+	public void setRole(final Role role) {
 		this.role = role;
 	}
 
@@ -184,7 +165,7 @@ public class Player extends User{
 	 * Set the player's game history
 	 * @param gameHistory The player's game history to be set
 	 */
-	public void setGameHistory(List<Game> gameHistory) {
+	public void setGameHistory(final List<Game> gameHistory) {
 		this.gameHistory = gameHistory;
 	}
 
@@ -200,14 +181,14 @@ public class Player extends User{
 	 * Set the player's status
 	 * @param alive The player's status
 	 */
-	public void setAlive(boolean alive) {
+	public void setAlive(final boolean alive) {
 		this.alive = alive;
 	}
 
 	@Override
-    public boolean equals(Object o){
+    public boolean equals(final Object o){
 		if(o instanceof Player){
-			Player p = (Player)o;
+			Player p = (Player) o;
 			if(this.getUsername().equals(p.getUsername())&& 
 			   this.getPassword().equals(p.getPassword())){
 				return true;

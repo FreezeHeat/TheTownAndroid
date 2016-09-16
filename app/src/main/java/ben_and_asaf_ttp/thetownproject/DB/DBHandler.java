@@ -45,8 +45,13 @@ public class DBHandler {
         result.moveToFirst();
 
         //extract information and return it as Player
-        return new Player(result.getString(result.getColumnIndex(DBConstants.PLAYER_USERNAME)),
-                          result.getString(result.getColumnIndex(DBConstants.PLAYER_PASSWORD)));
+        p = new Player(result.getString(result.getColumnIndex(DBConstants.PLAYER_USERNAME)),
+                result.getString(result.getColumnIndex(DBConstants.PLAYER_PASSWORD)));
+
+        //close cursor
+        result.close();
+
+        return p;
     }
 
     // returns true/false if the addition was successful

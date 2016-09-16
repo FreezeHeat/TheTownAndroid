@@ -75,12 +75,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
                             editor.putString("username", player.getUsername());
                             editor.putString("password", player.getPassword());
-                            editor.commit();
+                            editor.apply();
                         }else{
                             SharedPreferences.Editor editor = MainActivity.myPrefs.edit();
                             editor.putString("username", "");
                             editor.putString("password", "");
-                            editor.commit();
+                            editor.apply();
                         }
                         Login.this.finish();
                         Intent myIntent = new Intent(Login.this, Lobby.class);
