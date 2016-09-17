@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +39,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         checkBox.setChecked(true);
         player = new Player("", "");
         dp = new DataPacket();
+        myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         Button btnSignIn = (Button) findViewById(R.id.login_btnSignIn);
         Button btnForgotPass = (Button) findViewById(R.id.login_btnForgot);
@@ -45,6 +47,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         btnSignIn.setOnClickListener(this);
         btnForgotPass.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
+
+        //if there's a username and password
+        String username = myPrefs.getString("username", "");
+        if(username != null && !username.equals("")){
+            editUser.setText(username);
+            editPassword.setText(myPrefs.getString("password",""));
+        }
     }
 
     public void login()
@@ -55,6 +64,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         //check if strings are empty
         if(this.player.getUsername() != null && (!this.player.getUsername().equals("")) &&
             this.player.getPassword() != null && (!this.player.getPassword().equals(""))) {
+
+            //password checks
+            if(this.player.getPassword().length() < 6){
+                Toast.makeText(Login.this, getResources().getText(R.string.general_password_too_few_characters), Toast.LENGTH_SHORT).show();
+                return;
+            }else if(this.player.getPassword().length() > 30){
+                Toast.makeText(Login.this, getResources().getText(R.string.general_password_too_much_characters), Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             new AsyncTask<DataPacket, Void, DataPacket>() {
 
@@ -85,7 +103,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 SharedPreferences.Editor editor = myPrefs.edit();
                                 editor.putString("username", "");
                                 editor.putString("password", "");
-                                editor.apply();
+                                editor.commit();
                             }
                             Login.this.finish();
                             Intent myIntent = new Intent(Login.this, Lobby.class);

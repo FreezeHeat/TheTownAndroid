@@ -35,18 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnRegister.setOnClickListener(this);
         btnForgot.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
-
-        //check if user already exists
-        myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        player = new Player(myPrefs.getString("username", ""), myPrefs.getString("password", ""));
-
-        //If user already exists, get right into lobby activity
-        if(player.getUsername() != null && (!player.getUsername().equals("")) &&
-                player.getPassword() != null && (!player.getPassword().equals(""))) {
-            finish();
-            Intent myIntent = new Intent(this, Lobby.class);
-            startActivity(myIntent);
-        }
     }
 
     @Override

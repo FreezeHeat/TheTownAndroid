@@ -1,6 +1,7 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -33,5 +34,12 @@ public class Lobby extends AppCompatActivity{
         // Set the adapter for the list view
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, friendsListName));
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

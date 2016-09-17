@@ -65,6 +65,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 this.player.setUsername(this.editUser.getText().toString());
                 this.player.setPassword(this.editPassword.getText().toString());
 
+                //password checks
+                if(this.player.getPassword().length() < 6){
+                    Toast.makeText(Register.this, getResources().getText(R.string.general_password_too_few_characters), Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(this.player.getPassword().length() > 30){
+                    Toast.makeText(Register.this, getResources().getText(R.string.general_password_too_much_characters), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 new AsyncTask<DataPacket, Void, DataPacket>(){
                     @Override
                     protected DataPacket doInBackground(DataPacket... params) {
@@ -86,11 +95,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
 
                                 //Save the information
                                 SharedPreferences.Editor editor = myPrefs.edit();
-                                player.getUsername();
-                                myPrefs.getString("username", "");
                                 editor.putString("username", player.getUsername());
                                 editor.putString("password", player.getPassword());
-                                editor.apply();
+                                editor.commit();
 
                                 //start lobby intent
                                 Register.this.finish();

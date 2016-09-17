@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:gravity="center"
-        android:id="@+id/register_editUser"/>
+        android:id="@+id/register_editUser"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
 
     <EditText
         android:hint="Password"
@@ -22,7 +23,8 @@
         android:textColor="@android:color/white"
         android:inputType="textPassword"
         android:id="@+id/register_editPass"
-        android:gravity="center" />
+        android:gravity="center"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
 
     <EditText
         android:hint="Re-Type Password"
@@ -32,7 +34,8 @@
         android:textColor="@android:color/white"
         android:inputType="textPassword"
         android:id="@+id/register_editRePass"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
 
     <EditText
         android:hint="Email Address"
@@ -42,7 +45,7 @@
         android:textColor="@android:color/white"
         android:inputType="textEmailAddress"
         android:id="@+id/register_txtEmail"
-        android:gravity="center" />
+        android:gravity="center"/>
 
     <TextView
         android:layout_width="wrap_content"
