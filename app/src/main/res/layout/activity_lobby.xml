@@ -12,7 +12,135 @@
     android:id="@+id/content_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" />
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="70">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Player"
+                android:id="@+id/lobby_txt_player"
+                android:layout_weight="0"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Won"
+                    android:id="@+id/lobby_txt_won"
+                    android:layout_weight="25"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lost"
+                    android:id="@+id/lobby_txt_lost"
+                    android:layout_weight="25"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ratio"
+                    android:id="@+id/lobby_txt_ratio"
+                    android:layout_weight="25"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Kills"
+                    android:id="@+id/lobby_txt_kills"
+                    android:layout_weight="25"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Heals"
+                    android:id="@+id/lobby_txt_heals"
+                    android:layout_weight="25"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                android:id="@+id/lobby_txt_rating"
+                android:layout_weight="0"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="30"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Find a game"
+                android:id="@+id/lobby_btn_joinGame"
+                android:background="@drawable/round_button_small"
+                android:layout_margin="2dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Options"
+                android:id="@+id/lobby_btn_options"
+                android:background="@drawable/round_button_small"
+                android:layout_margin="2dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
+
     <!-- The navigation drawer -->
 <ListView android:id="@+id/left_drawer"
     android:layout_width="240dp"
@@ -21,11 +149,6 @@
     android:choiceMode="singleChoice"
     android:divider="@android:color/transparent"
     android:dividerHeight="0dp"
-    android:background="@drawable/blood"
-
-
-
-
-    />
+    android:background="@drawable/blood" />
 
 </android.support.v4.widget.DrawerLayout>

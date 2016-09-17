@@ -25,6 +25,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     private EditText editPassword2;
     private EditText editEmail;
     private TextView txtConfirm;
+    private GlobalResources globalResources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         player = new Player("", "");
         dp = new DataPacket();
+        globalResources = (GlobalResources)getApplication();
 
         editUser = (EditText)findViewById(R.id.register_editUser);
         editPassword = (EditText)findViewById(R.id.register_editPass);
@@ -92,6 +94,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                         switch(dataPacket.getCommand()){
                             case REGISTER:
                                 Register.this.player = dataPacket.getPlayer();
+                                globalResources.setPlayer(player);
 
                                 //Save the information
                                 SharedPreferences.Editor editor = myPrefs.edit();

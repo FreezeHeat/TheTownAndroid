@@ -34,6 +34,14 @@
     <string name="login_already_connected">This user is already connected</string>
     <string name="register_user_already_exists">This username already exists</string>
     <string name="register_passwords_do_not_match">Passwords do not match</string>
+    <string name="lobby_btn_joinGame">Join A Game</string>
+    <string name="lobby_btn_options">Options</string>
+    <string name="lobby_stats_won">Won</string>
+    <string name="lobby_stats_lost">Lost</string>
+    <string name="lobby_stats_ratio">Win/Lose Ratio</string>
+    <string name="lobby_stats_kills">Kills</string>
+    <string name="lobby_stats_heals">Heals</string>
+    <string name="lobby_stats_rating">Rating</string>
 
     <string-array name="friends_list_name">
         <item>Meme 1</item>

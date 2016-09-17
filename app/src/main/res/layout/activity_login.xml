@@ -131,7 +131,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/login_imgbtnInfo"
-                android:src="@drawable/info"/>
+                android:src="@drawable/info"
+                android:layout_gravity="center"/>
     </LinearLayout>
 
 </LinearLayout>

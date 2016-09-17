@@ -28,6 +28,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private Player player = null;
     private DataPacket dp;
     private SharedPreferences myPrefs;
+    private GlobalResources globalResources;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         player = new Player("", "");
         dp = new DataPacket();
         myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        globalResources = (GlobalResources)getApplication();
 
         Button btnSignIn = (Button) findViewById(R.id.login_btnSignIn);
         Button btnForgotPass = (Button) findViewById(R.id.login_btnForgot);
@@ -65,15 +67,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         if(this.player.getUsername() != null && (!this.player.getUsername().equals("")) &&
             this.player.getPassword() != null && (!this.player.getPassword().equals(""))) {
 
-            //password checks
-            if(this.player.getPassword().length() < 6){
-                Toast.makeText(Login.this, getResources().getText(R.string.general_password_too_few_characters), Toast.LENGTH_SHORT).show();
-                return;
-            }else if(this.player.getPassword().length() > 30){
-                Toast.makeText(Login.this, getResources().getText(R.string.general_password_too_much_characters), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             new AsyncTask<DataPacket, Void, DataPacket>() {
 
                 @Override
@@ -92,6 +85,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     switch (dataPacket.getCommand()) {
                         case LOGIN:
                             Login.this.player = dataPacket.getPlayer();
+                            globalResources.setPlayer(player);
 
                             //check if user checked the checkbox to remember details
                             if (checkBox.isChecked()) {
