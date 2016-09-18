@@ -97,6 +97,11 @@
     <string name="forgot_btnClear_land">Clear</string>
     <string name="forgot_btnBack_land">Back</string>
 
-
+    <string-array name="lobby_array_how_many_players">
+        <item>Quick-Join</item>
+        <item>5</item>
+        <item>8</item>
+        <item>10</item>
+    </string-array>
 
 </resources>

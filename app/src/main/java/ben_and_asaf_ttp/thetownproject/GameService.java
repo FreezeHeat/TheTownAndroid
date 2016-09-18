@@ -54,8 +54,6 @@ public class GameService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        dpSend = new DataPacket();
-        dpRecieve = new DataPacket();
 
         executor = new Executor() {
             @Override
