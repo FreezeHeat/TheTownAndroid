@@ -1,9 +1,12 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -37,6 +40,8 @@ public class GameActivity extends AppCompatActivity {
     private GridView grid;
     private Executor executor;
     private GameLogic gameLogic;
+    private GameService mService;
+    private boolean mBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +55,6 @@ public class GameActivity extends AppCompatActivity {
         MyPlayerAdapter myAdapter = new MyPlayerAdapter(this, R.layout.player_card, game.getPlayers());
         grid.setAdapter(myAdapter);
         registerForContextMenu(grid);
-
-        //run game logic
-        executor.execute(gameLogic);
     }
 
     class GameLogic implements Runnable{
@@ -61,13 +63,10 @@ public class GameActivity extends AppCompatActivity {
         public void run() {
 
             //start game service
-            Intent myIntent = new Intent(GameActivity.this, GameService.class);
-            //bindService(myIntent, ,);
-
             DataPacket dp;
 
             while(true){
-                dp = ClientConnection.getConnection().receiveDataPacket();
+                dp = mService.getPacket();
                 switch(dp.getCommand()){
                     case REFRESH_PLAYERS:
 
@@ -129,6 +128,45 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        Intent intent = new Intent(this, GameService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        //run game logic
+        executor.execute(gameLogic);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+    /** Defines callbacks for service binding, passed to bindService() */
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            GameService.LocalBinder binder = (GameService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
     class MyPlayerAdapter extends ArrayAdapter<Player>
     {
