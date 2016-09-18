@@ -12,9 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_weight="95"
-        android:rowCount="5"
+        android:rowCount="2"
         android:id="@+id/game_playerGrid"
-        android:background="@drawable/bgsmall"></GridLayout>
+        android:background="@drawable/bgsmall"
+        android:columnCount="5"></GridLayout>
 
     <LinearLayout
         android:orientation="horizontal"
