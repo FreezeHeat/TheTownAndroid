@@ -1,9 +1,14 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Binder;
+import android.os.IBinder;
 import android.provider.Settings;
+
+import java.util.concurrent.Executor;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Game;
@@ -16,87 +21,61 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class GameService extends IntentService {
-    private GlobalResources globalResources;
-    private Game game;
-    private Player player;
-    private DataPacket dp;
+public class GameService extends Service {
+    private Executor executor;
+    private Runnable send;
+    private Runnable recieve;
+    private DataPacket dpSend;
+    private DataPacket dpRecieve;
+    private IBinder binder = new LocalBinder();
 
-    public GameService() {
-        super("GameService");
+    public class LocalBinder extends Binder {
+        GameService getService() {
+            // Return this instance of LocalService so clients can call public methods
+            return GameService.this;
+        }
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        while(true){
-            dp = ClientConnection.getConnection().receiveDataPacket();
-            switch(dp.getCommand()){
-                case REFRESH_PLAYERS:
+    public IBinder onBind(Intent intent) {
+        return binder;
+    }
 
-                    //refreshed players - who is alive and who's not
+    public DataPacket getPacket(){
+        executor.execute(recieve);
+        return dpRecieve;
+    }
 
-                    break;
-                case DAY:
-
-                    //day cycle - change GUI and chat
-
-                    break;
-
-                case NIGHT:
-
-                    //night cycle - change GUI and chat
-
-                    break;
-                case SNITCH:
-
-                    //get player - get his role for the SNITCH
-
-                    break;
-                case EXECUTE:
-
-                    //player was executed - get datapacket with player who was killed
-
-                    break;
-                case PLAYER_JOINED:
-
-                    //get a player and players (alert about the player and set the players)
-
-                    break;
-                case PLAYER_LEFT:
-
-                    //get the player, alert about him/her
-
-                    break;
-                case READY:
-
-                    //game begun (30 seconds wait and starting DAY phase) - get players
-
-                    break;
-                case WIN_CITIZENS:
-
-                    //get refreshed players with stats and game history - check each one for this player
-
-                    break;
-                case WIN_KILLERS:
-
-                    //get refreshed players with stats and game history - check each one for this player
-
-                    break;
-                case SERVER_SHUTDOWN:
-
-                    //server shuts down...
-
-                    break;
-            }
-        }
+    public void sendPacket(DataPacket dpSend){
+        this.dpSend = dpSend;
+        executor.execute(send);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        globalResources = (GlobalResources)getApplication();
-        game = globalResources.getGame();
-        player = globalResources.getPlayer();
-        dp = new DataPacket();
+        dpSend = new DataPacket();
+        dpRecieve = new DataPacket();
+
+        executor = new Executor() {
+            @Override
+            public void execute(Runnable command) {
+                new Thread(command).start();
+            }
+        };
+
+        send = new Runnable() {
+            @Override
+            public void run() {
+                ClientConnection.getConnection().sendDataPacket(GameService.this.dpSend);
+            }
+        };
+
+        recieve = new Runnable() {
+            @Override
+            public void run() {
+                GameService.this.dpRecieve = ClientConnection.getConnection().receiveDataPacket();
+            }
+        };
     }
 }

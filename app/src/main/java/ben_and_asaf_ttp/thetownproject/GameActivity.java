@@ -36,6 +36,7 @@ public class GameActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private GridView grid;
     private Executor executor;
+    private GameLogic gameLogic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +46,88 @@ public class GameActivity extends AppCompatActivity {
         globalResources = (GlobalResources)getApplication();
         game = globalResources.getGame();
         player = globalResources.getPlayer();
+        gameLogic = new GameLogic();
         MyPlayerAdapter myAdapter = new MyPlayerAdapter(this, R.layout.player_card, game.getPlayers());
         grid.setAdapter(myAdapter);
         registerForContextMenu(grid);
 
-        //start game service
-        Intent myIntent = new Intent(this, GameService.class);
-        startService(myIntent);
+        //run game logic
+        executor.execute(gameLogic);
+    }
+
+    class GameLogic implements Runnable{
+
+        @Override
+        public void run() {
+
+            //start game service
+            Intent myIntent = new Intent(GameActivity.this, GameService.class);
+            //bindService(myIntent, ,);
+
+            DataPacket dp;
+
+            while(true){
+                dp = ClientConnection.getConnection().receiveDataPacket();
+                switch(dp.getCommand()){
+                    case REFRESH_PLAYERS:
+
+                        //refreshed players - who is alive and who's not
+
+                        break;
+                    case DAY:
+
+                        //day cycle - change GUI and chat
+
+                        break;
+
+                    case NIGHT:
+
+                        //night cycle - change GUI and chat
+
+                        break;
+                    case SNITCH:
+
+                        //get player - get his role for the SNITCH
+
+                        break;
+                    case EXECUTE:
+
+                        //player was executed - get datapacket with player who was killed
+
+                        break;
+                    case PLAYER_JOINED:
+
+                        //get a player and players (alert about the player and set the players)
+
+                        break;
+                    case PLAYER_LEFT:
+
+                        //get the player, alert about him/her
+
+                        break;
+                    case READY:
+
+                        //game begun (30 seconds wait and starting DAY phase) - get players
+
+                        break;
+                    case WIN_CITIZENS:
+
+                        //get refreshed players with stats and game history - check each one for this player
+
+                        break;
+                    case WIN_KILLERS:
+
+                        //get refreshed players with stats and game history - check each one for this player
+
+                        break;
+                    case SERVER_SHUTDOWN:
+
+                        //server shuts down...
+
+                        break;
+                }
+            }
+        }
     }
 
     class MyPlayerAdapter extends ArrayAdapter<Player>
