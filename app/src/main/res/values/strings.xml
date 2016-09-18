@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">TheTownProject</string>
-    <string name="txtUser">Username</string>
-    <string name="txtPass">Password</string>
-    <string name="btnLogin">Login</string>
-    <string name="btnLogin2">Sign in</string>
+
+
     <string name="txtWelcome">Welcome</string>
     <string name="btnExit">Exit</string>
     <string name="btnNewGame">New Game</string>
@@ -12,18 +10,9 @@
     <string name="editGameNumPlayers">Number of players</string>
     <string name="btnOK">OK</string>
     <string name="btnRegister">Register</string>
-    <string name="checkboxRemember">Remember Username ?</string>
-    <string name="btnForgot">Forgot Pass</string>
-    <string name="btnOptions">Options</string>
-    <string name="txtReg">Please enter the following:</string>
-    <string name="txtReg1">Confirmation has been sent to your Email address.</string>
-    <string name="txtRepass">Re-type Password</string>
-    <string name="txtEmail">Email</string>
-    <string name="btnReLogin">Confirm</string>
-    <string name="btnClear">Clear</string>
-    <string name="btnBack">Back</string>
-    <string name="friendslist">Friends List</string>
-    <string name="txtForgot_1">Please enter your Email</string>
+
+
+
     <string name="general_empty_details">Nothing was entered</string>
     <string name="general_password_too_few_characters">Minimum password length is 6</string>
     <string name="general_password_too_much_characters">Maximum password length is 30</string>
@@ -51,32 +40,63 @@
     <string name="game_exitDialog">Are you sure? It will harm your rating..</string>
     <string name="playercard_menu_get_stats">See Stats</string>
 
-    <string-array name="lobby_array_how_many_players">
-        <item>Quick-Join</item>
-        <item>5</item>
-        <item>8</item>
-        <item>10</item>
-    </string-array>
 
-    <string-array name="friends_list_name">
-        <item>Meme 1</item>
-        <item>Meme 2</item>
-        <item>Meme 3</item>
-        <item>Meme 4</item>
-    </string-array>
 
-    <string-array name="friends_list_status">
-        <item>Online</item>
-        <item>Offline</item>
-        <item>Meme 3</item>
-        <item>Meme 4</item>
-    </string-array>
+    <string name="login_btnOptions">Options</string>
+    <string name="login_btnForgot">Forgot Pass</string>
+    <string name="login_btnLogin2">Sign in</string>
+    <string name="login_checkboxRemember">Remember Username ?</string>
+    <string name="login_txtUser">Username</string>
+    <string name="login_txtPass">Password</string>
+    <string name="login_txtUser_land">Username</string>
+    <string name="login_txtPass_land">Password</string>
+    <string name="login_checkboxRemember_land">Remember Username ?</string>
+    <string name="login_btnSignIn_land">Sign in</string>
+    <string name="login_btnForgot_land">Forogt Pass</string>
+    <string name="login_btnOptions_land">Options</string>
 
-    <string name="title_activity_navigation">navigation</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
+    <string name="main_btnLogin">Login</string>
+    <string name="main_btnRegister">Register</string>
+    <string name="main_btnForgot">Forogt Pass</string>
+    <string name="main_btnOptions">Options</string>
+    <string name="main_btnLogin_land">Login</string>
+    <string name="main_btnRegister_land">Register</string>
+    <string name="main_btnForgot_land">Forogt Pass</string>
+    <string name="main_btnOptions_land">Options</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_txtUsername">Username</string>
+    <string name="register_txtPass">Password</string>
+    <string name="register_txtReg">Please enter the following:</string>
+    <string name="register_txtReg1">Confirmation has been sent to your Email address.</string>
+    <string name="register_txtRepass">Re-type Password</string>
+    <string name="register_txtEmail">Email</string>
+    <string name="register_btnConfirm">Confirm</string>
+    <string name="register_btnConfirm_land">Confirm</string>
+    <string name="register_btnClear">Clear</string>
+    <string name="register_btnBack">Back</string>
+    <string name="register_btnRegister_land">Register</string>
+    <string name="register_checkboxRemember_land">Remember Username ?</string>
+    <string name="register_btnForgot_land">Forgot Pass</string>
+    <string name="register_btnOptions_land">Options</string>
+    <string name="register_txtReg_land">Please enter the following:</string>
+    <string name="register_txtReg1_land">Confirmation has been sent to your Email address.</string>
+    <string name="register_txtRepass_land">Re-type Password</string>
+    <string name="register_txtCheckEmail_land">Confirmation email has been sent to email.</string>
+    <string name="register_btnBack_land">Back</string>
+
+    <string name="forgot_txtForgot_1">Please enter account email.</string>
+    <string name="forgot_txtEmail1">Email</string>
+    <string name="forgot_txtEmailResponse">An email has been sent to the address.</string>
+    <string name="forgot_btnReLogin">Confirm</string>
+    <string name="forgot_btnClear">Clear</string>
+    <string name="forgot_btnBack">Back</string>
+    <string name="forgot_txtForgot_1_land">Please enter account email.</string>
+    <string name="forgot_txtEmail1_land">Email</string>
+    <string name="forgot_txtEmailResponse_land">An email has been sent to the address.</string>
+    <string name="forgot_btnReLogin_land">Confirm</string>
+    <string name="forgot_btnClear_land">Clear</string>
+    <string name="forgot_btnBack_land">Back</string>
+
+
+
 </resources>
