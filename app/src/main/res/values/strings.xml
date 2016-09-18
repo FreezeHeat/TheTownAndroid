@@ -42,6 +42,16 @@
     <string name="lobby_stats_kills">Kills</string>
     <string name="lobby_stats_heals">Heals</string>
     <string name="lobby_stats_rating">Rating</string>
+    <string name="lobby_matchMaking_progress_title">Searching for a game</string>
+    <string name="lobby_matchMaking_progress_message">Searching...</string>
+    <string name="lobby_matchMaking_cancel">Cancel</string>
+    <string name="lobby_matchMaking_howManyPlayers_title">How many players?</string>
+
+    <string-array name="lobby_array_how_many_players">
+        <item>5</item>
+        <item>8</item>
+        <item>10</item>
+    </string-array>
 
     <string-array name="friends_list_name">
         <item>Meme 1</item>

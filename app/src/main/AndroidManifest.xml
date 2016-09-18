@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ben_and_asaf_ttp.thetownproject">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".GlobalResources"
@@ -11,11 +11,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".Login"/>
-        <activity android:name=".Register"/>
-        <activity android:name=".Forgotpass"/>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".Login" />
+        <activity android:name=".Register" />
+        <activity android:name=".Forgotpass" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Lobby" />
-
     </application>
 
 </manifest>

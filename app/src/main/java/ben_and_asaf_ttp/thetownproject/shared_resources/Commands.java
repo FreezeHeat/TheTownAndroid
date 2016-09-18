@@ -112,6 +112,18 @@ public enum Commands implements Serializable{
      */
     REFRESH_PLAYERS,
     
+    /**
+     * Used with the {@code GameThread} thread 
+     * <p>Specifies that a player has left the game</p>
+     */
+    PLAYER_LEFT,
+    
+    /**
+     * Used with the {@code GameThread} thread 
+     * <p>Specifies that a player has joined the gmae</p>
+     */
+    PLAYER_JOINED,
+    
      /**
      * Used with the {@code GameThread} thread 
      * <p>Specifies that the game has begun</p>
