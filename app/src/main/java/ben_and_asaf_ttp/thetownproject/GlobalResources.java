@@ -2,6 +2,8 @@ package ben_and_asaf_ttp.thetownproject;
 
 import android.app.Application;
 
+import java.util.List;
+
 import ben_and_asaf_ttp.thetownproject.shared_resources.Game;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 

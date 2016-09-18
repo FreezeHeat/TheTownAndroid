@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void buildExitDialog() {
         if(builder == null) {
             builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure?");
+            builder.setMessage(getResources().getText(R.string.general_exitDialog));
             builder.setCancelable(false);
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

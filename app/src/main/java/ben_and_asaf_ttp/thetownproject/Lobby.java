@@ -87,8 +87,14 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                //set value according to the array (5, 8 or 10)
-                Lobby.this.numPlayers = Integer.decode(getResources().getStringArray(R.array.lobby_array_how_many_players)[which]);
+                //set value according to the array (QuickJoin[0], 5, 8 or 10)
+                if(which == 0){
+
+                    //if it's quick-join, set default of 0 (which is quick-join in the server)
+                    Lobby.this.numPlayers = 0;
+                }else {
+                    Lobby.this.numPlayers = Integer.decode(getResources().getStringArray(R.array.lobby_array_how_many_players)[which]);
+                }
                 Lobby.this.dialogHowManyPlayers.dismiss();
                 Lobby.this.dialogProgress.show();
                 Lobby.this.executor.execute(Lobby.this.searchGame);
@@ -120,17 +126,19 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
                 dp.setNumber(Lobby.this.numPlayers);
                 ClientConnection.getConnection().sendDataPacket(dp);
                 dp = ClientConnection.getConnection().receiveDataPacket();
-                ((GlobalResources)getApplication()).setGame(dp.getGame());
-                if(((GlobalResources)getApplication()).getGame() != null){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(Lobby.this, "Got a game!", Toast.LENGTH_SHORT).show();
-                            dialogProgress.dismiss();
-                        }
-                    });
-                    //Intent myIntent = new Intent(this, GameActivity.class);
-                    //startActivity(myIntent);
+                if(dp.getCommand() == Commands.OK) {
+                    ((GlobalResources) getApplication()).setGame(dp.getGame());
+                    if (((GlobalResources) getApplication()).getGame() != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialogProgress.dismiss();
+                                Intent myIntent = new Intent(Lobby.this, GameActivity.class);
+                                startActivity(myIntent);
+                                Lobby.this.finish();
+                            }
+                        });
+                    }
                 }
             }
         };

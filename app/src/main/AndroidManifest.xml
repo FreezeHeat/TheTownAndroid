@@ -23,6 +23,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".Lobby" />
+        <activity android:name=".GameActivity" />
+
+        <service
+            android:name=".GameService"
+            android:exported="false"></service>
     </application>
 
 </manifest>
