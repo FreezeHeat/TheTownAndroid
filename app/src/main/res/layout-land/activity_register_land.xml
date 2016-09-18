@@ -12,7 +12,7 @@
         android:layout_height="40dp"
         android:textColor="@android:color/white"
         android:gravity="center"
-        android:id="@+id/register_editUser"/>
+        android:id="@+id/register_editUser_land"/>
 
     <EditText
         android:hint="Password"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:inputType="textPassword"
-        android:id="@+id/register_editPass"
+        android:id="@+id/register_editPass_land"
         android:gravity="center" />
 
     <EditText
@@ -31,7 +31,7 @@
         android:layout_height="40dp"
         android:textColor="@android:color/white"
         android:inputType="textPassword"
-        android:id="@+id/register_editRePass"
+        android:id="@+id/register_editRePass_land"
         android:gravity="center"/>
 
     <EditText
@@ -41,7 +41,7 @@
         android:layout_height="40dp"
         android:textColor="@android:color/white"
         android:inputType="textEmailAddress"
-        android:id="@+id/register_txtEmail"
+        android:id="@+id/register_txtEmail_land"
         android:gravity="center" />
 
     <TextView
@@ -49,8 +49,8 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:textColorHint="#FFC10101"
-        android:id="@+id/register_txtEmailResponse"
-        android:hint="@string/txtReg1"
+        android:id="@+id/register_txtCheckEmail_land"
+        android:hint="@string/register_txtCheckEmail_land"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
         android:layout_marginBottom="5dp"
@@ -70,8 +70,8 @@
         android:background="@drawable/round_button"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:hint="@string/btnReLogin"
-        android:id="@+id/register_btnConfirm"
+        android:hint="@string/register_btnConfirm_land"
+        android:id="@+id/register_btnConfirm_land"
         android:layout_marginRight="10dp" />
 
     <Button
@@ -81,8 +81,8 @@
         android:background="@drawable/round_button"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:hint="@string/btnClear"
-        android:id="@+id/register_btnClear"
+        android:hint="@string/register_btnBack_land"
+        android:id="@+id/register_btnBack_land"
         android:layout_marginRight="10dp" />
 
     </LinearLayout>
