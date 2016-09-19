@@ -17,13 +17,18 @@
     <string name="general_password_too_few_characters">Minimum password length is 6</string>
     <string name="general_password_too_much_characters">Maximum password length is 30</string>
     <string name="general_exitDialog">Are you sure?</string>
+    <string name="general_server_shutdown">Server was shut down</string>
+
     <string name="splash_socket_connection">Starting Socket Connection</string>
     <string name="splash_socket_failed">Failed to connect, Shutting down</string>
     <string name="splash_socket_success">Connection Established</string>
+
     <string name="login_wrong_details">Details sent do not match</string>
     <string name="login_already_connected">This user is already connected</string>
+
     <string name="register_user_already_exists">This username already exists</string>
     <string name="register_passwords_do_not_match">Passwords do not match</string>
+
     <string name="lobby_btn_joinGame">Join A Game</string>
     <string name="lobby_btn_options">Options</string>
     <string name="lobby_stats_won">Won</string>
@@ -36,8 +41,29 @@
     <string name="lobby_matchMaking_progress_message">Searching...</string>
     <string name="lobby_matchMaking_cancel">Cancel</string>
     <string name="lobby_matchMaking_howManyPlayers_title">How many players?</string>
+
     <string name="game_txtSendMessage_hint">Enter your message here</string>
     <string name="game_exitDialog">Are you sure? It will harm your rating..</string>
+    <string name="game_kill">Kill</string>
+    <string name="game_heal">Heal</string>
+    <string name="game_snitch">Snitch</string>
+    <string name="game_vote">Vote</string>
+    <string name="game_action_you_dead">You can\'t do anything, you are dead</string>
+    <string name="game_action_upon_dead">This player is dead</string>
+    <string name="game_player_dead">Player\'s dead</string>
+    <string name="game_day_phase">DAY PHASE STARTED!</string>
+    <string name="game_night_phase">NIGHT PHASE STARTED!</string>
+    <string name="game_ready_phase">Game will start in 30 seconds!</string>
+    <string name="game_snitch_identity">%1$s role is:</string>
+    <string name="game_role_snitch">Snitch</string>
+    <string name="game_role_killer">Killer</string>
+    <string name="game_role_healer">Healer</string>
+    <string name="game_role_citizen">Citizen</string>
+    <string name="game_executed_other">%1$s was executed!</string>
+    <string name="game_executed_you">You were executed!</string>
+    <string name="game_player_joined">%1$s has joined</string>
+    <string name="game_player_left">%1$s has left</string>
+
     <string name="playercard_menu_get_stats">See Stats</string>
 
 
@@ -103,6 +129,5 @@
         <item>8</item>
         <item>10</item>
     </string-array>
-
 
 </resources>

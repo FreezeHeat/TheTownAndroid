@@ -97,7 +97,7 @@ public class Game implements Serializable{
 	 * Set a list of all the players in the game
 	 * @param players the list of players to be set
 	 */
-	public void setPlayers(final ArrayList<Player> players) {
+	public void setPlayers(final List<Player> players) {
 		this.players = players;
 	}
 

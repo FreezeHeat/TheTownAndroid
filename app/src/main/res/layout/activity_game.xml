@@ -7,39 +7,57 @@
     android:weightSum="100"
     tools:context="ben_and_asaf_ttp.thetownproject.GameActivity">
 
-    <GridLayout
-        android:layout_width="match_parent"
+    <GridView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="95"
-        android:rowCount="2"
         android:id="@+id/game_playerGrid"
+        android:layout_weight="80"
         android:background="@drawable/bgsmall"
-        android:columnCount="5"></GridLayout>
+        android:numColumns="5"/>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:weightSum="100"
-        android:background="@android:color/black">
+        android:layout_weight="20"
+        android:weightSum="100">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/game_txt_sendMessage"
-            android:layout_weight="95"
-            android:textColor="@android:color/white"
-            android:hint="@string/game_txtSendMessage_hint"
-            android:textColorHint="@android:color/white"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="2"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/black"
+            android:id="@+id/game_chat_txt" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="Send"
-            android:id="@+id/game_btn_send"
-            android:layout_weight="5"
-            android:longClickable="false" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:weightSum="100"
+            android:background="@android:color/black">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/game_txt_sendMessage"
+                android:layout_weight="80"
+                android:textColor="@android:color/white"
+                android:hint="@string/game_txtSendMessage_hint"
+                android:textColorHint="@android:color/white"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send"
+                android:id="@+id/game_btn_send"
+                android:layout_weight="20"
+                android:longClickable="false" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>

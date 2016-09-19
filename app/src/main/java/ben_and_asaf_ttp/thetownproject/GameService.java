@@ -22,9 +22,9 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
  * helper methods.
  */
 public class GameService extends Service {
+    public static boolean isRunning = false;
     private Executor executor;
     private Runnable send;
-    private Runnable recieve;
     private DataPacket dpSend;
     private DataPacket dpRecieve;
     private IBinder binder = new LocalBinder();
@@ -42,7 +42,7 @@ public class GameService extends Service {
     }
 
     public DataPacket getPacket(){
-        executor.execute(recieve);
+        GameService.this.dpRecieve = ClientConnection.getConnection().receiveDataPacket();
         return dpRecieve;
     }
 
@@ -69,11 +69,6 @@ public class GameService extends Service {
             }
         };
 
-        recieve = new Runnable() {
-            @Override
-            public void run() {
-                GameService.this.dpRecieve = ClientConnection.getConnection().receiveDataPacket();
-            }
-        };
+        isRunning = true;
     }
 }
