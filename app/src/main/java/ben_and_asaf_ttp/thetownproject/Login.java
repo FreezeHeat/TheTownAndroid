@@ -125,6 +125,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         boolean checked = ((CheckBox)v).isChecked();
     }
 
+
+
     @Override
     public void onBackPressed() {
         finish();
@@ -139,10 +141,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 login();
                 break;
             case R.id.login_btnOptions:
-                Toast.makeText(Login.this, "In development", Toast.LENGTH_SHORT).show();
+                Intent btnOptions = new Intent(Login.this,SettingsActivity.class);
+                Login.this.startActivity(btnOptions);
+                finish();
                 break;
             case R.id.login_btnForgot:
-                Toast.makeText(Login.this, "TODO!", Toast.LENGTH_SHORT).show();
+                Intent btnForgot = new Intent(Login.this,Forgotpass.class);
+                Login.this.startActivity(btnForgot);
+                finish();
                 break;
             default:
                 break;

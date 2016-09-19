@@ -100,13 +100,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.main_btnForgot:
-                // TODO: actual something to happen
-                Toast.makeText(this, "In development", Toast.LENGTH_SHORT).show();
+                Intent btnForgot = new Intent(MainActivity.this,Forgotpass.class);
+                MainActivity.this.startActivity(btnForgot);
+                finish();
                 break;
 
             case R.id.main_btnOptions:
-                // TODO: actual something to happen
-                Toast.makeText(this, "TODO!", Toast.LENGTH_SHORT).show();
+                Intent btnOptions = new Intent(MainActivity.this,SettingsActivity.class);
+                MainActivity.this.startActivity(btnOptions);
+                finish();
                 break;
             default:
                 break;

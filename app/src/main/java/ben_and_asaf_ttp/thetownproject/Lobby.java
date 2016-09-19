@@ -166,8 +166,12 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
                this.dialogHowManyPlayers.show();
                break;
             case R.id.lobby_btn_options:
-
+                Intent btnOptions = new Intent(Lobby.this,SettingsActivity.class);
+                Lobby.this.startActivity(btnOptions);
+                finish();
                 break;
+                default:
+                    break;
         }
     }
 }
