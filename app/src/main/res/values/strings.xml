@@ -104,5 +104,7 @@
         <item>10</item>
     </string-array>
 
+    <string name="pref_switch1">Remember Username</string>
+    <string name="pref_btnBack">Back</string>
 
 </resources>
