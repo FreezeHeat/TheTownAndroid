@@ -17,7 +17,7 @@ public class SettingsActivity extends PreferenceActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
-
+        addPreferencesFromResource(R.layout.activity_preferences);
 
 
 
@@ -26,9 +26,9 @@ public class SettingsActivity extends PreferenceActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.pref_btnBack:
+           // case R.id.pref_btnBack:
 
-                break;
+                //break;
             default:
                 break;
         }
