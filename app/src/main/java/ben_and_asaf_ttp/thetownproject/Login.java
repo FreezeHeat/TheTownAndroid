@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
+import ben_and_asaf_ttp.thetownproject.shared_resources.MyPreferencesActivity;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
@@ -141,7 +142,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 login();
                 break;
             case R.id.login_btnOptions:
-                Intent btnOptions = new Intent(Login.this,SettingsActivity.class);
+                Intent btnOptions = new Intent(Login.this,MyPreferencesActivity.class);
                 Login.this.startActivity(btnOptions);
                 finish();
                 break;
