@@ -9,9 +9,9 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_weight="60">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="55">
 
         <GridView
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="40"
+        android:layout_weight="45"
         android:weightSum="100">
 
         <TextView
@@ -45,7 +45,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="5"
             android:weightSum="100"
             android:background="@android:color/black">
@@ -61,7 +61,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
 
             <Button
-                android:layout_width="50dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="@string/game_btnSend"
                 android:id="@+id/game_btn_send"

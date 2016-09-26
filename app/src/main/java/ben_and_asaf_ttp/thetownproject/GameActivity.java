@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -97,11 +98,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         public void run() {
 
             //start game service
-            DataPacket dp;
+            DataPacket dp = null;
             String msg;
 
             while(true){
-                dp = mService.getPacket();
+                try {
+                    dp = mService.getPacket();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            buildConnectionDialog();
+                            builder.show();
+                        }
+                    });
+                    return;
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 Intent myIntent;
                 switch(dp.getCommand()){
                     case SEND_MESSAGE:
@@ -455,7 +470,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 public void onClick(DialogInterface dialog, int id) {
                     DataPacket dp = new DataPacket();
                     dp.setCommand(Commands.DISCONNECT);
-                    ClientConnection.getConnection().sendDataPacket(dp);
+                    try {
+                        ClientConnection.getConnection().sendDataPacket(dp);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Intent myIntent = new Intent(GameActivity.this, Lobby.class);
                     startActivity(myIntent);
                     GameActivity.this.finish();
@@ -469,9 +488,27 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void buildConnectionDialog() {
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getText(R.string.general_connection_problem));
+            builder.setCancelable(false);
+            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    GameActivity.this.finish();
+                    try {
+                        ClientConnection.getConnection().exit();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
     @Override
     public void onBackPressed() {
         buildExitDialog();
-        builder.create().show();
+        builder.show();
     }
 }

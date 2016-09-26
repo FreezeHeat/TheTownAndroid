@@ -1,5 +1,7 @@
 package ben_and_asaf_ttp.thetownproject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -13,11 +15,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class SplashActivity extends AppCompatActivity {
 
     private TextView txtSplashScreen;
     private ProgressBar pbSplashScreen;
     private ImageView imgSplashScreen;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             pbSplashScreen.setVisibility(View.VISIBLE);
-            txtSplashScreen.setText("0 %");
+            txtSplashScreen.setText(getResources().getString(R.string.splash_socket_connection));
         }
 
         // this method runs on UI - so Toast is ok here
@@ -57,22 +62,24 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             publishProgress("0", getResources().getString(R.string.splash_socket_connection));
-            ClientConnection.getConnection().startConnection();
-            if(!ClientConnection.getConnection().isOnline()){
+            try {
+                ClientConnection.getConnection().startConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
                 publishProgress("-1", getResources().getString(R.string.splash_socket_failed));
                 try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.sleep(500);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
                 }
                 return false;
-            }else{
-                publishProgress("50", getResources().getString(R.string.splash_socket_success));
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            }
+
+            publishProgress("50", getResources().getString(R.string.splash_socket_success));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             return true;
@@ -86,7 +93,7 @@ public class SplashActivity extends AppCompatActivity {
                 pbSplashScreen.setProgress(100);
                 txtSplashScreen.setText("Successful - starting the game");
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -98,13 +105,32 @@ public class SplashActivity extends AppCompatActivity {
 
                 //in case starting up the socket failed
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Log.e(this.getClass().getName(), "Error connecting to socket");
-                finish();
+                buildExitDialog();
+                builder.show();
             }
+        }
+    }
+
+    public void buildExitDialog() {
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getText(R.string.general_connection_problem));
+            builder.setCancelable(false);
+            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    SplashActivity.this.finish();
+                    try {
+                        ClientConnection.getConnection().exit();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 }

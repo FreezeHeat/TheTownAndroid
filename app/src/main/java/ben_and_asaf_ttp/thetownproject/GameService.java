@@ -8,6 +8,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.provider.Settings;
 
+import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
@@ -41,7 +42,7 @@ public class GameService extends Service {
         return binder;
     }
 
-    public DataPacket getPacket(){
+    public DataPacket getPacket() throws IOException, ClassNotFoundException {
         GameService.this.dpRecieve = ClientConnection.getConnection().receiveDataPacket();
         return dpRecieve;
     }
@@ -65,7 +66,11 @@ public class GameService extends Service {
         send = new Runnable() {
             @Override
             public void run() {
-                ClientConnection.getConnection().sendDataPacket(GameService.this.dpSend);
+                try {
+                    ClientConnection.getConnection().sendDataPacket(GameService.this.dpSend);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         };
 

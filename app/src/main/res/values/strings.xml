@@ -18,6 +18,9 @@
     <string name="general_password_too_much_characters">Maximum password length is 30</string>
     <string name="general_exitDialog">Are you sure?</string>
     <string name="general_server_shutdown">Server was shut down</string>
+    <string name="general_connection_problem">There\'s a problem with the connection</string>
+    <string name="general_ok">OK</string>
+    <string name="general_cancel">Cancel</string>
 
     <string name="splash_socket_connection">Starting Socket Connection</string>
     <string name="splash_socket_failed">Failed to connect, Shutting down</string>
@@ -43,6 +46,7 @@
     <string name="lobby_matchMaking_howManyPlayers_title">How many players?</string>
 
     <string name="game_txtSendMessage_hint">Enter your message here</string>
+    <string name="game_btnSend">Send</string>
     <string name="game_exitDialog">Are you sure? It will harm your rating..</string>
     <string name="game_kill">Kill</string>
     <string name="game_heal">Heal</string>

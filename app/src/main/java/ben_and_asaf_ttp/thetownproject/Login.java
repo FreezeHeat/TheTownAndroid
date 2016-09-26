@@ -1,6 +1,7 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,6 +14,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
@@ -75,40 +78,52 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     DataPacket dp = params[0];
                     dp.setCommand(Commands.LOGIN);
                     dp.setPlayer(player);
-                    ClientConnection.getConnection().sendDataPacket(dp);
-                    dp = ClientConnection.getConnection().receiveDataPacket();
+                    try {
+                        ClientConnection.getConnection().sendDataPacket(dp);
+                        dp = ClientConnection.getConnection().receiveDataPacket();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     return dp;
                 }
 
                 @Override
                 protected void onPostExecute(DataPacket dataPacket) {
-                    switch (dataPacket.getCommand()) {
-                        case LOGIN:
-                            Login.this.player = dataPacket.getPlayer();
-                            globalResources.setPlayer(player);
+                    if(dataPacket != null) {
+                        switch (dataPacket.getCommand()) {
+                            case LOGIN:
+                                Login.this.player = dataPacket.getPlayer();
+                                globalResources.setPlayer(player);
 
-                            //check if user checked the checkbox to remember details
-                            if (checkBox.isChecked()) {
-                                SharedPreferences.Editor editor = myPrefs.edit();
-                                editor.putString("username", player.getUsername());
-                                editor.putString("password", player.getPassword());
-                                editor.apply();
-                            } else {
-                                SharedPreferences.Editor editor = myPrefs.edit();
-                                editor.putString("username", "");
-                                editor.putString("password", "");
-                                editor.commit();
-                            }
-                            Login.this.finish();
-                            Intent myIntent = new Intent(Login.this, Lobby.class);
-                            startActivity(myIntent);
-                            return;
-                        case ALREADY_CONNECTED:
-                            Toast.makeText(Login.this, getResources().getText(R.string.login_already_connected), Toast.LENGTH_SHORT).show();
-                            break;
-                        case WRONG_DETAILS:
-                            Toast.makeText(Login.this, getResources().getText(R.string.login_wrong_details), Toast.LENGTH_SHORT).show();
-                            break;
+                                //check if user checked the checkbox to remember details
+                                if (checkBox.isChecked()) {
+                                    SharedPreferences.Editor editor = myPrefs.edit();
+                                    editor.putString("username", player.getUsername());
+                                    editor.putString("password", player.getPassword());
+                                    editor.apply();
+                                } else {
+                                    SharedPreferences.Editor editor = myPrefs.edit();
+                                    editor.putString("username", "");
+                                    editor.putString("password", "");
+                                    editor.commit();
+                                }
+                                Login.this.finish();
+                                Intent myIntent = new Intent(Login.this, Lobby.class);
+                                startActivity(myIntent);
+                                return;
+                            case ALREADY_CONNECTED:
+                                Toast.makeText(Login.this, getResources().getText(R.string.login_already_connected), Toast.LENGTH_SHORT).show();
+                                break;
+                            case WRONG_DETAILS:
+                                Toast.makeText(Login.this, getResources().getText(R.string.login_wrong_details), Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }else{
+                        buildExitDialog();
+                        builder.show();
                     }
 
                     //reset password and focus on the password component
@@ -125,7 +140,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         boolean checked = ((CheckBox)v).isChecked();
     }
 
-
+    public void buildExitDialog() {
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getText(R.string.general_connection_problem));
+            builder.setCancelable(false);
+            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Login.this.finish();
+                    try {
+                        ClientConnection.getConnection().exit();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
 
     @Override
     public void onBackPressed() {

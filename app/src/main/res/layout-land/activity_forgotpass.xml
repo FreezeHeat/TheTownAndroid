@@ -12,7 +12,7 @@
         android:textSize="30dp"
         android:textColorHint="#FFC10101"
         android:id="@+id/txtForgot_1"
-        android:hint="@string/forgot_txtForgot_1_land"
+        android:hint="@string/forgot_txtForgot_1"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
 
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtEmail1"
-        android:hint="@string/forgot_txtEmail1_land"
+        android:hint="@string/forgot_txtEmail1"
         android:textSize="25dp"
         android:textColorHint="#FFC10101"
         android:layout_gravity="center_horizontal" />
@@ -42,9 +42,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:textColorHint="#FFC10101"
+        android:textColorHint="@android:color/white"
         android:id="@+id/txtEmailResponse"
-        android:hint="@string/forgot_txtEmailResponse_land"
+        android:hint="@string/forgot_txtEmailResponse"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
 
@@ -64,9 +64,10 @@
             android:background="@drawable/round_button"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
-            android:hint="@string/forgot_btnReLogin_land"
+            android:hint="@string/forgot_btnReLogin"
             android:id="@+id/btnReLogin"
             android:onClick="login"
+            android:textColorHint="@android:color/white"
             android:layout_marginRight="10dp" />
 
         <Button
@@ -76,9 +77,11 @@
             android:textSize="17dp"
             android:background="@drawable/round_button"
             android:textStyle="bold"
-            android:hint="@string/forgot_btnClear_land"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/forgot_btnClear"
             android:id="@+id/btnLogin"
             android:onClick="login"
+            android:textColorHint="@android:color/white"
             android:layout_marginRight="10dp" />
 
     </LinearLayout>
@@ -95,7 +98,7 @@
             android:textSize="17dp"
             android:background="@drawable/round_button"
             android:textStyle="bold"
-            android:hint="@string/forgot_btnBack_land"
+            android:hint="@string/forgot_btnBack"
             android:id="@+id/btnBack"
             android:onClick="" android:layout_gravity="right" />
 

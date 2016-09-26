@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.concurrent.Executor;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
@@ -124,8 +125,14 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
                 DataPacket dp = new DataPacket();
                 dp.setCommand(Commands.READY);
                 dp.setNumber(Lobby.this.numPlayers);
-                ClientConnection.getConnection().sendDataPacket(dp);
-                dp = ClientConnection.getConnection().receiveDataPacket();
+                try {
+                    ClientConnection.getConnection().sendDataPacket(dp);
+                    dp = ClientConnection.getConnection().receiveDataPacket();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 if(dp.getCommand() == Commands.OK) {
                     ((GlobalResources) getApplication()).setGame(dp.getGame());
                     if (((GlobalResources) getApplication()).getGame() != null) {

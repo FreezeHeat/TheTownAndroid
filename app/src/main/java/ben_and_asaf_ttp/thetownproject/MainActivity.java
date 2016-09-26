@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -63,13 +65,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             builder = new AlertDialog.Builder(this);
             builder.setMessage(getResources().getText(R.string.general_exitDialog));
             builder.setCancelable(false);
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     MainActivity.this.finish();
-                    ClientConnection.getConnection().exit();
+                    try {
+                        ClientConnection.getConnection().exit();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
