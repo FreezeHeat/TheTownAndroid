@@ -12,7 +12,6 @@
     <string name="btnRegister">Register</string>
 
 
-
     <string name="general_empty_details">Nothing was entered</string>
     <string name="general_password_too_few_characters">Minimum password length is 6</string>
     <string name="general_password_too_much_characters">Maximum password length is 30</string>
@@ -21,6 +20,7 @@
     <string name="general_connection_problem">There\'s a problem with the connection</string>
     <string name="general_ok">OK</string>
     <string name="general_cancel">Cancel</string>
+    <string name="general_options">Options</string>
 
     <string name="splash_socket_connection">Starting Socket Connection</string>
     <string name="splash_socket_failed">Failed to connect, Shutting down</string>
@@ -69,7 +69,6 @@
     <string name="game_player_left">%1$s has left</string>
 
     <string name="playercard_menu_get_stats">See Stats</string>
-
 
 
     <string name="login_btnOptions">Options</string>
@@ -137,5 +136,7 @@
     <string name="pref_switch1">Clear Local Data</string>
     <string name="pref_switch2">OK</string>
     <string name="pref_btnBack">Back</string>
+    <string name="pref_title_clearLocalData">Delete Local Data</string>
+    <string name="pref_summary_clearLocalData">This option will delete local data, such as passwords.</string>
 
 </resources>

@@ -4,5 +4,9 @@
         android:title="@string/btnExit"
         android:id="@+id/exitApp"
         android:icon="@android:drawable/ic_menu_add"></item>
+    <item
+        android:title="@string/general_options"
+        android:id="@+id/main_menu_options"
+        android:icon="@android:drawable/ic_menu_add"></item>
 
 </menu>

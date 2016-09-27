@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -161,6 +163,22 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onBackPressed() {
+
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                DataPacket dp = new DataPacket();
+                dp.setCommand(Commands.DISCONNECT);
+                try {
+                    ClientConnection.getConnection().sendDataPacket(dp);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+
         finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

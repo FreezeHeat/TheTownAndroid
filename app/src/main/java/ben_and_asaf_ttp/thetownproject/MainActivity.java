@@ -55,7 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 builder.create().show();
                 break;
 
-            //TODO: add case for OPTIONS, instead of the main window
+            case R.id.main_menu_options:
+                Intent myIntent = new Intent(this, SettingsActivity.class);
+                startActivity(myIntent);
+                break;
         }
         return true;
     }
@@ -114,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_btnOptions:
                 Intent btnOptions = new Intent(MainActivity.this,SettingsActivity.class);
                 MainActivity.this.startActivity(btnOptions);
-                finish();
                 break;
             default:
                 break;
