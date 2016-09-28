@@ -125,7 +125,9 @@ public class SplashActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int id) {
                     SplashActivity.this.finish();
                     try {
-                        ClientConnection.getConnection().exit();
+                        if(ClientConnection.getConnection().getOutput() != null) {
+                            ClientConnection.getConnection().exit();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

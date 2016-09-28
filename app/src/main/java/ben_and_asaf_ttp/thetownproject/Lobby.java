@@ -178,7 +178,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
                 return null;
             }
         }.execute();
-
         finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

@@ -52,13 +52,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         btnSignIn.setOnClickListener(this);
         btnForgotPass.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
-
-        //if there's a username and password
-        String username = myPrefs.getString("username", "");
-        if(username != null && !username.equals("")){
-            editUser.setText(username);
-            editPassword.setText(myPrefs.getString("password",""));
-        }
     }
 
     public void login()
@@ -83,6 +76,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         dp = ClientConnection.getConnection().receiveDataPacket();
                     } catch (IOException e) {
                         e.printStackTrace();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                buildConnectionDialog();
+                                builder.show();
+                            }
+                        });
                         return null;
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -119,16 +119,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 break;
                             case WRONG_DETAILS:
                                 Toast.makeText(Login.this, getResources().getText(R.string.login_wrong_details), Toast.LENGTH_SHORT).show();
+
+                                //reset password and focus on the password component
+                                editPassword.setText("");
+                                editPassword.requestFocus();
                                 break;
                         }
                     }else{
                         buildExitDialog();
                         builder.show();
                     }
-
-                    //reset password and focus on the password component
-                    editPassword.setText("");
-                    editPassword.requestFocus();
                 }
             }.execute(this.dp);
         }else{
@@ -158,6 +158,39 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    public void buildConnectionDialog() {
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getText(R.string.general_connection_problem));
+            builder.setCancelable(false);
+            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Login.this.finish();
+                    try {
+                        ClientConnection.getConnection().exit();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //if there's a username and password
+        String username = myPrefs.getString("username", "");
+        if(username != null && !username.equals("")){
+            editUser.setText(username);
+            editPassword.setText(myPrefs.getString("password",""));
+        }else{
+            editUser.setText("");
+            editPassword.setText("");
+        }
+    }
+
     @Override
     public void onBackPressed() {
         finish();
@@ -174,7 +207,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.login_btnOptions:
                 Intent btnOptions = new Intent(Login.this,SettingsActivity.class);
                 Login.this.startActivity(btnOptions);
-                finish();
                 break;
             case R.id.login_btnForgot:
                 Intent btnForgot = new Intent(Login.this,Forgotpass.class);

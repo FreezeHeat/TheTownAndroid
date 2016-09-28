@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -58,7 +59,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private MyPlayerAdapter myAdapter;
     private boolean mBound = false;
     private DataPacket out;
-    private DataPacket in;
     private boolean day;
     private boolean gameStarted;
 
@@ -106,29 +106,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     dp = mService.getPacket();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Runnable run = new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             buildConnectionDialog();
                             builder.show();
-                            synchronized (this) {
-                                this.notify();
-                            }
                         }
-                    };
-
-                    synchronized (run) {
-                        runOnUiThread(run);
-                        try {
-                            run.wait();
-                        } catch (InterruptedException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
+                    });
                     return;
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
+
                 Intent myIntent;
                 switch(dp.getCommand()){
                     case SEND_MESSAGE:
@@ -143,8 +132,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         game.setPlayers(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         game.getPlayers().remove(player);
-                        myAdapter.notifyDataSetChanged();
-                        grid.setAdapter(myAdapter);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myAdapter.notifyDataSetChanged();
+                                grid.setAdapter(myAdapter);
+                            }
+                        });
                         break;
                     case DAY:
 
@@ -154,7 +148,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         txtSendMessage.setEnabled(true);
                         runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
                         break;
-
                     case NIGHT:
 
                         //night cycle - change GUI and chat
@@ -210,9 +203,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //get the player, alert about him/her
                         msg = String.format(getResources().getString(R.string.game_player_left), dp.getPlayer().getUsername());
-                        game.setPlayers(dp.getPlayers());
-                        player = game.getPlayers().get(game.getPlayers().indexOf(player));
-                        game.getPlayers().remove(player);
+                        game.getPlayers().remove(dp.getPlayer());
 
                         //update gui
                         runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, myAdapter, grid, null));
@@ -269,6 +260,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     default:
                         return;
                 }
+                Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
             }
         }
     }
@@ -304,6 +296,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
+
         // Unbind from the service
         if (mBound) {
             unbindService(mConnection);
@@ -515,6 +508,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
     }
+
 
     @Override
     public void onBackPressed() {
