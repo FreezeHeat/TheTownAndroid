@@ -463,8 +463,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             else if(msg != null) {
                 Toast.makeText(GameActivity.this, this.msg, duration).show();
                 if(adapter != null) {
-                    adapter.notifyDataSetChanged();
-                    grid.invalidateViews();
+                    myAdapter = new MyPlayerAdapter(GameActivity.this, R.layout.player_card, game.getPlayers());
+                    grid.setAdapter(myAdapter);
                 }
             }
         }
