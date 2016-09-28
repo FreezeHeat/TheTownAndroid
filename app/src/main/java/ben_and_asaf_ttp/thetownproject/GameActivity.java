@@ -175,7 +175,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }else{
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_citizen));
                         }
-
                         runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
                         break;
                     case EXECUTE:
@@ -265,7 +264,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -327,10 +325,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-    class MyPlayerAdapter extends ArrayAdapter<Player>
+    class MyPlayerAdapter extends ArrayAdapter<Player> implements View.OnCreateContextMenuListener
     {
 
-        public MyPlayerAdapter(Context context, int resource, List<Player> objects) {
+        public MyPlayerAdapter(Context context, int resource, List<Player> objects){
             super(context, resource, objects);
         }
 
@@ -355,6 +353,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             final ImageView imgviewPlayerImage = (ImageView) convertView.findViewById(R.id.playerCard_playerImage);
             final TextView txtPlayerName = (TextView) convertView.findViewById(R.id.playerCard_playerUsername);
             final Button btnPlayerAction = (Button) convertView.findViewById(R.id.playerCard_btn_action);
+
+            imgviewPlayerImage.setOnCreateContextMenuListener(this);
 
             final Role role = GameActivity.this.player.getRole();
 
@@ -415,12 +415,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             return convertView;
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {}
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.playercard_menu, menu);
     }
@@ -462,7 +464,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(GameActivity.this, this.msg, duration).show();
                 if(adapter != null) {
                     adapter.notifyDataSetChanged();
-                    grid.setAdapter(adapter);
+                    grid.invalidateViews();
                 }
             }
         }
@@ -508,7 +510,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
     }
-
 
     @Override
     public void onBackPressed() {
