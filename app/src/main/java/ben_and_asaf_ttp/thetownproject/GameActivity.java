@@ -106,13 +106,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     dp = mService.getPacket();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    runOnUiThread(new Runnable() {
+                    Runnable run = new Runnable() {
                         @Override
                         public void run() {
                             buildConnectionDialog();
                             builder.show();
+                            synchronized (this) {
+                                this.notify();
+                            }
                         }
-                    });
+                    };
+
+                    synchronized (run) {
+                        runOnUiThread(run);
+                        try {
+                            run.wait();
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                     return;
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
@@ -253,6 +265,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         myIntent = new Intent(GameActivity.this, SplashActivity.class);
                         startActivity(myIntent);
                         finish();
+                        return;
+                    default:
                         return;
                 }
             }
@@ -466,15 +480,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             builder = new AlertDialog.Builder(this);
             builder.setMessage(getResources().getText(R.string.game_exitDialog));
             builder.setCancelable(false);
+
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    DataPacket dp = new DataPacket();
-                    dp.setCommand(Commands.DISCONNECT);
-                    try {
-                        ClientConnection.getConnection().sendDataPacket(dp);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    out.setCommand(Commands.DISCONNECT);
+                    mService.sendPacket(out);
                     Intent myIntent = new Intent(GameActivity.this, Lobby.class);
                     startActivity(myIntent);
                     GameActivity.this.finish();

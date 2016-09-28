@@ -142,13 +142,13 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
                             @Override
                             public void run() {
                                 dialogProgress.dismiss();
-                                Intent myIntent = new Intent(Lobby.this, GameActivity.class);
-                                startActivity(myIntent);
-                                Lobby.this.finish();
                             }
                         });
                     }
                 }
+                Intent myIntent = new Intent(Lobby.this, GameActivity.class);
+                startActivity(myIntent);
+                Lobby.this.finish();
             }
         };
 
@@ -193,10 +193,9 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
             case R.id.lobby_btn_options:
                 Intent btnOptions = new Intent(Lobby.this,SettingsActivity.class);
                 Lobby.this.startActivity(btnOptions);
-                finish();
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 }

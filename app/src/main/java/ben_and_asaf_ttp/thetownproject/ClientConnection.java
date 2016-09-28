@@ -8,9 +8,6 @@ import java.net.Socket;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 
-/**
- * Created by user on 12/09/2016.
- */
 public class ClientConnection {
 
     /**
@@ -34,7 +31,8 @@ public class ClientConnection {
 
     //10.0.2.2 - is the IP for the external localhost, because the VIRTUAL MACHINE of the android device
     //already is the 127.0.0.1 - the external IP to the "real" localhost is 10.0.2.2
-    private String hostname = "10.0.2.2";
+    //For GENYMOTION - use 10.0.3.2
+    private String hostname = "10.0.3.2";
 
     /**
      * Port number, used with hostname <i>e.g. (127.0.0.1:5555)</i>
