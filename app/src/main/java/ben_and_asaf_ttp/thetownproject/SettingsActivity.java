@@ -1,6 +1,7 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
 
@@ -13,6 +14,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setBackgroundDrawableResource(R.drawable.bgsmall);
+        getListView().setBackgroundColor(Color.TRANSPARENT);
+        getListView().setCacheColorHint(Color.TRANSPARENT);
+
+
         addPreferencesFromResource(R.xml.preferences);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
@@ -42,4 +48,5 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             }
         }
     }
+
 }
