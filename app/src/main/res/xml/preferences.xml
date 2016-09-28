@@ -3,7 +3,9 @@
 
     <CheckBoxPreference android:title="@string/pref_title_clearLocalData"
         android:defaultValue="false"
+        android:layout="@layout/prefs_first"
         android:summary="@string/pref_summary_clearLocalData"
         android:key="clearLocalData" />
+
 
 </PreferenceScreen>

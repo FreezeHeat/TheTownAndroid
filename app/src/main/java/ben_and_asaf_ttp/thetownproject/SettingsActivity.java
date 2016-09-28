@@ -17,6 +17,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         getWindow().setBackgroundDrawableResource(R.drawable.bgsmall);
         getListView().setBackgroundColor(Color.TRANSPARENT);
         getListView().setCacheColorHint(Color.TRANSPARENT);
+
+
         addPreferencesFromResource(R.xml.preferences);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
