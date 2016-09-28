@@ -17,7 +17,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:theme="@style/SettingsActivity_theme" />
         <activity
             android:name=".Register"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />

@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
 
-public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class SettingsActivity extends PreferenceActivity{
 
     private static final String SETTINGS_CLEAR_LOCAL_DATA_KEY = "clearLocalData";
     private static final String APP_USERNAME = "username";
@@ -20,33 +20,17 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
 
         addPreferencesFromResource(R.xml.preferences);
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        getPreferenceScreen().getSharedPreferences()
-                .registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        getPreferenceScreen().getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(SETTINGS_CLEAR_LOCAL_DATA_KEY)) {
-            if (sharedPreferences.getBoolean(SETTINGS_CLEAR_LOCAL_DATA_KEY, false) == true) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(APP_USERNAME, "");
-                editor.putString(APP_PASSWORD, "");
-                editor.commit();
-            }
+    public void onBackPressed() {
+        SharedPreferences.Editor preferences = getPreferenceScreen().getSharedPreferences().edit();
+        if( getPreferenceScreen().getSharedPreferences().getBoolean(SETTINGS_CLEAR_LOCAL_DATA_KEY, false) == true){
+            preferences.putString(APP_USERNAME, "");
+            preferences.putString(APP_PASSWORD, "");
+            preferences.putBoolean(SETTINGS_CLEAR_LOCAL_DATA_KEY, false);
+            preferences.commit();
         }
+        finish();
     }
-
 }
