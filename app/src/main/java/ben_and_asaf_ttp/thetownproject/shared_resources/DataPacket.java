@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class DataPacket implements Serializable{
 	private Commands command;
@@ -14,11 +15,14 @@ public class DataPacket implements Serializable{
 	private String message;
 	private String server_message;
 	private int number;
-	
-	public DataPacket(){}
-	
-	public DataPacket(final Commands command, final Game game, final List<Game> games, final Player player, final List<Player> players, 
-			final String message,final String server_message, final int number) {
+	private transient Gson gson;
+
+	public DataPacket(){
+		this(null, null, null, null, null, null, null, -1);
+	}
+
+	public DataPacket(final Commands command, final Game game, final List<Game> games, final Player player, final List<Player> players,
+					  final String message,final String server_message, final int number) {
 		this.command = command;
 		this.game = game;
 		this.games = games;
@@ -27,6 +31,9 @@ public class DataPacket implements Serializable{
 		this.message = message;
 		this.server_message = server_message;
 		this.number = number;
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(Role.class, new RoleInstanceCreator());
+		this.gson = gsonBuilder.create();
 	}
 
 	public Commands getCommand() {
@@ -92,13 +99,13 @@ public class DataPacket implements Serializable{
 	public void setNumber(final int number) {
 		this.number = number;
 	}
-	
+
 	public String toJson(){
-		return new Gson().toJson(this, DataPacket.class);
+		return this.gson.toJson(this, DataPacket.class);
 	}
-	
+
 	public DataPacket fromJson(final String json){
-		return new Gson().fromJson(json, DataPacket.class);
+		return this.gson.fromJson(json, DataPacket.class);
 	}
 
 	@Override

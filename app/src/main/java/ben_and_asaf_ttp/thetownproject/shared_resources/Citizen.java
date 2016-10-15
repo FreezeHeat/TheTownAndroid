@@ -5,5 +5,4 @@ import java.io.Serializable;
 public class Citizen extends Role implements Serializable{
 	@Override
 	public void action(final DataPacket dp) {}
-	
 }

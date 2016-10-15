@@ -67,7 +67,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        grid = (GridView) findViewById(R.id.game_playerGrid);
+        grid = (GridView)findViewById(R.id.game_playerGrid);
         Button btnSendMsg = (Button)findViewById(R.id.game_btn_send);
         btnSendMsg.setOnClickListener(this);
         txtSendMessage = (EditText)findViewById(R.id.game_txt_sendMessage);
@@ -129,14 +129,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     case REFRESH_PLAYERS:
 
                         //refreshed players - who is alive and who's not
-                        game.setPlayers(dp.getPlayers());
+                        game.getPlayers().clear();
+                        game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         game.getPlayers().remove(player);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 myAdapter.notifyDataSetChanged();
-                                grid.setAdapter(myAdapter);
                             }
                         });
                         break;
@@ -145,7 +145,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         //day cycle - change GUI and chat
                         day = true;
                         msg = getResources().getString(R.string.game_day_phase);
-                        txtSendMessage.setEnabled(true);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtSendMessage.setEnabled(true);
+                            }
+                        });
                         runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
                         break;
                     case NIGHT:
@@ -155,9 +160,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         msg = getResources().getString(R.string.game_day_phase);
                         txtSendMessage.setEnabled(true);
                         runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
-                        if(!(player.getRole() instanceof Killer)){
-                            txtSendMessage.setEnabled(false);
-                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!(player.getRole() instanceof Killer)){
+                                    txtSendMessage.setEnabled(false);
+                                }
+                            }
+                        });
                         break;
                     case SNITCH:
 
@@ -191,7 +201,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //get a player and players (alert about the player and set the players)
                         msg = String.format(getResources().getString(R.string.game_player_joined), dp.getPlayer().getUsername());
-                        game.setPlayers(dp.getPlayers());
+                        game.getPlayers().clear();
+                        game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         game.getPlayers().remove(player);
 
@@ -211,7 +222,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //game begun (30 seconds wait and starting DAY phase) - get players
                         msg = getResources().getString(R.string.game_ready_phase);
-                        game.setPlayers(dp.getPlayers());
+                        game.getPlayers().clear();
+                        game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         game.getPlayers().remove(player);
 
@@ -342,13 +354,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             final Player user = getItem(position);
 
             // Check if an existing view is being reused, otherwise inflate the view
-
             // the mechanism recycles objects - so it creates them only the firs time
             // if created already - only update the data inside
             // ( when scrolling)
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.player_card, parent, false);
             }
+
             // Lookup view for data population
             final ImageView imgviewPlayerImage = (ImageView) convertView.findViewById(R.id.playerCard_playerImage);
             final TextView txtPlayerName = (TextView) convertView.findViewById(R.id.playerCard_playerUsername);
@@ -463,8 +475,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             else if(msg != null) {
                 Toast.makeText(GameActivity.this, this.msg, duration).show();
                 if(adapter != null) {
-                    myAdapter = new MyPlayerAdapter(GameActivity.this, R.layout.player_card, game.getPlayers());
-                    grid.setAdapter(myAdapter);
+                    myAdapter.notifyDataSetChanged();
                 }
             }
         }

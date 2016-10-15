@@ -67,20 +67,9 @@ public class SplashActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
                 publishProgress("-1", getResources().getString(R.string.splash_socket_failed));
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ie) {
-                    ie.printStackTrace();
-                }
                 return false;
             }
-
             publishProgress("50", getResources().getString(R.string.splash_socket_success));
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             return true;
         }
@@ -92,11 +81,6 @@ public class SplashActivity extends AppCompatActivity {
             {
                 pbSplashScreen.setProgress(100);
                 txtSplashScreen.setText("Successful - starting the game");
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 finish();   // finish the activity of the splash so it will not be in the history
                 Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(myIntent);
@@ -104,11 +88,6 @@ public class SplashActivity extends AppCompatActivity {
             else{
 
                 //in case starting up the socket failed
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 Log.e(this.getClass().getName(), "Error connecting to socket");
                 buildExitDialog();
                 builder.show();

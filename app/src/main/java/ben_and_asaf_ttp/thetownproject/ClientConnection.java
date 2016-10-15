@@ -74,7 +74,7 @@ public class ClientConnection {
         connection = new Socket(hostname, port);
 
         //wait 30 seconds for the connection to respond
-        connection.setSoTimeout(2500);
+        connection.setSoTimeout(5000);
         out = new ObjectOutputStream(connection.getOutputStream());
         in = new ObjectInputStream(connection.getInputStream());
         Log.i(this.getClass().getName(), "Socket connection successful " +
@@ -101,8 +101,10 @@ public class ClientConnection {
         DataPacket dp = new DataPacket();
         dp.setCommand(Commands.DISCONNECT);
         out.writeObject(dp.toJson());
-        out.close();
-        in.close();
+        if(out != null && in != null) {
+            out.close();
+            in.close();
+        }
         connection.close();
         Log.i(this.getClass().getName(), "Socket connection was closed");
     }

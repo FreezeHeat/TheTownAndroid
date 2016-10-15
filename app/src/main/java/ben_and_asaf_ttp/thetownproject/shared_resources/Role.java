@@ -17,6 +17,4 @@ public abstract class Role implements Serializable{
 	 * @param dp The DataPacket which is set to your action
 	 */
     public abstract void action(DataPacket dp);
-
-	public Role(){}
 }
