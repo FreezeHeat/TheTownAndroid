@@ -102,23 +102,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             String msg;
 
             while(true){
-                try {
-                    dp = mService.getPacket();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            buildConnectionDialog();
-                            builder.show();
-                        }
-                    });
-                    return;
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-
+                dp = mService.getPacket();
                 Intent myIntent;
+
                 switch(dp.getCommand()){
                     case SEND_MESSAGE:
                     case SEND_MESSAGE_DEAD:
@@ -269,6 +255,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         finish();
                         return;
                     default:
+                        if(dp != null) {
+                            Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
+                        }else{
+                            Log.e(this.getClass().getName(), "DataPacket is null");
+                        }
                         return;
                 }
                 Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
@@ -312,6 +303,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             unbindService(mConnection);
             mBound = false;
         }
+        stopService(new Intent(this, GameService.class));
     }
 
     /** Defines callbacks for service binding, passed to bindService() */
@@ -512,11 +504,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     GameActivity.this.finish();
-                    try {
-                        ClientConnection.getConnection().exit();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    ClientConnection.getConnection().closeSocket();
                 }
             });
         }

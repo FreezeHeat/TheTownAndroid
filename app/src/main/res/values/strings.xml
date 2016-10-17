@@ -1,17 +1,6 @@
 <resources>
     <string name="app_name">TheTownProject</string>
 
-
-    <string name="txtWelcome">Welcome</string>
-    <string name="btnExit">Exit</string>
-    <string name="btnNewGame">New Game</string>
-    <string name="btnShowGames">Show Games</string>
-    <string name="editGameDescription">Game Description</string>
-    <string name="editGameNumPlayers">Number of players</string>
-    <string name="btnOK">OK</string>
-    <string name="btnRegister">Register</string>
-
-
     <string name="general_empty_details">Nothing was entered</string>
     <string name="general_password_too_few_characters">Minimum password length is 6</string>
     <string name="general_password_too_much_characters">Maximum password length is 30</string>
@@ -44,6 +33,7 @@
     <string name="lobby_matchMaking_progress_message">Searching...</string>
     <string name="lobby_matchMaking_cancel">Cancel</string>
     <string name="lobby_matchMaking_howManyPlayers_title">How many players?</string>
+    <string name="lobby_disconnect">Are you sure you want to disconnect?</string>
 
     <string name="game_txtSendMessage_hint">Enter your message here</string>
     <string name="game_btnSend">Send</string>
@@ -70,7 +60,6 @@
 
     <string name="playercard_menu_get_stats">See Stats</string>
 
-
     <string name="login_btnOptions">Options</string>
     <string name="login_btnForgot">Forgot Pass</string>
     <string name="login_btnLogin2">Sign in</string>
@@ -81,9 +70,10 @@
     <string name="login_txtPass_land">Password</string>
     <string name="login_checkboxRemember_land">Remember Username ?</string>
     <string name="login_btnSignIn_land">Sign in</string>
-    <string name="login_btnForgot_land">Forogt Pass</string>
+    <string name="login_btnForgot_land">Forgot Pass</string>
     <string name="login_btnOptions_land">Options</string>
 
+    <string name="main_exit">Exit</string>
     <string name="main_btnLogin">Login</string>
     <string name="main_btnRegister">Register</string>
     <string name="main_btnForgot">Forogt Pass</string>

@@ -63,11 +63,14 @@ public class SplashActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             publishProgress("0", getResources().getString(R.string.splash_socket_connection));
             try {
+                Thread.sleep(5000);
                 ClientConnection.getConnection().startConnection();
             } catch (IOException e) {
                 e.printStackTrace();
                 publishProgress("-1", getResources().getString(R.string.splash_socket_failed));
                 return false;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             publishProgress("50", getResources().getString(R.string.splash_socket_success));
 
@@ -82,7 +85,8 @@ public class SplashActivity extends AppCompatActivity {
                 pbSplashScreen.setProgress(100);
                 txtSplashScreen.setText("Successful - starting the game");
                 finish();   // finish the activity of the splash so it will not be in the history
-                Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
+                //Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent myIntent = new Intent(SplashActivity.this, Test.class);
                 startActivity(myIntent);
             }
             else{
@@ -102,14 +106,10 @@ public class SplashActivity extends AppCompatActivity {
             builder.setCancelable(false);
             builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    SplashActivity.this.finish();
-                    try {
-                        if(ClientConnection.getConnection().getOutput() != null) {
-                            ClientConnection.getConnection().exit();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            SplashActivity.this.finish();
+            if(ClientConnection.getConnection().getOutput() != null) {
+                ClientConnection.getConnection().closeSocket();
+            }
                 }
             });
         }

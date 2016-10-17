@@ -45,6 +45,11 @@ public class ClientConnection {
     private static ClientConnection client = new ClientConnection();
 
     /**
+     * DataPacket in use for communication
+     */
+    private DataPacket dpIn;
+
+    /**
      * Create a singleton connection
      */
     private ClientConnection() {
@@ -73,39 +78,56 @@ public class ClientConnection {
     public void startConnection() throws IOException {
         connection = new Socket(hostname, port);
 
-        //wait 30 seconds for the connection to respond
+        //wait 5 seconds for the connection to respond
         connection.setSoTimeout(5000);
         out = new ObjectOutputStream(connection.getOutputStream());
         in = new ObjectInputStream(connection.getInputStream());
-        Log.i(this.getClass().getName(), "Socket connection successful " +
-                this.hostname+ ":" + this.port);
+        Log.i(this.getClass().getName(), "Socket connection successful " + this.hostname+ ":" + this.port);
         connection.setSoTimeout(0);
+        dpIn = new DataPacket();
     }
 
-    public void sendDataPacket(DataPacket dp) throws IOException {
-        this.getOutput().writeObject(dp.toJson());
-        Log.i(this.getClass().getName(), "DataPacket sent: " + dp.toString());
+    public void sendDataPacket(DataPacket dp){
+        try {
+            this.getOutput().writeObject(dp.toJson());
+            Log.i(this.getClass().getName(), "DataPacket sent: " + dp.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            dp = null;
+            Log.e(this.getClass().getName(), "DataPacket IOException");
+        }
     }
 
-    public DataPacket receiveDataPacket() throws IOException, ClassNotFoundException {
-        DataPacket dp = new DataPacket();
-        dp = dp.fromJson((String)this.getInput().readObject());
-        Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
-        return dp;
+    public DataPacket receiveDataPacket(){
+        try {
+            dpIn = dpIn.fromJson((String)this.getInput().readObject());
+            Log.i(this.getClass().getName(), "DataPacket received: " + dpIn.toString());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            dpIn = null;
+            Log.e(this.getClass().getName(), "DataPacket ClassNotFoundException");
+        } catch (IOException e) {
+            e.printStackTrace();
+            dpIn = null;
+            Log.e(this.getClass().getName(), "DataPacket IOException");
+        }finally {
+            return dpIn;
+        }
     }
 
     /**
-     * Close all connections and alert the server of it
+     * Close the socket connection
      */
-    public void exit() throws IOException {
-        DataPacket dp = new DataPacket();
-        dp.setCommand(Commands.DISCONNECT);
-        out.writeObject(dp.toJson());
-        if(out != null && in != null) {
-            out.close();
-            in.close();
+    public void closeSocket(){
+        try {
+            if(connection.isClosed()){
+                out.close();
+                in.close();
+                connection.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        connection.close();
         Log.i(this.getClass().getName(), "Socket connection was closed");
     }
 
@@ -115,6 +137,5 @@ public class ClientConnection {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        exit();
     }
 }

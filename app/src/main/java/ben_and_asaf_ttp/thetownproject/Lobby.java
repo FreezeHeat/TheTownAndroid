@@ -44,7 +44,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
     private AlertDialog dialogHowManyPlayers;
     private ProgressDialog dialogProgress;
     private Runnable searchGame;
-    private Executor executor;
     private int numPlayers = -1;
 
     @Override
@@ -100,7 +99,32 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
                 }
                 Lobby.this.dialogHowManyPlayers.dismiss();
                 Lobby.this.dialogProgress.show();
-                Lobby.this.executor.execute(Lobby.this.searchGame);
+                new AsyncTask<Void, Void, DataPacket>(){
+
+                    @Override
+                    protected DataPacket doInBackground(Void... params) {
+                        DataPacket dp = new DataPacket();
+                        dp.setCommand(Commands.READY);
+                        dp.setNumber(Lobby.this.numPlayers);
+                        ClientConnection.getConnection().sendDataPacket(dp);
+                        dp = ClientConnection.getConnection().receiveDataPacket();
+                        return dp;
+                    }
+
+                    // this runs on UI thread
+                    @Override
+                    protected void onPostExecute(DataPacket dp) {
+                        if(dp.getCommand() == Commands.OK) {
+                            ((GlobalResources) getApplication()).setGame(dp.getGame());
+                            if (((GlobalResources) getApplication()).getGame() != null) {
+                                dialogProgress.dismiss();
+                            }
+                        }
+                        Intent myIntent = new Intent(Lobby.this, GameActivity.class);
+                        startActivity(myIntent);
+                        Lobby.this.finish();
+                    }
+                }.execute();
             }
         });
 
@@ -111,54 +135,14 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
         dialogProgress.setMessage(getResources().getString(R.string.lobby_matchMaking_progress_message));
         dialogProgress.setTitle(getResources().getString(R.string.lobby_matchMaking_progress_title));
         dialogProgress.setButton(DialogInterface.BUTTON_NEGATIVE,
-                getResources().getText(R.string.lobby_matchMaking_cancel),
-                new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ((GlobalResources)((GlobalResources) getApplication())).setGame(null);
-                        dialogProgress.dismiss();
-                    }
-                });
-
-        //Set task for executor
-        searchGame = new Runnable() {
-            @Override
-            public void run() {
-                DataPacket dp = new DataPacket();
-                dp.setCommand(Commands.READY);
-                dp.setNumber(Lobby.this.numPlayers);
-                try {
-                    ClientConnection.getConnection().sendDataPacket(dp);
-                    dp = ClientConnection.getConnection().receiveDataPacket();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+            getResources().getText(R.string.lobby_matchMaking_cancel),
+            new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((GlobalResources)((GlobalResources) getApplication())).setGame(null);
+                    dialogProgress.dismiss();
                 }
-                if(dp.getCommand() == Commands.OK) {
-                    ((GlobalResources) getApplication()).setGame(dp.getGame());
-                    if (((GlobalResources) getApplication()).getGame() != null) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                dialogProgress.dismiss();
-                            }
-                        });
-                    }
-                }
-                Intent myIntent = new Intent(Lobby.this, GameActivity.class);
-                startActivity(myIntent);
-                Lobby.this.finish();
-            }
-        };
-
-        //Thread manipulator and executor, here it runs a new thread each time it is called
-        executor = new Executor() {
-            @Override
-            public void execute(Runnable command) {
-                new Thread(command).start();
-            }
-        };
+            });
     }
 
     @Override
@@ -170,11 +154,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
             protected Void doInBackground(Void... params) {
                 DataPacket dp = new DataPacket();
                 dp.setCommand(Commands.DISCONNECT);
-                try {
-                    ClientConnection.getConnection().sendDataPacket(dp);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ClientConnection.getConnection().sendDataPacket(dp);
                 return null;
             }
         }.execute();

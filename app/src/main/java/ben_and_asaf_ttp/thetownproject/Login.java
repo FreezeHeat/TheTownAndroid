@@ -71,22 +71,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     DataPacket dp = params[0];
                     dp.setCommand(Commands.LOGIN);
                     dp.setPlayer(player);
-                    try {
-                        ClientConnection.getConnection().sendDataPacket(dp);
-                        dp = ClientConnection.getConnection().receiveDataPacket();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                buildConnectionDialog();
-                                builder.show();
-                            }
-                        });
-                        return null;
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    ClientConnection.getConnection().sendDataPacket(dp);
+                    dp = ClientConnection.getConnection().receiveDataPacket();
                     return dp;
                 }
 
@@ -147,30 +133,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             builder.setCancelable(false);
             builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Login.this.finish();
-                    try {
-                        ClientConnection.getConnection().exit();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-    }
-
-    public void buildConnectionDialog() {
-        if(builder == null) {
-            builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getText(R.string.general_connection_problem));
-            builder.setCancelable(false);
-            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Login.this.finish();
-                    try {
-                        ClientConnection.getConnection().exit();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            Login.this.finish();
+            ClientConnection.getConnection().closeSocket();
                 }
             });
         }

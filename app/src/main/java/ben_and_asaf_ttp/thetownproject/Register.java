@@ -89,15 +89,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                         DataPacket dp = params[0];
                         dp.setCommand(Commands.REGISTER);
                         dp.setPlayer(player);
-                        try {
-                            ClientConnection.getConnection().sendDataPacket(dp);
-                            dp = ClientConnection.getConnection().receiveDataPacket();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            return null;
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                        ClientConnection.getConnection().sendDataPacket(dp);
+                        dp = ClientConnection.getConnection().receiveDataPacket();
                         return dp;
                     }
 
@@ -148,12 +141,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             builder.setCancelable(false);
             builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Register.this.finish();
-                    try {
-                        ClientConnection.getConnection().exit();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            Register.this.finish();
+            ClientConnection.getConnection().closeSocket();
                 }
             });
         }

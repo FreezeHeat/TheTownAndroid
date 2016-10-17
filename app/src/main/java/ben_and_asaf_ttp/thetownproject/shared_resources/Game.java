@@ -45,6 +45,11 @@ public class Game implements Serializable{
 	 */
 	private Date date;
 
+	/**
+	 * Game phase
+	 */
+	private boolean day;
+
     /**
      * This constructor creates an empty <code>Game</code> with today's {@code Date}
      */
@@ -133,6 +138,22 @@ public class Game implements Serializable{
 	public String getDateString(){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		return dateFormat.format(this.date);
+	}
+
+	/**
+	 * Set the game's phase
+	 * @param day true for day phase / false for night phase
+	 */
+	public void setDay(boolean day){
+		this.day = day;
+	}
+
+	/**
+	 * Check the game's phase
+	 * @return true for day phase / false for night phase
+	 */
+	public boolean isDay(){
+		return this.day;
 	}
 	
 	/**

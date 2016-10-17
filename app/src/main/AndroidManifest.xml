@@ -41,6 +41,8 @@
         <service
             android:name=".GameService"
             android:exported="false" />
+
+        <activity android:name=".Test"></activity>
     </application>
 
 </manifest>

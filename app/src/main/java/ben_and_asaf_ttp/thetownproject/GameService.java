@@ -25,14 +25,11 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
  */
 public class GameService extends Service {
     public static boolean isRunning = false;
-    private Executor executor;
-    private Runnable send;
-    private DataPacket dpSend;
-    private DataPacket dpRecieve;
     private IBinder binder = new LocalBinder();
 
     public class LocalBinder extends Binder {
         GameService getService() {
+
             // Return this instance of LocalService so clients can call public methods
             return GameService.this;
         }
@@ -43,38 +40,17 @@ public class GameService extends Service {
         return binder;
     }
 
-    public DataPacket getPacket() throws IOException, ClassNotFoundException {
-        GameService.this.dpRecieve = ClientConnection.getConnection().receiveDataPacket();
-        return dpRecieve;
+    public DataPacket getPacket(){
+        return ClientConnection.getConnection().receiveDataPacket();
     }
 
     public void sendPacket(DataPacket dpSend){
-        this.dpSend = dpSend;
-        executor.execute(send);
+        ClientConnection.getConnection().sendDataPacket(dpSend);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        executor = new Executor() {
-            @Override
-            public void execute(Runnable command) {
-                new Thread(command).start();
-            }
-        };
-
-        send = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ClientConnection.getConnection().sendDataPacket(GameService.this.dpSend);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
         isRunning = true;
     }
 }

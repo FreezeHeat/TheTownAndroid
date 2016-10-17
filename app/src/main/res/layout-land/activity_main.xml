@@ -46,7 +46,7 @@
                 android:textStyle="bold"
                 android:textSize="17sp"
                 android:layout_gravity="center_horizontal"
-                android:hint="@string/btnRegister"
+                android:hint="@string/main_btnRegister_land"
                 android:textColorHint="@android:color/white"
                 android:id="@+id/main_btnRegister"
                 android:layout_weight="50"/>

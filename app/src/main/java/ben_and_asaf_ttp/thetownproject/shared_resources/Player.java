@@ -39,7 +39,12 @@ public class Player extends User{
      * The player's status, alive or not
      */
     private boolean alive;
-    
+
+	/**
+	 * If the player voted or not
+	 */
+    private boolean voted;
+
     /**
      * This constructor creates an empty <code>Player</code>
      */    
@@ -180,6 +185,22 @@ public class Player extends User{
 	/**
 	 * Set the player's status
 	 * @param alive The player's status
+	 */
+	public void setVoted(final boolean voted) {
+		this.voted = voted;
+	}
+
+	/**
+	 * Check if the player has voted
+	 * @return true\false if voted
+	 */
+	public boolean hasVoted() {
+		return this.voted;
+	}
+
+	/**
+	 * Set the player's vote status
+	 * @param alive The player's vote status
 	 */
 	public void setAlive(final boolean alive) {
 		this.alive = alive;
