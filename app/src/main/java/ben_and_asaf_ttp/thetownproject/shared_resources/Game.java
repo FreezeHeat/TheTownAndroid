@@ -1,6 +1,5 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.Date;
  * @see Player
  * @since 1.0
  */
-public class Game implements Serializable{
+public class Game{
 
 	/**
 	 * An auto generated ID for a game, used to identify a {@code Game} instance
@@ -167,7 +166,12 @@ public class Game implements Serializable{
 		int i = 0;
 		for(Player p : this.players){
 			p.setRole(rolesBank.get(i++));
-			System.out.println(p.username + " : " + p.getRole().toString());
+			System.out.println(p.getUsername() + " : " + p.getRole().toString());
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "Game{" + "gameId=" + gameId + ", maxPlayers=" + maxPlayers + ", date=" + date + '}';
 	}
 }

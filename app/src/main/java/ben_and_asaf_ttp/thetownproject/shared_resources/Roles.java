@@ -1,7 +1,5 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
-import java.io.Serializable;
-
 /**
  * This enum is for the roles in-game.
  * this is used by the server and client to identify and set roles in the game
@@ -10,7 +8,7 @@ import java.io.Serializable;
  * @see Game
  * @since 1.0
  */
-public enum Roles implements Serializable {
+public enum Roles{
 	
 	/**
 	 * The citizen role

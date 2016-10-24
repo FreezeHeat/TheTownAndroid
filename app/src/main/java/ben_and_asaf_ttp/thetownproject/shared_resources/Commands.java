@@ -1,7 +1,5 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
-import java.io.Serializable;
-
 /**
  *
  * Includes {@code Commands} that are required for the <i>server/client output/input</i>
@@ -10,7 +8,7 @@ import java.io.Serializable;
  * @version %I%
  * @since 1.0
  */
-public enum Commands implements Serializable{
+public enum Commands{
 	
     /**
      * Used with the server thread 

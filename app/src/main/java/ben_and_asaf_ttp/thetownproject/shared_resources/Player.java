@@ -9,8 +9,20 @@ import java.util.List;
  * @since 1.0
  */
 
-public class Player extends User{
-	
+public class Player{
+
+	/**
+	 * The user's username
+	 * <p><b>Note:</b> PK in the database, so it's unique</p>
+	 */
+
+	private String username;
+
+	/**
+	 * The user's password
+	 */
+	private String password;
+
 	/**
      * {@code Stats} that hold the statistics of the player
      * @see Stats
@@ -33,7 +45,7 @@ public class Player extends User{
      * This list holds all the games the players has played (Game history)
      * @see Game
      */
-    private List<Game> gameHistory;
+    private transient List<Game> gameHistory;
     
     /**
      * The player's status, alive or not
@@ -43,7 +55,7 @@ public class Player extends User{
 	/**
 	 * If the player acted or not
 	 */
-	private boolean acted;
+	private transient boolean acted;
 
     /**
      * This constructor creates an empty <code>Player</code>
@@ -81,28 +93,40 @@ public class Player extends User{
     public Player(final String username, final String password){
     	this(username, password, new Stats(), PlayerStatus.OFFLINE, null);
     }
-    
-	@Override
+
+	/**
+	 * Gets the username
+	 *
+	 * @return username
+	 */
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return this.username;
 	}
 
-	@Override
+	/**
+	 * Sets the username
+	 *
+	 * @param username Username to set
+	 */
 	public void setUsername(final String username) {
-		// TODO Auto-generated method stub
 		this.username = username;
 	}
 
-	@Override
+	/**
+	 * Gets the password
+	 *
+	 * @return Password
+	 */
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return this.password;
 	}
 
-	@Override
+	/**
+	 * Sets the password
+	 *
+	 * @param password Password to be set
+	 */
 	public void setPassword(final String password) {
-		// TODO Auto-generated method stub
 		this.password = password;
 	}
 

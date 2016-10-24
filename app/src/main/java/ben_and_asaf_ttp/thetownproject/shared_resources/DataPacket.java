@@ -1,11 +1,10 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
-import java.io.Serializable;
 import java.util.List;
 
 import com.google.gson.Gson;
 
-public class DataPacket implements Serializable{
+public class DataPacket{
 	private Commands command;
 	private Game game;
 	private List<Game> games;

@@ -1,7 +1,5 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
-import java.io.Serializable;
-
 /**
  * {@code PlayerStatus} class, holds the information about each user's status in the server
  * @author Ben Gilad and Asaf Yeshayahu
@@ -9,8 +7,7 @@ import java.io.Serializable;
  * @see Player
  * @since 1.0
  */
-public enum PlayerStatus implements Serializable
-{
+public enum PlayerStatus {
 	
 	/**
 	 * Indicates the {@code User} is offline

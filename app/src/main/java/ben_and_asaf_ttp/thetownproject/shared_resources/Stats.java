@@ -1,7 +1,5 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
-import java.io.Serializable;
-
 /**
  * {@code Stats} class, holds the information about each user's stats in the database
  * @author Ben Gilad and Asaf Yeshayahu
@@ -9,7 +7,7 @@ import java.io.Serializable;
  * @see Player
  * @since 1.0
  */
-public class Stats implements Serializable{
+public class Stats{
 
 	/**
 	 * The ID of the statistics, unique to each {@code Player}
