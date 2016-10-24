@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class DataPacket implements Serializable{
 	private Commands command;
@@ -31,9 +30,7 @@ public class DataPacket implements Serializable{
 		this.message = message;
 		this.server_message = server_message;
 		this.number = number;
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(Role.class, new RoleInstanceCreator());
-		this.gson = gsonBuilder.create();
+		this.gson = new Gson();
 	}
 
 	public Commands getCommand() {
@@ -51,7 +48,7 @@ public class DataPacket implements Serializable{
 	public void setGame(final Game game) {
 		this.game = game;
 	}
-	
+
 	public List<Game> getGames() {
 		return games;
 	}

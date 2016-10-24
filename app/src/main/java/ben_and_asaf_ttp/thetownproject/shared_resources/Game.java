@@ -31,9 +31,9 @@ public class Game implements Serializable{
 	/**
 	 * The role bank({@code ArrayList} format) for this game based on {@code maxPlayers}
 	 * (<b>Note:</b> this role bank is given by the server)
-	 * @see Role
+	 * @see Roles
 	 */
-	private ArrayList<Role> rolesBank;
+	private ArrayList<Roles> rolesBank;
 	
 	/**
 	 * This {@code ArrayList} holds all the players that are in the game
@@ -50,9 +50,9 @@ public class Game implements Serializable{
 	 */
 	private boolean day;
 
-    /**
-     * This constructor creates an empty <code>Game</code> with today's {@code Date}
-     */
+	/**
+	 * This constructor creates an empty <code>Game</code> with today's {@code Date}
+	 */
 	public Game(){
 		this.date = new Date();
 		this.players = new ArrayList<Player>();
@@ -73,23 +73,23 @@ public class Game implements Serializable{
 	public void setMaxPlayers(final int maxPlayers) {
 		this.maxPlayers = maxPlayers;
 	}
-	
+
 	/**
 	 * Get the game's role bank
 	 * @return the game's role bank
 	 */
-	public ArrayList<Role> getRolesBank() {
+	public ArrayList<Roles> getRolesBank() {
 		return rolesBank;
 	}
-	
+
 	/**
 	 * Set the game's role bank({@code ArrayList} format)
 	 * @param rolesBank the game's role bank to be set
 	 */
-	public void setRolesBank(final ArrayList<Role> rolesBank) {
+	public void setRolesBank(final ArrayList<Roles> rolesBank) {
 		this.rolesBank = rolesBank;
 	}
-	
+
 	/**
 	 * Get a list of all the players in the game
 	 * @return list of all the players in the game
@@ -113,7 +113,7 @@ public class Game implements Serializable{
 	public int getGameId() {
 		return gameId;
 	}
-	
+
 	/**
 	 * Get the game's creation date
 	 * @return game's creation date
@@ -130,7 +130,7 @@ public class Game implements Serializable{
 	public int getPlayerSlotsLeft(){
 		return maxPlayers - players.size();
 	}
-	
+
 	/**
 	 * Returns the game's date as a {@code String}
 	 * @return the game's date (String format)
@@ -155,7 +155,7 @@ public class Game implements Serializable{
 	public boolean isDay(){
 		return this.day;
 	}
-	
+
 	/**
 	 * Shuffles the roles bank, and sets randomized roles for the players
 	 * @see Game#rolesBank
@@ -163,9 +163,11 @@ public class Game implements Serializable{
 	 */
 	public void distributeRoles(){
 		Collections.shuffle(this.rolesBank);
+		System.out.println("Game - Distributing roles:");
 		int i = 0;
 		for(Player p : this.players){
 			p.setRole(rolesBank.get(i++));
+			System.out.println(p.username + " : " + p.getRole().toString());
 		}
 	}
 }

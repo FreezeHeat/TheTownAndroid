@@ -25,9 +25,9 @@ public class Player extends User{
     
     /**
      * {@code Role} holds information about the player's role in the game
-     * @see Role
+     * @see Roles
      */
-    private Role role;
+    private Roles role;
 	
     /**
      * This list holds all the games the players has played (Game history)
@@ -41,9 +41,9 @@ public class Player extends User{
     private boolean alive;
 
 	/**
-	 * If the player voted or not
+	 * If the player acted or not
 	 */
-    private boolean voted;
+	private boolean acted;
 
     /**
      * This constructor creates an empty <code>Player</code>
@@ -59,11 +59,11 @@ public class Player extends User{
      * @param role Player's role
      * @see Stats
      * @see PlayerStatus
-     * @see Role
+     * @see Roles
      */
     public Player(
     		final String username, final String password,
-    		final Stats stats, final PlayerStatus status, final Role role){
+    		final Stats stats, final PlayerStatus status, final Roles role){
     	this.setUsername(username);
     	this.setPassword(password);
     	this.setStats(stats);
@@ -143,18 +143,18 @@ public class Player extends User{
 	/**
 	 * Get the player's role
 	 * @return the player's role
-	 * @see Role
+	 * @see Roles
 	 */
-	public Role getRole() {
+	public Roles getRole() {
 		return role;
 	}
 
 	/**
 	 * Set the player's role
 	 * @param role the role to be set
-	 * @see Role
+	 * @see Roles
 	 */
-	public void setRole(final Role role) {
+	public void setRole(final Roles role) {
 		this.role = role;
 	}
 
@@ -183,27 +183,27 @@ public class Player extends User{
 	}
 
 	/**
-	 * Set the player's status
-	 * @param alive The player's status
-	 */
-	public void setVoted(final boolean voted) {
-		this.voted = voted;
-	}
-
-	/**
-	 * Check if the player has voted
-	 * @return true\false if voted
-	 */
-	public boolean hasVoted() {
-		return this.voted;
-	}
-
-	/**
-	 * Set the player's vote status
-	 * @param alive The player's vote status
+	 * Set if the player is alive or not
+	 * @param alive true/false player is alive/dead
 	 */
 	public void setAlive(final boolean alive) {
 		this.alive = alive;
+	}
+
+	/**
+	 * Set if action was done or not
+	 * @param acted true/false if action was done or not
+	 */
+	public void setActed(final boolean acted) {
+		this.acted = acted;
+	}
+
+	/**
+	 * Check if the player has acted
+	 * @return true\false if acted
+	 */
+	public boolean hasActed() {
+		return this.acted;
 	}
 
 	@Override
@@ -219,8 +219,8 @@ public class Player extends User{
 	}
 
 	@Override
-    public String toString(){
-		return this.getUsername() + ": " + this.getStats().toString();
+	public String toString() {
+		return getUsername() + " [stats=" + stats + "\n, status=" + status + "\n, role=" + role + ", gameHistory=" + gameHistory
+				+ "\n, alive=" + alive + ", acted=" + acted + "]";
 	}
-	
 }

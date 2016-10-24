@@ -22,28 +22,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import ben_and_asaf_ttp.thetownproject.shared_resources.Citizen;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Game;
-import ben_and_asaf_ttp.thetownproject.shared_resources.Healer;
-import ben_and_asaf_ttp.thetownproject.shared_resources.Killer;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
-import ben_and_asaf_ttp.thetownproject.shared_resources.Role;
-import ben_and_asaf_ttp.thetownproject.shared_resources.Snitch;
+import ben_and_asaf_ttp.thetownproject.shared_resources.Roles;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener{
     private GlobalResources globalResources;
@@ -149,7 +140,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(!(player.getRole() instanceof Killer)){
+                                if(!(player.getRole() == Roles.KILLER)){
                                     txtSendMessage.setEnabled(false);
                                 }
                             }
@@ -161,12 +152,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         msg = String.format(
                                 getResources().getString(R.string.game_snitch_identity),
                                 dp.getPlayer());
-                        Role role = dp.getPlayer().getRole();
-                        if(role instanceof Killer){
+                        Roles role = dp.getPlayer().getRole();
+                        if(role == Roles.KILLER){
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_killer));
-                        }else if (role instanceof Healer){
+                        }else if (role == Roles.HEALER){
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_healer));
-                        }else if (role instanceof  Snitch){
+                        }else if (role == Roles.SNITCH){
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_snitch));
                         }else{
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_citizen));
@@ -274,7 +265,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 if(player.isAlive() == true) {
                     if (day){
                         out.setCommand(Commands.SEND_MESSAGE);
-                    }else if(player.getRole() instanceof Killer){
+                    }else if(player.getRole() == Roles.KILLER){
                         out.setCommand(Commands.SEND_MESSAGE_KILLER);
                     }
                 }else{
@@ -360,15 +351,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             imgviewPlayerImage.setOnCreateContextMenuListener(this);
 
-            final Role role = GameActivity.this.player.getRole();
+            final Roles role = GameActivity.this.player.getRole();
 
             if(user.isAlive()) {
                 if (role != null) {
-                    if (role instanceof Killer) {
+                    if (role == Roles.KILLER) {
                         btnPlayerAction.setText(getResources().getText(R.string.game_kill));
-                    } else if (role instanceof Healer) {
+                    } else if (role == Roles.HEALER) {
                         btnPlayerAction.setText(getResources().getText(R.string.game_heal));
-                    } else if (role instanceof Snitch) {
+                    } else if (role == Roles.SNITCH) {
                         btnPlayerAction.setText(getResources().getText(R.string.game_snitch));
                     } else {
                         btnPlayerAction.setText(getResources().getText(R.string.game_vote));
