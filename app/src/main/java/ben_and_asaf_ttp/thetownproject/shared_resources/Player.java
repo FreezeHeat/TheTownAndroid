@@ -52,11 +52,6 @@ public class Player{
      */
     private boolean alive;
 
-	/**
-	 * If the player acted or not
-	 */
-	private transient boolean acted;
-
     /**
      * This constructor creates an empty <code>Player</code>
      */    
@@ -214,22 +209,6 @@ public class Player{
 		this.alive = alive;
 	}
 
-	/**
-	 * Set if action was done or not
-	 * @param acted true/false if action was done or not
-	 */
-	public void setActed(final boolean acted) {
-		this.acted = acted;
-	}
-
-	/**
-	 * Check if the player has acted
-	 * @return true\false if acted
-	 */
-	public boolean hasActed() {
-		return this.acted;
-	}
-
 	@Override
     public boolean equals(final Object o){
 		if(o instanceof Player){
@@ -245,6 +224,6 @@ public class Player{
 	@Override
 	public String toString() {
 		return getUsername() + " [stats=" + stats + "\n, status=" + status + "\n, role=" + role + ", gameHistory=" + gameHistory
-				+ "\n, alive=" + alive + ", acted=" + acted + "]";
+				+ "\n, alive=" + alive + "]";
 	}
 }

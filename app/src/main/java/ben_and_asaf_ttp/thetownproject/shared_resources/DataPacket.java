@@ -16,11 +16,11 @@ public class DataPacket{
 	private transient Gson gson;
 
 	public DataPacket(){
-		this(null, null, null, null, null, null, null, -1);
+		this(null, null, null, null, null, null, null);
 	}
 
 	public DataPacket(final Commands command, final Game game, final List<Game> games, final Player player, final List<Player> players,
-					  final String message,final String server_message, final int number) {
+					  final String message,final String server_message) {
 		this.command = command;
 		this.game = game;
 		this.games = games;
@@ -28,7 +28,6 @@ public class DataPacket{
 		this.players = players;
 		this.message = message;
 		this.server_message = server_message;
-		this.number = number;
 		this.gson = new Gson();
 	}
 

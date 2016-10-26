@@ -62,17 +62,27 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             publishProgress("0", getResources().getString(R.string.splash_socket_connection));
+
             try {
-                Thread.sleep(5000);
+                Thread.sleep(2500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            try {
                 ClientConnection.getConnection().startConnection();
             } catch (IOException e) {
                 e.printStackTrace();
                 publishProgress("-1", getResources().getString(R.string.splash_socket_failed));
                 return false;
+            }
+            publishProgress("50", getResources().getString(R.string.splash_socket_success));
+
+            try {
+                Thread.sleep(2500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            publishProgress("50", getResources().getString(R.string.splash_socket_success));
 
             return true;
         }
@@ -84,6 +94,13 @@ public class SplashActivity extends AppCompatActivity {
             {
                 pbSplashScreen.setProgress(100);
                 txtSplashScreen.setText("Successful - starting the game");
+
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 finish();   // finish the activity of the splash so it will not be in the history
                 //Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
                 Intent myIntent = new Intent(SplashActivity.this, Test.class);
