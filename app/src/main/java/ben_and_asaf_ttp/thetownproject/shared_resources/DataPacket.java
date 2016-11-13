@@ -3,16 +3,18 @@ package ben_and_asaf_ttp.thetownproject.shared_resources;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 
 public class DataPacket{
-	private Commands command;
-	private Game game;
-	private List<Game> games;
-	private Player player;
-	private List<Player> players;
-	private String message;
-	private String server_message;
-	private int number;
+	@Expose private Commands command;
+	@Expose private Game game;
+	@Expose private List<Game> games;
+	@Expose private Player player;
+	@Expose private List<Player> players;
+	@Expose private String message;
+	@Expose private String server_message;
+	@Expose private int number;
 	private transient Gson gson;
 
 	public DataPacket(){
@@ -28,7 +30,7 @@ public class DataPacket{
 		this.players = players;
 		this.message = message;
 		this.server_message = server_message;
-		this.gson = new Gson();
+		this.gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	}
 
 	public Commands getCommand() {

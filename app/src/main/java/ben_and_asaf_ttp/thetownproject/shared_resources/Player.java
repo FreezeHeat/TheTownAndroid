@@ -1,5 +1,7 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.List;
 
 /**
@@ -15,41 +17,56 @@ public class Player{
 	 * The user's username
 	 * <p><b>Note:</b> PK in the database, so it's unique</p>
 	 */
-
+	@Expose
 	private String username;
 
 	/**
 	 * The user's password
 	 */
+	@Expose
 	private String password;
 
 	/**
      * {@code Stats} that hold the statistics of the player
      * @see Stats
      */
+	@Expose
     private Stats stats;
 
     /**
      * {@code PlayerStatus} holds information about the player's status in the server
      * @see PlayerStatus
      */
+	@Expose
     private PlayerStatus status;
     
     /**
      * {@code Role} holds information about the player's role in the game
      * @see Roles
      */
+	@Expose
     private Roles role;
 	
     /**
      * This list holds all the games the players has played (Game history)
      * @see Game
      */
-    private transient List<Game> gameHistory;
-    
+    private List<Game> gameHistory;
+
+	/**
+	 * This list holds the player's friends list
+	 */
+	private List<Player> friends;
+
+	/**
+	 * This list holds the player's friend requests
+	 */
+	private List<Player> friendsRequests;
+
     /**
      * The player's status, alive or not
      */
+	@Expose
     private boolean alive;
 
     /**
@@ -194,6 +211,38 @@ public class Player{
 	}
 
 	/**
+	 * Get the player's friends list
+	 * @return The player's friends list
+	 */
+	public List<Player> getFriends() {
+		return this.friends;
+	}
+
+	/**
+	 * Set the player's friends list
+	 * @param friends The player's friends list to be set
+	 */
+	public void setFriends(final List<Player> friends) {
+		this.friends = friends;
+	}
+
+    /**
+     * Get the player's friends request list
+     * @return The player's friends request list
+     */
+    public List<Player> getFriendsRequests() {
+        return friendsRequests;
+    }
+
+    /**
+     * Set the player's friends request list
+     * @param friendsRequests The player's friends request list to be set
+     */
+    public void setFriendsRequests(List<Player> friendsRequests) {
+        this.friendsRequests = friendsRequests;
+    }
+
+	/**
 	 * Check if the player is alive
 	 * @return true\false if alive
 	 */
@@ -221,9 +270,10 @@ public class Player{
 		return false;
 	}
 
-	@Override
-	public String toString() {
-		return getUsername() + " [stats=" + stats + "\n, status=" + status + "\n, role=" + role + ", gameHistory=" + gameHistory
-				+ "\n, alive=" + alive + "]";
-	}
+    @Override
+    public String toString() {
+        return "Player [username=" + username + ", password=" + password + ",\nstats=" + stats + ",\n status=" + status
+                + ", role=" + role + ",\n gameHistory=" + gameHistory + ",\n friends=" + friends +
+                ",\n friendRequests=" + friendsRequests + ",\n alive=" + alive + "]";
+    }
 }

@@ -65,7 +65,43 @@ public enum Commands{
      * <p>Specifies that the server is shutting down
      */
     SERVER_SHUTDOWN,
-    
+
+    /**
+     * Used with the main server
+     * <p>Specifies the user wants to refresh his friends list and see their status
+     */
+    REFRESH_FRIENDS,
+
+    /**
+     * Used with the main server
+     * <p>Specifies the user wants to add a friend to his/hers friend list
+     */
+    ADD_FRIEND,
+
+    /**
+     * Used with the main server
+     * <p>Specifies the user wants to remove a friend from his/her friend list
+     */
+    REMOVE_FRIEND,
+
+    /**
+     * Used with the main server
+     * <p>Specifices the user received a friend request</p>
+     */
+    FRIEND_REQUEST,
+
+    /**
+     * Used with the main server
+     * <p>Specifies the user wishes to decline a friend request</p>
+     */
+    FRIEND_REQUEST_DECLINE,
+
+    /**
+     * Used with the main server
+     * <p>Specifies the user wants to join his friend's game (If IN-QUEUE)
+     */
+    JOIN_FRIEND,
+
      /**
      * Used with the server thread 
      * <p>Specifies that some kind of action (Login, Register etc..) was fine</p>
@@ -151,9 +187,15 @@ public enum Commands{
      * <p>Specifies that the game has ended and citizens won</p>
      */
     WIN_CITIZENS,
-    
-     /**
-     * Used with the {@code GameThread} thread 
+
+    /**
+     * Used with the {@code GameThread} thread
+     * <p>Specifies that the game has ended prematurely because of balance issues (player leaving)</p>
+     */
+    GAME_DISBANDED,
+
+    /**
+     * Used with the {@code GameThread} thread
      * <p>Specifies the switch to the voting phase in-game</p>
      */
     VOTE,

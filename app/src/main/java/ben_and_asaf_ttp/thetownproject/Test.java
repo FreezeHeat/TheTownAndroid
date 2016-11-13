@@ -80,7 +80,7 @@ public class Test extends AppCompatActivity {
 
     public void showMe(View v){
         if(this.player != null) {
-            txtServer.append(this.player.toString() + "\n");
+            txtServer.append(this.player.toString() + "\n" + "Friends: \n" + this.player.getFriends() + "\n=====\n");
         }
     }
 
@@ -149,6 +149,32 @@ public class Test extends AppCompatActivity {
                     Test.this.player.getRole().action(dp);
                     dp.setPlayer(game.getPlayers().get(Integer.decode(params[0])));
                     break;
+                case "friends":
+                    dp.setCommand(Commands.REFRESH_FRIENDS);
+                    break;
+                //New players are added here for test purposes.. real players would be used otherwise
+                case "acceptfriend":
+
+                    //Adding a friend is ACCEPTING A FRIEND REQUEST
+                    dp.setCommand(Commands.ADD_FRIEND);
+                    dp.setPlayer(new Player(params[0], "0"));
+                    break;
+                case "declinefriend":
+                    dp.setCommand(Commands.FRIEND_REQUEST_DECLINE);
+                    dp.setPlayer(Test.this.player.getFriendsRequests().get(Integer.decode(params[0])));
+                    break;
+                case "removefriend":
+                    dp.setCommand(Commands.REMOVE_FRIEND);
+                    dp.setPlayer(new Player(params[0], "0"));
+                    break;
+                case "friendrequest":
+                    dp.setCommand(Commands.FRIEND_REQUEST);
+                    dp.setPlayer(new Player(params[0], "0"));
+                    break;
+                case "joinfriend":
+                    dp.setCommand(Commands.JOIN_FRIEND);
+                    dp.setPlayer(Test.this.player.getFriends().get(Integer.decode(params[0])));
+                    break;
                 case "exit":
                     Test.this.finish();
                     return;
@@ -182,7 +208,9 @@ public class Test extends AppCompatActivity {
                         Test.this.player = Test.this.dp.getPlayer();
 
                         //problem with GSON because of circular reference requires sending this separately
+                        //Player's GameHistory and FriendList
                         Test.this.player.setGameHistory(Test.this.dp.getGames());
+                        Test.this.player.setFriends(Test.this.dp.getPlayers());
                         break;
                     case REFRESH_PLAYERS:
                     case PLAYER_JOINED:
@@ -203,9 +231,42 @@ public class Test extends AppCompatActivity {
                             }
                         });
                         break;
+                    case REFRESH_FRIENDS:
+                        Test.this.player.setFriends(Test.this.dp.getPlayers());
+                        break;
+                    case FRIEND_REQUEST:
+                        Test.this.player.setFriendsRequests(Test.this.dp.getPlayers());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Test.this, "You have a friend request", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        break;
                     case READY:
                         Test.this.player = Test.this.dp.getPlayers().get(Test.this.dp.getPlayers().indexOf(Test.this.player));
                         Log.i(this.getClass().getName(), "Role is: " + Test.this.player.getRole().toString());
+                        break;
+                    case GAME_DISBANDED:
+
+                        //this is the case when a player leaving has destroyed the game
+                        //which means, no penalties to other players, and no update of stats
+                        //after that, return to lobby
+
+                        break;
+                    case WIN_CITIZENS:
+                    case WIN_KILLERS:
+
+                        //after the refresh players command (in which you also update your player)
+                        //return to lobby and send the player back
+                        break;
+                    case JOIN_FRIEND:
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Test.this, "JOIN FAILED", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         break;
                     case SERVER_SHUTDOWN:
                         runOnUiThread(new Runnable() {
