@@ -44,8 +44,7 @@
             android:textSize="22sp"
             android:textColor="#b30000"
             android:textStyle="bold"
-            android:typeface="serif"
-            android:text="Wins" >
+            android:text="@string/statsWins" >
         </TextView>
 
         <TextView
@@ -53,9 +52,8 @@
             android:textSize="22sp"
             android:textColor="#b30000"
             android:gravity="center"
-            android:text="Lost"
-            android:textStyle="bold"
-            android:typeface="serif" >
+            android:text="@string/statsLost"
+            android:textStyle="bold">
         </TextView>
 
         <TextView
@@ -63,9 +61,9 @@
             android:textSize="22sp"
             android:textColor="#b30000"
             android:gravity="center"
-            android:text="Kills"
+            android:text="@string/statsKills"
             android:textStyle="bold"
-            android:typeface="serif" >
+ >
         </TextView>
 
         <TextView
@@ -73,9 +71,8 @@
             android:gravity="center"
             android:textSize="22sp"
             android:textColor="#b30000"
-            android:text="Heals"
-            android:textStyle="bold"
-            android:typeface="serif" >
+            android:text="@string/statsHeals"
+            android:textStyle="bold">
         </TextView>
 
         <TextView
@@ -83,9 +80,9 @@
             android:gravity="center"
             android:textSize="22sp"
             android:textColor="#b30000"
-            android:text="Snitches"
+            android:text="@string/statsSnitches"
             android:textStyle="bold"
-            android:typeface="serif" >
+ >
         </TextView>
 
 
