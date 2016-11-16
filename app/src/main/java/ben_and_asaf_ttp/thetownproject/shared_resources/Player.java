@@ -73,38 +73,48 @@ public class Player{
      * This constructor creates an empty <code>Player</code>
      */    
     public Player(){}
-    
-    /**
-     * Full constructor for the {@code Player}
-     * @param username Player's username
-     * @param password Player's password
-     * @param stats Player's stats
-     * @param status Player's current status
-     * @param role Player's role
-     * @see Stats
-     * @see PlayerStatus
-     * @see Roles
-     */
-    public Player(
-    		final String username, final String password,
-    		final Stats stats, final PlayerStatus status, final Roles role){
-    	this.setUsername(username);
-    	this.setPassword(password);
-    	this.setStats(stats);
-    	this.setStatus(status);
-    	this.setRole(role);
-    }
-    
-    /**
-     * A constructor for the {@code Player}, for initializing new players,
-     * since it uses only the username and password, the rest is set to their
-     * default values
-     * @param username the Player's username
-     * @param password the Player's password
-     */
-    public Player(final String username, final String password){
-    	this(username, password, new Stats(), PlayerStatus.OFFLINE, null);
-    }
+
+	/**
+	 * Full constructor for the {@code Player}
+	 * @param username Player's username
+	 * @param password Player's password
+	 * @param stats Player's stats
+	 * @param status Player's current status
+	 * @param role Player's role
+	 * @param gamehistory Player's game history
+	 * @param friends Player's friend list
+	 * @param friendsRequests Player's friend requests list
+	 * @param alive Player's status in-game if alive or not
+	 * @see Stats
+	 * @see PlayerStatus
+	 * @see Roles
+	 * @see Game
+	 */
+	public Player(
+			final String username, final String password,
+			final Stats stats, final PlayerStatus status, final Roles role, final List<Game> gamehistory,
+			final List<Player> friends, final List<Player> friendsRequests, final boolean alive){
+		this.setUsername(username);
+		this.setPassword(password);
+		this.setStats(stats);
+		this.setStatus(status);
+		this.setRole(role);
+		this.setGameHistory(gamehistory);
+		this.setFriends(friends);
+		this.setFriendsRequests(friendsRequests);
+		this.setAlive(alive);
+	}
+
+	/**
+	 * A constructor for the {@code Player}, for initializing new players,
+	 * since it uses only the username and password, the rest is set to their
+	 * default values
+	 * @param username the Player's username
+	 * @param password the Player's password
+	 */
+	public Player(final String username, final String password){
+		this(username, password, new Stats(), PlayerStatus.OFFLINE, null, null, null, null, false);
+	}
 
 	/**
 	 * Gets the username

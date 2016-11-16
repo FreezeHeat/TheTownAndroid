@@ -1,10 +1,14 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +36,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private DataPacket dp;
     private SharedPreferences myPrefs;
     private GlobalResources globalResources;
+    private GameService mService;
+    private boolean mBound = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +77,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     DataPacket dp = params[0];
                     dp.setCommand(Commands.LOGIN);
                     dp.setPlayer(player);
-                    ClientConnection.getConnection().sendDataPacket(dp);
-                    dp = ClientConnection.getConnection().receiveDataPacket();
+                    if(GameService.isRunning) {
+                        mService.sendPacket(dp);
+                        dp = mService.getPacket();
+                    }else{
+                        dp.setCommand(Commands.CONNECTION_ERROR);
+                    }
                     return dp;
                 }
 
@@ -82,6 +92,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         switch (dataPacket.getCommand()) {
                             case LOGIN:
                                 Login.this.player = dataPacket.getPlayer();
+                                Login.this.player.setFriends(dataPacket.getPlayers());
+                                Login.this.player.setGameHistory(dataPacket.getGames());
                                 globalResources.setPlayer(player);
 
                                 //check if user checked the checkbox to remember details
@@ -109,6 +121,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 //reset password and focus on the password component
                                 editPassword.setText("");
                                 editPassword.requestFocus();
+                                break;
+                            case CONNECTION_ERROR:
+                                Toast.makeText(Login.this, getResources().getText(R.string.general_connection_problem), Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }else{
@@ -153,6 +168,44 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             editUser.setText("");
             editPassword.setText("");
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+        stopService(new Intent(this, GameService.class));
+    }
+
+    /** Defines callbacks for service binding, passed to bindService() */
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            GameService.LocalBinder binder = (GameService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        Intent intent = new Intent(this, GameService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override

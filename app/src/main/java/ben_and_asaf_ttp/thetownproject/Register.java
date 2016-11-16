@@ -1,10 +1,14 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +35,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     private TextView txtConfirm;
     private GlobalResources globalResources;
     private AlertDialog.Builder builder;
+    private GameService mService;
+    private boolean mBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +95,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                         DataPacket dp = params[0];
                         dp.setCommand(Commands.REGISTER);
                         dp.setPlayer(player);
-                        ClientConnection.getConnection().sendDataPacket(dp);
-                        dp = ClientConnection.getConnection().receiveDataPacket();
+
+                        if(GameService.isRunning) {
+                            mService.sendPacket(dp);
+                            dp = mService.getPacket();
+                        }else{
+                            dp.setCommand(Commands.CONNECTION_ERROR);
+                        }
                         return dp;
                     }
 
@@ -118,6 +129,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
 
                                     //refocus on the user
                                     editUser.requestFocus();
+                                    break;
+                                case CONNECTION_ERROR:
+                                    Toast.makeText(Register.this, getResources().getText(R.string.general_connection_problem), Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }else{
@@ -160,6 +174,44 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+        stopService(new Intent(this, GameService.class));
+    }
+
+    /** Defines callbacks for service binding, passed to bindService() */
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            GameService.LocalBinder binder = (GameService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        Intent intent = new Intent(this, GameService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override

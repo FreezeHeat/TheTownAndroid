@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button btnLogin = (Button) findViewById(R.id.main_btnLogin);
         Button btnRegister = (Button) findViewById(R.id.main_btnRegister);
-        Button btnForgot = (Button) findViewById(R.id.main_btnForgot);
+        //Button btnForgot = (Button) findViewById(R.id.main_btnForgot);
         Button btnOptions = (Button) findViewById(R.id.main_btnOptions);
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
-        btnForgot.setOnClickListener(this);
+        //btnForgot.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
     }
 
@@ -105,11 +105,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
 
-            case R.id.main_btnForgot:
-                Intent btnForgot = new Intent(MainActivity.this,Forgotpass.class);
-                MainActivity.this.startActivity(btnForgot);
-                finish();
-                break;
+//            case R.id.main_btnForgot:
+//                Intent btnForgot = new Intent(MainActivity.this,Forgotpass.class);
+//                MainActivity.this.startActivity(btnForgot);
+//                finish();
+//                break;
 
             case R.id.main_btnOptions:
                 Intent btnOptions = new Intent(MainActivity.this,SettingsActivity.class);

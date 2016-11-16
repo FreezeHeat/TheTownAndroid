@@ -47,8 +47,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Executor executor;
     private GameLogic gameLogic;
     private GameService mService;
-    private MyPlayerAdapter myAdapter;
     private boolean mBound = false;
+    private MyPlayerAdapter myAdapter;
     private DataPacket out;
     private boolean day;
     private boolean gameStarted;

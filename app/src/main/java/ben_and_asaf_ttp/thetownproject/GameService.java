@@ -17,7 +17,7 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.Game;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 /**
- * An {@link IntentService} subclass for handling asynchronous task requests in
+ * An {@link Service} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p/>
  * TODO: Customize class - update intent actions, extra parameters and static

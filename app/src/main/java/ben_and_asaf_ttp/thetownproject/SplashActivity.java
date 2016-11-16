@@ -103,7 +103,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 finish();   // finish the activity of the splash so it will not be in the history
                 //Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
-                Intent myIntent = new Intent(SplashActivity.this, Test.class);
+                Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(myIntent);
             }
             else{
