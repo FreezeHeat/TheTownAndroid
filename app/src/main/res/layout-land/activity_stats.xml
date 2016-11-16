@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    style="@style/myBackgroundSmall"
+    android:weightSum="1"
+    tools:context=".StatsActivity"
+    android:id="@+id/tableLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:shrinkColumns="*"
+    android:stretchColumns="*" >
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
+
+        <TextView
+            android:id="@+id/stats_PlayerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="6"
+            android:gravity="center"
+            android:text="PlayerName"
+            android:textColor="#800000"
+            android:textSize="25sp"
+            android:textStyle="bold" >
+        </TextView>
+    </TableRow>
+
+
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:id="@+id/statsWins"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textColor="#b30000"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:text="Wins" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/statsLost"
+            android:textSize="22sp"
+            android:textColor="#b30000"
+            android:gravity="center"
+            android:text="Lost"
+            android:textStyle="bold"
+            android:typeface="serif" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/statsKills"
+            android:textSize="22sp"
+            android:textColor="#b30000"
+            android:gravity="center"
+            android:text="Kills"
+            android:textStyle="bold"
+            android:typeface="serif" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/statsHeals"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textColor="#b30000"
+            android:text="Heals"
+            android:textStyle="bold"
+            android:typeface="serif" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/statsSnitches"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textColor="#b30000"
+            android:text="Snitches"
+            android:textStyle="bold"
+            android:typeface="serif" >
+        </TextView>
+
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+
+
+        <TextView
+            android:id="@+id/stats_Wins"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#b30000"
+            android:gravity="center_horizontal">
+        </TextView>
+
+        <TextView
+            android:id="@+id/stats_Lost"
+            android:textSize="14sp"
+            android:textColor="#b30000"
+            android:textStyle="bold"
+            android:gravity="center_horizontal">
+        </TextView>
+
+        <TextView
+            android:id="@+id/stats_Kills"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#b30000"
+            android:gravity="center_horizontal">
+        </TextView>
+
+        <TextView
+            android:id="@+id/stats_Heals"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#b30000"
+            android:gravity="center_horizontal">
+        </TextView>
+
+        <TextView
+            android:id="@+id/stats_Snitches"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#b30000"
+            android:gravity="center_horizontal">
+        </TextView>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+    </TableRow>
+
+</TableLayout>
