@@ -45,7 +45,7 @@
             android:textColor="#b30000"
             android:textStyle="bold"
             android:typeface="serif"
-            android:text="Wins" >
+            android:text="@string/statsWins" >
         </TextView>
 
         <TextView
@@ -63,7 +63,7 @@
             android:textSize="22sp"
             android:textColor="#b30000"
             android:gravity="center"
-            android:text="Kills"
+            android:text="@string/statsKills"
             android:textStyle="bold"
             android:typeface="serif" >
         </TextView>
@@ -73,7 +73,7 @@
             android:gravity="center"
             android:textSize="22sp"
             android:textColor="#b30000"
-            android:text="Heals"
+            android:text="@string/statsHeals"
             android:textStyle="bold"
             android:typeface="serif" >
         </TextView>
@@ -83,7 +83,7 @@
             android:gravity="center"
             android:textSize="22sp"
             android:textColor="#b30000"
-            android:text="Snitches"
+            android:text="@string/statsRating"
             android:textStyle="bold"
             android:typeface="serif" >
         </TextView>
@@ -92,24 +92,21 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/tableRow3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
-
 
         <TextView
             android:id="@+id/stats_Wins"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="#b30000"
+            android:textColor="@android:color/white"
             android:gravity="center_horizontal">
         </TextView>
 
         <TextView
             android:id="@+id/stats_Lost"
             android:textSize="14sp"
-            android:textColor="#b30000"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:gravity="center_horizontal">
         </TextView>
@@ -118,7 +115,7 @@
             android:id="@+id/stats_Kills"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="#b30000"
+            android:textColor="@android:color/white"
             android:gravity="center_horizontal">
         </TextView>
 
@@ -126,7 +123,7 @@
             android:id="@+id/stats_Heals"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="#b30000"
+            android:textColor="@android:color/white"
             android:gravity="center_horizontal">
         </TextView>
 
@@ -134,24 +131,9 @@
             android:id="@+id/stats_Snitches"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="#b30000"
+            android:textColor="@android:color/white"
             android:gravity="center_horizontal">
         </TextView>
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" >
     </TableRow>
 
 </TableLayout>

@@ -37,34 +37,13 @@
         android:gravity="center"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
 
-    <EditText
-        android:hint="Email Address"
-        android:textColorHint="@android:color/holo_red_dark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:inputType="textEmailAddress"
-        android:id="@+id/register_txtEmail"
-        android:gravity="center"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textAlignment="center"
-        android:textColorHint="#FFC10101"
-        android:id="@+id/register_txtEmailResponse"
-        android:hint="@string/register_txtReg1"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="bottom"
+        android:layout_marginTop="20dp"
+        android:layout_weight="100">
 
     <Button
         android:layout_width="wrap_content"
@@ -76,7 +55,8 @@
         android:hint="@string/register_btnConfirm"
         android:id="@+id/register_btnConfirm"
         android:layout_marginRight="10dp"
-        android:textColorHint="@android:color/white"/>
+        android:textColorHint="@android:color/white"
+        android:layout_weight="50"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -88,7 +68,8 @@
         android:hint="@string/register_btnClear"
         android:id="@+id/register_btnClear"
         android:layout_marginRight="10dp"
-        android:textColorHint="@android:color/white"/>
+        android:textColorHint="@android:color/white"
+        android:layout_weight="50"/>
 
     </LinearLayout>
 

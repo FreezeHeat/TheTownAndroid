@@ -36,110 +36,44 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="4dp"
                 android:textColor="@android:color/white"
-                android:textSize="30sp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lobby_stats_won"
-                    android:id="@+id/lobby_txt_won"
-                    android:layout_weight="25"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/white"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lobby_stats_lost"
-                    android:id="@+id/lobby_txt_lost"
-                    android:layout_weight="25"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/white"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lobby_stats_ratio"
-                    android:id="@+id/lobby_txt_ratio"
-                    android:layout_weight="25"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/white"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lobby_stats_kills"
-                    android:id="@+id/lobby_txt_kills"
-                    android:layout_weight="25"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/white"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lobby_stats_heals"
-                    android:id="@+id/lobby_txt_heals"
-                    android:layout_weight="25"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/white"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lobby_stats_rating"
-                android:id="@+id/lobby_txt_rating"
-                android:layout_weight="0"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/white"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"
-            android:gravity="center">
+                android:textSize="30sp"
+                android:paddingBottom="100dp"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/lobby_btn_joinGame"
                 android:textColor="@android:color/white"
                 android:id="@+id/lobby_btn_joinGame"
                 android:background="@drawable/round_button_small"
-                android:layout_margin="2dp"/>
+                android:layout_margin="2dp"
+                android:layout_weight="0" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/lobby_btn_stats"
+                android:textColor="@android:color/white"
+                android:id="@+id/lobby_btn_stats"
+                android:background="@drawable/round_button_small"
+                android:layout_margin="2dp"
+                android:layout_weight="0" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/lobby_btn_options"
                 android:textColor="@android:color/white"
                 android:id="@+id/lobby_btn_options"
                 android:background="@drawable/round_button_small"
-                android:layout_margin="2dp"/>
+                android:layout_margin="2dp"
+                android:layout_weight="0" />
+
         </LinearLayout>
+
     </LinearLayout>
 </FrameLayout>
 

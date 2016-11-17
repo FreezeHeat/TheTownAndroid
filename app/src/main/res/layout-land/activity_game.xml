@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:id="@+id/game_playerGrid"
         android:background="@drawable/bgsmall"
-        android:numColumns="5" />
+        android:numColumns="2" />
 
     <LinearLayout
         android:orientation="vertical"

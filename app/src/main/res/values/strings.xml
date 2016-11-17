@@ -23,6 +23,7 @@
 
     <string name="lobby_btn_joinGame">Join A Game</string>
     <string name="lobby_btn_options">Options</string>
+    <string name="lobby_btn_stats">My Stats</string>
     <string name="lobby_stats_won">Won</string>
     <string name="lobby_stats_lost">Lost</string>
     <string name="lobby_stats_ratio">Win/Lose Ratio</string>
@@ -116,6 +117,16 @@
     <string name="forgot_btnClear_land">Clear</string>
     <string name="forgot_btnBack_land">Back</string>
 
+    <string name="statsWins">Wins</string>
+    <string name="statsLost">Lost</string>
+    <string name="statsKills">Kills</string>
+    <string name="statsHeals">Heals</string>
+    <string name="statsRating">Rating</string>
+
+    <string name="friendcard_joinGame">Join Game</string>
+    <string name="friendcard_showStats">Show Stats</string>
+    <string name="friendcard_remove">Remove</string>
+
     <string-array name="lobby_array_how_many_players">
         <item>Quick-Join</item>
         <item>5</item>
@@ -128,5 +139,4 @@
     <string name="pref_btnBack">Back</string>
     <string name="pref_title_clearLocalData">Delete Local Data</string>
     <string name="pref_summary_clearLocalData">This option will delete local data, such as passwords.</string>
-
 </resources>
