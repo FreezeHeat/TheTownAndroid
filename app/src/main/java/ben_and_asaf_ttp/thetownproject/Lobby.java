@@ -55,6 +55,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
     private int numPlayers = -1;
     private GameService mService;
     private boolean mBound = false;
+    private MyPlayerAdapter myAdapter;
     private Executor executor;
 
     @Override
@@ -68,8 +69,8 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, friendsListName));
+        myAdapter = new MyPlayerAdapter(this, R.layout.friend_card, player.getFriends());
+        mDrawerList.setAdapter(myAdapter);
 
         Button btnJoinGame = (Button)findViewById(R.id.lobby_btn_joinGame);
         Button btnOptions = (Button)findViewById(R.id.lobby_btn_options);

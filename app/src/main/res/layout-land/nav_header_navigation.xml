@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Friends List"
+        android:text="@string/lobby_friendlist_title"
         android:textSize="20sp"
         android:textColor="#FFF"
         android:textStyle="bold"
@@ -31,5 +31,14 @@
         android:id="@+id/friendslist"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="@string/lobby_friendlist_add_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/friendlist_add_friend"
+        android:layout_below="@+id/profile_image"
+        android:layout_toRightOf="@+id/profile_image"
+        android:layout_toEndOf="@+id/profile_image" />
 
 </RelativeLayout>

@@ -35,6 +35,8 @@
     <string name="lobby_matchMaking_cancel">Cancel</string>
     <string name="lobby_matchMaking_howManyPlayers_title">How many players?</string>
     <string name="lobby_disconnect">Are you sure you want to disconnect?</string>
+    <string name="lobby_friendlist_add_friend">Add a friend</string>
+    <string name="lobby_friendlist_title">Friends List</string>
 
     <string name="game_txtSendMessage_hint">Enter your message here</string>
     <string name="game_btnSend">Send</string>
