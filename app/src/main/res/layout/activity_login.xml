@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:src="@drawable/login"
-        android:layout_marginBottom="2dp" />
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -68,7 +68,7 @@
             android:checked="false"
             android:textColorHint="#FFFFFF"
             android:layout_gravity="center"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="35dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -98,17 +98,7 @@
         android:layout_gravity="center"
         android:weightSum="1">
 
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_button_small"
-                android:layout_gravity="center_horizontal"
-                android:textStyle="bold"
-                android:hint="@string/login_btnForgot"
-                android:textColorHint="@android:color/white"
-                android:id="@+id/login_btnForgot"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5" />
+
 
         <Button
                 android:layout_width="wrap_content"
@@ -129,13 +119,6 @@
         android:touchscreenBlocksFocus="true"
         android:gravity="center_vertical|center_horizontal">
 
-        <ImageButton
-                android:scaleType="fitXY"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/login_imgbtnInfo"
-                android:src="@drawable/info"
-                android:layout_gravity="center"/>
     </LinearLayout>
 
 </LinearLayout>

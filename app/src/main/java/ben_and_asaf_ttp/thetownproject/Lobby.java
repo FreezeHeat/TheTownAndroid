@@ -354,6 +354,39 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
         builder.setMessage(msg);
     }
 
+
+    public void addFriendDialog() {
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getString(R.string.lobby_addFriend));
+            builder.setCancelable(false);
+
+            builder.setPositiveButton(getResources().getString(R.string.lobby_addFriend), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    new AsyncTask<Void, Void, Void>(){
+
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            DataPacket dp = new DataPacket();
+                            dp.setCommand(Commands.DISCONNECT);
+                            ClientConnection.getConnection().sendDataPacket(dp);
+                            return null;
+                        }
+                    }.execute();
+                    finish();
+                    Intent intent = new Intent(Lobby.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton(getResources().getString(R.string.lobby_exitFriend), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+        }
+    }
+
+
     public void buildExitDialog() {
         if(builder == null) {
             builder = new AlertDialog.Builder(this);
