@@ -26,9 +26,7 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
-    private TextView welcome;
     private AlertDialog.Builder builder;
-    private static final int MENU_EXIT = -1;
     private EditText editUser;
     private EditText editPassword;
     private CheckBox checkBox;

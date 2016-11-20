@@ -150,7 +150,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //get player - get his role for the SNITCH
                         msg = String.format(
-                                getResources().getString(R.string.game_snitch_identity),
+                                getResources().getString(R.string.game_snitch_identity).toString(),
                                 dp.getPlayer());
                         Roles role = dp.getPlayer().getRole();
                         if(role == Roles.KILLER){
@@ -237,13 +237,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         finish();
                         return;
                     case SERVER_SHUTDOWN:
-
-                        //server shuts down...
-                        msg = getResources().getString(R.string.general_server_shutdown);
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
-                        myIntent = new Intent(GameActivity.this, SplashActivity.class);
-                        startActivity(myIntent);
-                        finish();
+                        buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
+                        builder.show();
                         return;
                     default:
                         if(dp != null) {
@@ -470,7 +465,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             builder.setMessage(getResources().getText(R.string.game_exitDialog));
             builder.setCancelable(false);
 
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     out.setCommand(Commands.DISCONNECT);
                     mService.sendPacket(out);
@@ -479,7 +474,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     GameActivity.this.finish();
                 }
             });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(getResources().getString(R.string.general_no), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
@@ -487,18 +482,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void buildConnectionDialog() {
-        if(builder == null) {
-            builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getText(R.string.general_connection_problem));
-            builder.setCancelable(false);
-            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    GameActivity.this.finish();
-                    ClientConnection.getConnection().closeSocket();
-                }
-            });
-        }
+    public void buildConfirmDialog(String msg) {
+        builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setMessage(msg);
+        builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                GameActivity.this.finish();
+                ClientConnection.getConnection().closeSocket();
+            }
+        });
     }
 
     @Override

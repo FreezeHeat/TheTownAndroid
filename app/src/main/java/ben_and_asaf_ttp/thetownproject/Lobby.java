@@ -43,20 +43,17 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.Roles;
 public class Lobby extends AppCompatActivity implements View.OnClickListener{
 
     private Player player;
-    String[] friendsListName = {"Ben","Asaf"};
-    int images[];
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private TextView txtPlayer;
-    private ArrayAdapter<String> mAdapter;
     private GlobalResources globalResources;
-    private AlertDialog dialogHowManyPlayers;
+    //private AlertDialog dialogHowManyPlayers;
     private ProgressDialog dialogProgress;
-    private int numPlayers = -1;
+    //private int numPlayers = -1;
     private GameService mService;
     private boolean mBound = false;
     private MyPlayerAdapter myAdapter;
-    private Executor executor;
+    private AlertDialog.Builder builder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,20 +72,15 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
         Button btnJoinGame = (Button)findViewById(R.id.lobby_btn_joinGame);
         Button btnOptions = (Button)findViewById(R.id.lobby_btn_options);
         Button btnStats = (Button)findViewById(R.id.lobby_btn_stats);
+        Button btn_drawer_addFriend = (Button)findViewById(R.id.friendlist_add_friend);
         btnJoinGame.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
         btnStats.setOnClickListener(this);
+        btn_drawer_addFriend.setOnClickListener(this);
 
         //set the player's name as a greeting
         txtPlayer = (TextView) findViewById(R.id.lobby_txt_player);
         txtPlayer.setText(player.getUsername());
-
-        executor = new Executor() {
-            @Override
-            public void execute(Runnable command) {
-                new Thread(command).start();
-            }
-        };
 
         //How many players dialog that handles the player's request
 //        AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -168,13 +160,24 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
 
                 switch(dp.getCommand()){
                     case OK:
-
+                        ((GlobalResources) getApplication()).setGame(dp.getGame());
+                        ((GlobalResources) getApplication()).setPlayer(Lobby.this.player);
+                        if (((GlobalResources) getApplication()).getGame() != null) {
+                            dialogProgress.dismiss();
+                        }
+                        myIntent = new Intent(Lobby.this, GameActivity.class);
+                        startActivity(myIntent);
+                        Lobby.this.finish();
                         break;
                     case REFRESH_FRIENDS:
-
+                        Lobby.this.player.setFriends(dp.getPlayers());
+                        break;
+                    case FRIEND_REQUEST:
+                        //TODO: Snackbar with forward to activity that handles friend requests
                         break;
                     case SERVER_SHUTDOWN:
-
+                        buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
+                        builder.show();
                         break;
                     default:
                         if(dp != null) {
@@ -229,20 +232,8 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onBackPressed() {
-
-        new AsyncTask<Void, Void, Void>(){
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                DataPacket dp = new DataPacket();
-                dp.setCommand(Commands.DISCONNECT);
-                ClientConnection.getConnection().sendDataPacket(dp);
-                return null;
-            }
-        }.execute();
-        finish();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        buildExitDialog();
+        builder.show();
     }
 
     class MyPlayerAdapter extends ArrayAdapter<Player> implements View.OnCreateContextMenuListener
@@ -349,6 +340,51 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
+    public void buildConfirmDialog(String msg) {
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Lobby.this.finish();
+                    ClientConnection.getConnection().closeSocket();
+                }
+            });
+        }
+        builder.setMessage(msg);
+    }
+
+    public void buildExitDialog() {
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getString(R.string.lobby_disconnect));
+            builder.setCancelable(false);
+
+            builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    new AsyncTask<Void, Void, Void>(){
+
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            DataPacket dp = new DataPacket();
+                            dp.setCommand(Commands.DISCONNECT);
+                            ClientConnection.getConnection().sendDataPacket(dp);
+                            return null;
+                        }
+                    }.execute();
+                    finish();
+                    Intent intent = new Intent(Lobby.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton(getResources().getString(R.string.general_no), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -357,30 +393,15 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
                //Use this in-case multi-choice of players is needed, for now only 5
                //this.dialogHowManyPlayers.show();
                Lobby.this.dialogProgress.show();
-               new AsyncTask<Void, Void, DataPacket>(){
+               new AsyncTask<Void, Void, Void>(){
 
                    @Override
-                   protected DataPacket doInBackground(Void... params) {
+                   protected Void doInBackground(Void... params) {
                        DataPacket dp = new DataPacket();
                        dp.setCommand(Commands.READY);
                        dp.setNumber(5);
                        mService.sendPacket(dp);
-                       dp = mService.getPacket();
-                       return dp;
-                   }
-
-                   // this runs on UI thread
-                   @Override
-                   protected void onPostExecute(DataPacket dp) {
-                       if(dp.getCommand() == Commands.OK) {
-                           ((GlobalResources) getApplication()).setGame(dp.getGame());
-                           if (((GlobalResources) getApplication()).getGame() != null) {
-                               dialogProgress.dismiss();
-                           }
-                       }
-                       Intent myIntent = new Intent(Lobby.this, GameActivity.class);
-                       startActivity(myIntent);
-                       Lobby.this.finish();
+                       return null;
                    }
                }.execute();
                break;
@@ -391,6 +412,10 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener{
             case R.id.lobby_btn_stats:
                 Intent btnStats = new Intent(Lobby.this, StatsActivity.class);
                 Lobby.this.startActivity(btnStats);
+                break;
+            case R.id.friendlist_add_friend:
+                //TODO: add friend activity
+//                Intent friendlist_addFriend = new Intent(Lobby.this, AddFriend.class);
                 break;
             default:
                 break;

@@ -8,6 +8,8 @@
     <string name="general_server_shutdown">Server was shut down</string>
     <string name="general_connection_problem">There\'s a problem with the connection</string>
     <string name="general_ok">OK</string>
+    <string name="general_yes">Yes</string>
+    <string name="general_no">No</string>
     <string name="general_cancel">Cancel</string>
     <string name="general_options">Options</string>
 
