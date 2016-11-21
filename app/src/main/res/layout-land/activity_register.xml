@@ -40,29 +40,6 @@
         android:gravity="center"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
 
-    <EditText
-        android:hint="Email Address"
-        android:textColorHint="@android:color/holo_red_dark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:inputType="textEmailAddress"
-        android:id="@+id/register_txtEmail"
-        android:gravity="center"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColorHint="#FFC10101"
-        android:id="@+id/register_txtEmailResponse"
-        android:hint="@string/register_txtReg1"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"

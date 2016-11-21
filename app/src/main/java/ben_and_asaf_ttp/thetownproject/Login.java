@@ -51,10 +51,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         globalResources = (GlobalResources)getApplication();
 
         Button btnSignIn = (Button) findViewById(R.id.login_btnSignIn);
-        Button btnForgotPass = (Button) findViewById(R.id.login_btnForgot);
         Button btnOptions = (Button) findViewById(R.id.login_btnOptions);
         btnSignIn.setOnClickListener(this);
-        btnForgotPass.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
     }
 
@@ -222,11 +220,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.login_btnOptions:
                 Intent btnOptions = new Intent(Login.this,SettingsActivity.class);
                 Login.this.startActivity(btnOptions);
-                break;
-            case R.id.login_btnForgot:
-                Intent btnForgot = new Intent(Login.this,Forgotpass.class);
-                Login.this.startActivity(btnForgot);
-                finish();
                 break;
             default:
                 break;

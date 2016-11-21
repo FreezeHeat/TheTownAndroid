@@ -71,7 +71,7 @@
             android:layout_marginBottom="5dp" />
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
@@ -87,55 +87,19 @@
             android:hint="@string/login_btnLogin2"
             android:textColorHint="@android:color/white"
             android:id="@+id/login_btnSignIn"
-            android:layout_marginBottom="5dp"
-            android:singleLine="false" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:weightSum="1">
+            android:layout_marginBottom="5dp" />
 
         <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_button_small"
-                android:layout_gravity="center_horizontal"
+                android:background="@drawable/round_button"
                 android:textStyle="bold"
-                android:hint="@string/login_btnForgot"
-                android:textColorHint="@android:color/white"
-                android:id="@+id/login_btnForgot"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5" />
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_button_small"
-                android:textStyle="bold"
+                android:textSize="17sp"
                 android:layout_gravity="center_horizontal"
                 android:textColorHint="@android:color/white"
                 android:hint="@string/login_btnOptions"
                 android:id="@+id/login_btnOptions"
                 android:layout_weight="0.5"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:touchscreenBlocksFocus="true"
-        android:gravity="center_vertical|center_horizontal">
-
-        <ImageButton
-                android:scaleType="fitXY"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/login_imgbtnInfo"
-                android:src="@drawable/info"
-                android:layout_gravity="center"/>
     </LinearLayout>
 
 </LinearLayout>

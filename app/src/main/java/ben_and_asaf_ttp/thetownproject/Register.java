@@ -31,8 +31,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     private EditText editUser;
     private EditText editPassword;
     private EditText editPassword2;
-    private EditText editEmail;
-    private TextView txtConfirm;
     private GlobalResources globalResources;
     private AlertDialog.Builder builder;
     private GameService mService;
@@ -51,20 +49,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         editUser = (EditText)findViewById(R.id.register_editUser);
         editPassword = (EditText)findViewById(R.id.register_editPass);
         editPassword2 = (EditText)findViewById(R.id.register_editRePass);
-        editEmail = (EditText)findViewById(R.id.register_txtEmail);
-        txtConfirm = (TextView)findViewById(R.id.register_txtEmailResponse);
 
         Button btnConfirm = (Button) findViewById(R.id.register_btnConfirm);
         Button btnClear = (Button) findViewById(R.id.register_btnClear);
         btnConfirm.setOnClickListener(this);
         btnClear.setOnClickListener(this);
-
-        //text confirm - hide it
-        txtConfirm.setVisibility(View.INVISIBLE);
-
-        //for now disable email
-        //TODO: Email (Somewhat complex - on the SERVER SIDE)
-        editEmail.setVisibility(View.GONE);
     }
 
     public void register()
@@ -166,7 +155,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         this.editUser.setText("");
         this.editPassword.setText("");
         this.editPassword2.setText("");
-        this.editEmail.setText("");
     }
 
     @Override

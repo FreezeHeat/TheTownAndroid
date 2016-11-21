@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TheTownProject</string>
+    <string name="app_name">The Town Project</string>
 
     <string name="general_empty_details">Nothing was entered</string>
     <string name="general_password_too_few_characters">Minimum password length is 6</string>
@@ -130,6 +130,9 @@
     <string name="friendcard_joinGame">Join Game</string>
     <string name="friendcard_showStats">Show Stats</string>
     <string name="friendcard_remove">Remove</string>
+
+    <string name="accessibility_open_drawer">Open friend list</string>
+    <string name="accessibility_close_drawer">Close friend list</string>
 
     <string-array name="lobby_array_how_many_players">
         <item>Quick-Join</item>
