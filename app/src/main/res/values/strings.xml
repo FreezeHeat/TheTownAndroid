@@ -39,6 +39,8 @@
     <string name="lobby_disconnect">Are you sure you want to disconnect?</string>
     <string name="lobby_friendlist_add_friend">Add a friend</string>
     <string name="lobby_friendlist_title">Friends List</string>
+    <string name="lobby_addFriend">Add friend</string>
+    <string name="lobby_exitFriend">Exit</string>
 
     <string name="game_txtSendMessage_hint">Enter your message here</string>
     <string name="game_btnSend">Send</string>
@@ -87,6 +89,8 @@
     <string name="main_btnRegister_land">Register</string>
     <string name="main_btnForgot_land">Forogt Pass</string>
     <string name="main_btnOptions_land">Options</string>
+    <string name="lobby_insertUsername">Username</string>
+
 
     <string name="register_txtUsername">Username</string>
     <string name="register_txtPass">Password</string>
