@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="@string/main_exit"
-        android:id="@+id/exitApp"
-        android:icon="@android:drawable/ic_menu_add"></item>
-    <item
-        android:title="@string/general_options"
-        android:id="@+id/main_menu_options"
+        android:title="@string/lobby_friendlist_add_friend"
+        android:id="@+id/lobby_add_friend"
         android:icon="@android:drawable/ic_menu_add"></item>
 
 </menu>

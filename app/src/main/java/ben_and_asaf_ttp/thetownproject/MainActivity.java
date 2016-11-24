@@ -39,30 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnOptions.setOnClickListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.my_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.exitApp:
-                buildExitDialog();
-                builder.create().show();
-                break;
-
-            case R.id.main_menu_options:
-                Intent myIntent = new Intent(this, SettingsActivity.class);
-                startActivity(myIntent);
-                break;
-        }
-        return true;
-    }
-
     public void buildExitDialog() {
         if(builder == null) {
             builder = new AlertDialog.Builder(this);

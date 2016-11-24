@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,7 +48,7 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.PlayerStatus;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Roles;
 
 
-public class Lobby extends AppCompatActivity implements View.OnClickListener, DrawerLayout.DrawerListener{
+public class Lobby extends AppCompatActivity implements View.OnClickListener {
 
     private Player player;
     private DrawerLayout mDrawerLayout;
@@ -61,33 +62,36 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener, Dr
     private boolean mBound = false;
     private MyPlayerAdapter myAdapter;
     private AlertDialog.Builder builder;
+    private ActionBarDrawerToggle mDrawerToggle;
     private Timer timer;
+    private Executor executor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        globalResources = (GlobalResources)getApplication();
+        globalResources = (GlobalResources) getApplication();
         player = globalResources.getPlayer();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+        //set action bar
+        setSupportActionBar(myToolbar);
 
         // Set the adapter for the list view
         myAdapter = new MyPlayerAdapter(this, R.layout.friend_card, player.getFriends());
         mDrawerList.setAdapter(myAdapter);
         registerForContextMenu(mDrawerList);
         mDrawerLayout.setOnClickListener(this);
-        mDrawerLayout.addDrawerListener(this);
 
-        Button btnJoinGame = (Button)findViewById(R.id.lobby_btn_joinGame);
-        Button btnOptions = (Button)findViewById(R.id.lobby_btn_options);
-        Button btnStats = (Button)findViewById(R.id.lobby_btn_stats);
-        ImageButton btnFriendList = (ImageButton) findViewById(R.id.lobby_btn_friendlist);
+        Button btnJoinGame = (Button) findViewById(R.id.lobby_btn_joinGame);
+        Button btnOptions = (Button) findViewById(R.id.lobby_btn_options);
+        Button btnStats = (Button) findViewById(R.id.lobby_btn_stats);
         btnJoinGame.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
         btnStats.setOnClickListener(this);
-        btnFriendList.setOnClickListener(this);
 
         //set the player's name as a greeting
         txtPlayer = (TextView) findViewById(R.id.lobby_txt_player);
@@ -146,14 +150,70 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener, Dr
         dialogProgress.setMessage(getResources().getString(R.string.lobby_matchMaking_progress_message));
         dialogProgress.setTitle(getResources().getString(R.string.lobby_matchMaking_progress_title));
         dialogProgress.setButton(DialogInterface.BUTTON_NEGATIVE,
-            getResources().getText(R.string.lobby_matchMaking_cancel),
-            new DialogInterface.OnClickListener(){
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ((GlobalResources)((GlobalResources) getApplication())).setGame(null);
-                    dialogProgress.dismiss();
-                }
-            });
+                getResources().getText(R.string.lobby_matchMaking_cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((GlobalResources) ((GlobalResources) getApplication())).setGame(null);
+                        dialogProgress.dismiss();
+                    }
+                });
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.string.accessibility_open_drawer,  /* "open drawer" description */
+                R.string.accessibility_close_drawer  /* "close drawer" description */
+        ) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                timer.cancel();
+                invalidateOptionsMenu();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                //When the drawer closes, it cancels the timer
+                timer = new Timer();
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+
+                        //run refresh friends every 8 seconds (delayed start by 500 ms)
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                DataPacket dp = new DataPacket();
+                                dp.setCommand(Commands.REFRESH_FRIENDS);
+                                mService.sendPacket(dp);
+                                executor.execute(new LobbyLogic());
+                            }
+                        }, 500, 8000);
+                        return null;
+                    }
+                }.execute();
+                invalidateOptionsMenu();
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        //action bar configurations
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        //execute lobby logic
+        executor = new Executor() {
+            @Override
+            public void execute(Runnable command) {
+                new Thread(command).start();
+            }
+        };
     }
 
     class LobbyLogic implements Runnable{
@@ -162,98 +222,104 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener, Dr
         public void run() {
 
             //start game service
-            DataPacket dp = null;
+            DataPacket dp = mService.getPacket();
             String msg;
+            Intent myIntent;
 
-            while(true){
-                dp = mService.getPacket();
-                Intent myIntent;
-
-                switch(dp.getCommand()){
-                    case OK:
-                        ((GlobalResources) getApplication()).setGame(dp.getGame());
-                        ((GlobalResources) getApplication()).setPlayer(Lobby.this.player);
-                        if (((GlobalResources) getApplication()).getGame() != null) {
-                            dialogProgress.dismiss();
+            switch(dp.getCommand()){
+                case OK:
+                    ((GlobalResources) getApplication()).setGame(dp.getGame());
+                    ((GlobalResources) getApplication()).setPlayer(Lobby.this.player);
+                    if (((GlobalResources) getApplication()).getGame() != null) {
+                        dialogProgress.dismiss();
+                    }
+                    myIntent = new Intent(Lobby.this, GameActivity.class);
+                    startActivity(myIntent);
+                    Lobby.this.finish();
+                    break;
+                case REFRESH_FRIENDS:
+                    Lobby.this.player.getFriends().clear();
+                    Lobby.this.player.getFriends().addAll(dp.getPlayers());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            myAdapter.notifyDataSetChanged();
                         }
-                        myIntent = new Intent(Lobby.this, GameActivity.class);
-                        startActivity(myIntent);
-                        Lobby.this.finish();
-                        break;
-                    case REFRESH_FRIENDS:
-                        Lobby.this.player.getFriends().clear();
-                        Lobby.this.player.getFriends().addAll(dp.getPlayers());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myAdapter.notifyDataSetChanged();
-                            }
-                        });
-                        break;
-                    case FRIEND_REQUEST:
-                        //TODO: Snackbar with forward to activity that handles friend requests
-                        break;
-                    case SERVER_SHUTDOWN:
-                        buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
-                        builder.show();
-                        break;
-                    default:
-                        if(dp != null) {
-                            Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
-                        }else{
-                            Log.e(this.getClass().getName(), "DataPacket is null");
-                        }
-                        return;
-                }
-                Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
+                    });
+                    break;
+                case FRIEND_REQUEST:
+                    //TODO: Snackbar with forward to activity that handles friend requests
+                    break;
+                case SERVER_SHUTDOWN:
+                    buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
+                    builder.show();
+                    break;
+                default:
+                    if(dp != null) {
+                        Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
+                    }else{
+                        Log.e(this.getClass().getName(), "DataPacket is null");
+                    }
+                    return;
             }
         }
     }
 
     @Override
-    public void onDrawerOpened(View drawerView) {
-        //When the drawer closes, it cancels the timer
-        timer = new Timer();
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-
-                //run refresh friends every 8 seconds (delayed start by 500 ms)
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        DataPacket dp = new DataPacket();
-                        dp.setCommand(Commands.REFRESH_FRIENDS);
-                        mService.sendPacket(dp);
-                    }
-                }, 500, 8000);
-                return null;
-            }
-        }.execute();
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
     @Override
-    public void onDrawerClosed(View drawerView) {
-        timer.cancel();
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
-    public void onDrawerStateChanged(int newState) {}
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        switch(item.getItemId()){
+            case R.id.lobby_add_friend:
+                //TODO: Dialog add friend
+                Toast.makeText(this, "Add friend", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {}
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.my_menu, menu);
+        menu.findItem(R.id.lobby_add_friend).setVisible(false);
+        return true;
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.lobby_add_friend).setVisible(drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     protected void onStop() {
-        super.onStop();
-
         // Unbind from the service
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
         }
-        stopService(new Intent(this, GameService.class));
+        super.onStop();
     }
 
     /** Defines callbacks for service binding, passed to bindService() */
@@ -444,7 +510,8 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener, Dr
                             return null;
                         }
                     }.execute();
-                    finish();
+
+                    Lobby.this.finish();
                     Intent intent = new Intent(Lobby.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -473,6 +540,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener, Dr
                        dp.setCommand(Commands.READY);
                        dp.setNumber(5);
                        mService.sendPacket(dp);
+                       executor.execute(new LobbyLogic());
                        return null;
                    }
                }.execute();
@@ -485,13 +553,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener, Dr
                 Intent btnStats = new Intent(Lobby.this, StatsActivity.class);
                 Lobby.this.startActivity(btnStats);
                 break;
-            case R.id.lobby_btn_friendlist:
-                mDrawerLayout.openDrawer(Gravity.LEFT);
-                break;
-            //case R.id.friendlist_add_friend:
-                //TODO: add friend activity
-//                Intent friendlist_addFriend = new Intent(Lobby.this, AddFriend.class);
-               // break;
             default:
                 break;
         }

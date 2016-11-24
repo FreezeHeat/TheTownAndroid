@@ -248,7 +248,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         return;
                 }
-                Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
             }
         }
     }
@@ -282,14 +281,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStop() {
-        super.onStop();
 
         // Unbind from the service
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
         }
-        stopService(new Intent(this, GameService.class));
+        super.onStop();
     }
 
     /** Defines callbacks for service binding, passed to bindService() */
