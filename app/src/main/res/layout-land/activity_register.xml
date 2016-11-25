@@ -3,7 +3,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/myBackgroundSmall"
-    android:weightSum="100">
+    android:weightSum="1"
+    android:layout_marginBottom="20dp">
+
+
+    <ImageView
+        android:id="@+id/login_phone_icon"
+        android:layout_gravity="center"
+        android:layout_width="110dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/login"
+        android:layout_marginBottom="20dp"
+        android:layout_weight=".3" />
 
     <EditText
         android:hint="Username"
@@ -11,7 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:gravity="center"
         android:id="@+id/register_editUser"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
@@ -22,7 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:inputType="textPassword"
         android:id="@+id/register_editPass"
         android:gravity="center"
@@ -34,11 +48,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:inputType="textPassword"
         android:id="@+id/register_editRePass"
         android:gravity="center"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+        android:layout_marginBottom="20dp" />
 
     <LinearLayout
         android:orientation="horizontal"
