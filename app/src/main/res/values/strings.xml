@@ -41,6 +41,7 @@
     <string name="lobby_friendlist_title">Friends List</string>
     <string name="lobby_addFriend">Add friend</string>
     <string name="lobby_exitFriend">Exit</string>
+    <string name="lobby_dialog_wrong_details">No such user</string>
 
     <string name="game_txtSendMessage_hint">Enter your message here</string>
     <string name="game_btnSend">Send</string>
