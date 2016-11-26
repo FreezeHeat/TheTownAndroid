@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColorHint="#FFC10101"
+        android:textColorHint="@android:color/white"
         android:id="@+id/login_txtUser"
         android:hint="@string/login_txtUser"
         android:gravity="center"
@@ -45,7 +45,7 @@
         android:hint="@string/login_txtPass"
         android:gravity="center"
         android:textSize="20sp"
-        android:textColorHint="#FFC10101"
+        android:textColorHint="@android:color/white"
         android:layout_gravity="center_horizontal" />
 
     <EditText
