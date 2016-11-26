@@ -24,9 +24,9 @@
             android:layout_span="6"
             android:gravity="center"
             android:text="PlayerName"
-            android:textColor="#800000"
+            android:textColor="@android:color/white"
             android:textSize="25sp"
-            android:textStyle="bold" >
+            android:textStyle="bold">
         </TextView>
     </TableRow>
 
@@ -36,7 +36,8 @@
         android:id="@+id/tableRow2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="25dp"
+        android:background="@android:color/black">
 
         <TextView
             android:id="@+id/statsWins"
@@ -79,7 +80,7 @@
         </TextView>
 
         <TextView
-            android:id="@+id/statsSnitches"
+            android:id="@+id/statsRating"
             android:gravity="center"
             android:textSize="22sp"
             android:textColor="#b30000"
@@ -93,7 +94,8 @@
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu">
 
         <TextView
             android:id="@+id/stats_Wins"
@@ -128,7 +130,7 @@
         </TextView>
 
         <TextView
-            android:id="@+id/stats_Snitches"
+            android:id="@+id/stats_Rating"
             android:textStyle="bold"
             android:textSize="14sp"
             android:textColor="@android:color/white"

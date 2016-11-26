@@ -21,6 +21,13 @@ public class StatsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        txtPlayer = (TextView)findViewById(R.id.stats_PlayerName);
+        statsKills = (TextView)findViewById(R.id.stats_Kills);
+        statsHeals = (TextView)findViewById(R.id.stats_Heals);
+        statsRating = (TextView)findViewById(R.id.stats_Rating);
+        statsWon = (TextView)findViewById(R.id.stats_Wins);
+        statsLost = (TextView)findViewById(R.id.stats_Lost);
+
         globalResources = (GlobalResources)getApplication();
         Player p = globalResources.getPlayer();
         this.txtPlayer.setText(p.getUsername());
