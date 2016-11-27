@@ -3,13 +3,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/myBackgroundSmall"
-    android:weightSum="1">
+    android:weightSum="1"
+
+    >
 
 
     <ImageView
         android:id="@+id/login_phone_icon"
         android:layout_gravity="center"
-        android:layout_width="110dp"
+        android:layout_width="120dp"
         android:layout_height="60dp"
         android:scaleType="fitXY"
         android:src="@drawable/login"
