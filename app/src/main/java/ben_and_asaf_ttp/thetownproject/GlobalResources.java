@@ -9,6 +9,7 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class GlobalResources extends Application {
     private Player player;
+    private Player statsPlayer;
     private Game game;
 
     public Player getPlayer() {
@@ -17,6 +18,14 @@ public class GlobalResources extends Application {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Player getStatsPlayer() {
+        return statsPlayer;
+    }
+
+    public void setStatsPlayer(Player statsPlayer) {
+        this.statsPlayer = statsPlayer;
     }
 
     public Game getGame() {

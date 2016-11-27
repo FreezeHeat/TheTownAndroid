@@ -52,7 +52,8 @@
     <string name="game_vote">Vote</string>
     <string name="game_action_you_dead">You can\'t do anything, you are dead</string>
     <string name="game_action_upon_dead">This player is dead</string>
-    <string name="game_player_dead">Player\'s dead</string>
+    <string name="game_player_dead">Dead</string>
+    <string name="game_player_alive">Alive</string>
     <string name="game_day_phase">DAY PHASE STARTED!</string>
     <string name="game_night_phase">NIGHT PHASE STARTED!</string>
     <string name="game_ready_phase">Game will start in 30 seconds!</string>
@@ -65,6 +66,7 @@
     <string name="game_executed_you">You were executed!</string>
     <string name="game_player_joined">%1$s has joined</string>
     <string name="game_player_left">%1$s has left</string>
+    <string name="game_game_disbanded">Game was disbanded</string>
 
     <string name="playercard_menu_get_stats">See Stats</string>
 

@@ -27,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -44,6 +46,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private GridView grid;
     private EditText txtSendMessage;
     private TextView txtGameChat;
+    private TextView txtGameTimer;
+    private ImageView imgvGamePhase;
     private Executor executor;
     private GameLogic gameLogic;
     private GameService mService;
@@ -62,9 +66,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Button btnSendMsg = (Button)findViewById(R.id.game_btn_send);
         btnSendMsg.setOnClickListener(this);
         txtSendMessage = (EditText)findViewById(R.id.game_txt_sendMessage);
+        txtGameTimer = (TextView)findViewById(R.id.game_txt_timer);
+        imgvGamePhase = (ImageView)findViewById(R.id.game_imgv_phase);
         txtGameChat = (TextView)findViewById(R.id.game_chat_txt);
-        txtGameChat.setMovementMethod(new ScrollingMovementMethod());
 
+        txtGameChat.setMovementMethod(new ScrollingMovementMethod());
         globalResources = (GlobalResources)getApplication();
         game = globalResources.getGame();
         player = globalResources.getPlayer();
@@ -101,7 +107,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     case SEND_MESSAGE_DEAD:
                     case SEND_MESSAGE_KILLER:
                         msg = dp.getMessage();
-                        runOnUiThread(new UIHandler(msg, 0, null, null, txtGameChat));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //TODO: add to chat with HTML code
+                            }
+                        });
                         break;
                     case REFRESH_PLAYERS:
 
@@ -122,29 +133,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         //day cycle - change GUI and chat
                         day = true;
                         msg = getResources().getString(R.string.game_day_phase);
+                        if(GameActivity.this.player.isAlive())
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 txtSendMessage.setEnabled(true);
                             }
                         });
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
+                        //TODO: Animation + chat alert + imageView + Timer update
                         break;
                     case NIGHT:
 
                         //night cycle - change GUI and chat
                         day = false;
                         msg = getResources().getString(R.string.game_day_phase);
-                        txtSendMessage.setEnabled(true);
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(!(player.getRole() == Roles.KILLER)){
+                        if(GameActivity.this.player.isAlive()) {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
                                     txtSendMessage.setEnabled(false);
                                 }
-                            }
-                        });
+                            });
+                        }
+                        //TODO: Animation + chat alert + imageView + Timer update
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if(!(player.getRole() == Roles.KILLER)){
+//                                    txtSendMessage.setEnabled(false);
+//                                }
+//                            }
+//                        });
                         break;
                     case SNITCH:
 
@@ -162,7 +180,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }else{
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_citizen));
                         }
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
+                        //TODO: Animation + Dialog with snitched player + Chat alert
                         break;
                     case EXECUTE:
 
@@ -172,28 +190,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             msg = String.format(getResources().getString(R.string.game_executed_other), dp.getPlayer().getUsername());
                         }
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, null, null, null));
+                        //TODO: Animation + Dialog with executed player + Chat alert
                         break;
                     case PLAYER_JOINED:
 
                         //get a player and players (alert about the player and set the players)
                         msg = String.format(getResources().getString(R.string.game_player_joined), dp.getPlayer().getUsername());
-                        game.getPlayers().clear();
-                        game.getPlayers().addAll(dp.getPlayers());
-                        player = game.getPlayers().get(game.getPlayers().indexOf(player));
+                        game.getPlayers().add(dp.getPlayer());
                         game.getPlayers().remove(player);
-
-                        //update gui
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, myAdapter, grid, null));
+                        //TODO: Chat alert + (Maybe, txtTimer will be used as player count?)
                         break;
                     case PLAYER_LEFT:
 
                         //get the player, alert about him/her
                         msg = String.format(getResources().getString(R.string.game_player_left), dp.getPlayer().getUsername());
                         game.getPlayers().remove(dp.getPlayer());
-
-                        //update gui
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, myAdapter, grid, null));
+                        //TODO: Chat alert + (Maybe, txtTimer will be used as player count?)
                         break;
                     case READY:
 
@@ -203,21 +215,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         game.getPlayers().remove(player);
-
-                        //update gui
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_SHORT, myAdapter, grid, null));
                         gameStarted = true;
+                        //TODO: Animation + Chat alert + Timer update
                         break;
                     case WIN_CITIZENS:
 
                         //get refreshed players with stats and game history - check each one for this player
                         msg = getResources().getString(R.string.game_ready_phase);
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_LONG, null, null, null));
                         try {
                             Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        //TODO: Animation
                         myIntent = new Intent(GameActivity.this, Lobby.class);
                         startActivity(myIntent);
                         finish();
@@ -226,16 +236,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //get refreshed players with stats and game history - check each one for this player
                         msg = getResources().getString(R.string.game_ready_phase);
-                        runOnUiThread(new UIHandler(msg, Toast.LENGTH_LONG, null, null, null));
                         try {
                             Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        //TODO: Animation
                         myIntent = new Intent(GameActivity.this, Lobby.class);
                         startActivity(myIntent);
                         finish();
                         return;
+                    case GAME_DISBANDED:
+                        msg = getResources().getString(R.string.game_game_disbanded);
+                        //TODO: AlertDialog
+                        myIntent = new Intent(GameActivity.this, Lobby.class);
+                        startActivity(myIntent);
+                        finish();
+                        break;
                     case SERVER_SHUTDOWN:
                         buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
                         builder.show();
@@ -337,16 +354,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.player_card, parent, false);
             }
 
-            // Lookup view for data population
-            final ImageView imgviewPlayerImage = (ImageView) convertView.findViewById(R.id.playerCard_playerImage);
-            final TextView txtPlayerName = (TextView) convertView.findViewById(R.id.playerCard_playerUsername);
-            final Button btnPlayerAction = (Button) convertView.findViewById(R.id.playerCard_btn_action);
-
-            imgviewPlayerImage.setOnCreateContextMenuListener(this);
-
+            final TextView txtPlayerName = (TextView) convertView.findViewById(R.id.playerCard_txt_playerUsername);
+            final TextView txtPlayerStatus = (TextView) convertView.findViewById(R.id.playerCard_txt_playerStatus);
+            final TextView btnPlayerAction = (Button) convertView.findViewById(R.id.playerCard_btn_action);
             final Roles role = GameActivity.this.player.getRole();
 
+            txtPlayerName.setText(user.getUsername());
+
             if(user.isAlive()) {
+                txtPlayerStatus.setText(getResources().getText(R.string.game_player_alive));
                 if (role != null) {
                     if (role == Roles.KILLER) {
                         btnPlayerAction.setText(getResources().getText(R.string.game_kill));
@@ -358,8 +374,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         btnPlayerAction.setText(getResources().getText(R.string.game_vote));
                     }
                 }
+                btnPlayerAction.setVisibility(View.VISIBLE);
             }else{
-                btnPlayerAction.setText(getResources().getText(R.string.game_player_dead));
+                txtPlayerStatus.setText(getResources().getText(R.string.game_player_dead));
+                btnPlayerAction.setVisibility(View.INVISIBLE);
             }
 
             btnPlayerAction.setOnClickListener(new View.OnClickListener() {
@@ -396,11 +414,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
             });
-
-            //TODO: Add an actual image
-            //imgviewPlayerImage.setImageDrawable();
-            txtPlayerName.setText(user.getUsername());
-
             return convertView;
         }
 
@@ -420,40 +433,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.menu_playercard_see_stats:
-                Toast.makeText(this, ((Player)grid.getItemAtPosition(info.position)).getStats().toString(), Toast.LENGTH_SHORT).show();
+                ((GlobalResources)getApplication()).setStatsPlayer(((Player)grid.getItemAtPosition(info.position)));
+                Intent intent = new Intent(GameActivity.this, StatsActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onContextItemSelected(item);
-        }
-    }
-
-    private class UIHandler implements Runnable{
-        final String msg;
-        final int duration;
-        final MyPlayerAdapter adapter;
-        final GridView grid;
-        final TextView chat;
-        final EditText chatSend = txtSendMessage;
-
-        UIHandler(String msg, int duration, MyPlayerAdapter adapter, GridView grid, TextView chat){
-            this.chat = chat;
-            this.msg = msg;
-            this.duration = duration;
-            this.adapter = adapter;
-            this.grid = grid;
-        }
-        @Override
-        public void run() {
-            if(chat != null){
-                chat.append(msg + "\n");
-                chatSend.setText("");
-            }
-            else if(msg != null) {
-                Toast.makeText(GameActivity.this, this.msg, duration).show();
-                if(adapter != null) {
-                    myAdapter.notifyDataSetChanged();
-                }
-            }
         }
     }
 

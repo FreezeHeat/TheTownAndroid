@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="100">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:id="@+id/playerCard_playerImage"
-        android:src="@android:drawable/sym_def_app_icon"
-        android:layout_weight="80"/>
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="50dp" android:background="@android:color/black"
+    android:paddingLeft="5dp" android:paddingRight="5dp"
+    android:weightSum="1">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_weight="0.5"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Player's Nickname"
-        android:id="@+id/playerCard_playerUsername"
-        android:background="@android:color/holo_red_dark"
+        android:id="@+id/playerCard_txt_playerUsername"
+        android:background="@drawable/menu"
         android:textColor="@android:color/white"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="15"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal"/>
+
+    <TextView
+        android:layout_weight="0.3"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Player's Status"
+        android:id="@+id/playerCard_txt_playerStatus"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical|center_horizontal"/>
 
     <Button
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/playerCard_btn_action"
-        android:layout_gravity="center_horizontal"
-        android:background="@android:color/black"
+        android:text="Player's action"
+        android:background="@drawable/border_rectangle_inverted"
         android:textColor="@android:color/white"
-        android:layout_margin="5dp"
-        android:layout_weight="5" />
+        android:layout_margin="2dp"/>
 </LinearLayout>

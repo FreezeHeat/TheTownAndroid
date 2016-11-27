@@ -32,16 +32,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:maxHeight="50dp"
-                android:layout_weight="0.8"/>
+                android:layout_weight="0.7"
+                android:id="@+id/game_imgv_phase" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_weight="0.3"
                 android:gravity="center"
                 android:textSize="20sp"
                 android:textColor="@android:color/white"
-                android:text="Timer"/>
+                android:id="@+id/game_txt_timer" />
         </LinearLayout>
 
         <TextView
