@@ -586,6 +586,10 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                break;
             case R.id.lobby_btn_options:
                 Intent btnOptions = new Intent(Lobby.this,SettingsActivity.class);
+
+                //intent to test gifs on options button
+                //Intent btnOptions = new Intent(Lobby.this,Pop.class);
+
                 Lobby.this.startActivity(btnOptions);
                 break;
             case R.id.lobby_btn_stats:
