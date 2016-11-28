@@ -14,7 +14,6 @@ public class StatsActivity extends AppCompatActivity {
     private TextView statsRating;
     private TextView statsWon;
     private TextView statsLost;
-    private GlobalResources globalResources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +27,7 @@ public class StatsActivity extends AppCompatActivity {
         statsWon = (TextView)findViewById(R.id.stats_Wins);
         statsLost = (TextView)findViewById(R.id.stats_Lost);
 
-        globalResources = (GlobalResources)getApplication();
-        Player p = globalResources.getPlayer();
+        Player p = ((GlobalResources)getApplication()).getStatsPlayer();
         this.txtPlayer.setText(p.getUsername());
         this.statsWon.setText(String.valueOf(p.getStats().getWon()));
         this.statsLost.setText(String.valueOf(p.getStats().getLost()));

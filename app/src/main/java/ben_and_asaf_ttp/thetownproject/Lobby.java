@@ -205,6 +205,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+
                 //When the drawer closes, it cancels the timer
                 timer = new Timer();
                 new AsyncTask<Void, Void, Void>() {
@@ -212,7 +213,8 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     protected Void doInBackground(Void... params) {
 
-                        //run refresh friends every 8 seconds (delayed start by 500 ms)
+                        //run refresh friends every X seconds (delayed start by 500 ms)
+                        // X = 8 if has friends, if not X = 20
                         timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
@@ -221,7 +223,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                                 mService.sendPacket(dp);
                                 executor.execute(new LobbyLogic());
                             }
-                        }, 500, 8000);
+                        }, 500, ((Lobby.this.player.getFriends() == null)? 20000 : 8000));
                         return null;
                     }
                 }.execute();
@@ -480,6 +482,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 return true;
             case R.id.menu_friendcard_showstats:
                 intent = new Intent(this, StatsActivity.class);
+                ((GlobalResources)getApplication()).setStatsPlayer(p);
                 startActivity(intent);
                 return true;
             default:
@@ -594,6 +597,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.lobby_btn_stats:
                 Intent btnStats = new Intent(Lobby.this, StatsActivity.class);
+                ((GlobalResources)getApplication()).setStatsPlayer(Lobby.this.player);
                 Lobby.this.startActivity(btnStats);
                 break;
             default:
