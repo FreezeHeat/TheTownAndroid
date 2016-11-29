@@ -7,9 +7,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -38,10 +41,12 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.Game;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Roles;
 
+import static ben_and_asaf_ttp.thetownproject.shared_resources.Commands.NIGHT;
+
 public class GameActivity extends AppCompatActivity implements View.OnClickListener{
-    private GlobalResources globalResources;
     private Game game;
     private Player player;
+    private Player target;
     private AlertDialog.Builder builder;
     private GridView grid;
     private EditText txtSendMessage;
@@ -53,9 +58,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private GameService mService;
     private boolean mBound = false;
     private MyPlayerAdapter myAdapter;
-    private DataPacket out;
+    private CountDownTimer countDownTimer;
     private boolean day;
     private boolean gameStarted;
+    private String msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +77,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         txtGameChat = (TextView)findViewById(R.id.game_chat_txt);
 
         txtGameChat.setMovementMethod(new ScrollingMovementMethod());
-        globalResources = (GlobalResources)getApplication();
-        game = globalResources.getGame();
-        player = globalResources.getPlayer();
+        txtSendMessage.setMovementMethod(new ScrollingMovementMethod());
+
+        game = ((GlobalResources)getApplication()).getGame();
+        player = ((GlobalResources)getApplication()).getPlayer();
         gameLogic = new GameLogic();
         myAdapter = new MyPlayerAdapter(this, R.layout.player_card, game.getPlayers());
         grid.setAdapter(myAdapter);
         registerForContextMenu(grid);
-        out = new DataPacket();
         day = true;
 
         executor = new Executor() {
@@ -96,7 +102,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             //start game service
             DataPacket dp = null;
-            String msg;
 
             while(true){
                 dp = mService.getPacket();
@@ -104,13 +109,41 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                 switch(dp.getCommand()){
                     case SEND_MESSAGE:
-                    case SEND_MESSAGE_DEAD:
-                    case SEND_MESSAGE_KILLER:
-                        msg = dp.getMessage();
+                        msg = "<font color=\"#009933\">" +
+                                dp.getPlayer().getUsername() +
+                                ": </font><font color=\"#ffffff\">" +
+                                dp.getMessage() +
+                                "</font><br/>";
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //TODO: add to chat with HTML code
+                                txtGameChat.append(Html.fromHtml(msg));
+                            }
+                        });
+                        break;
+                    case SEND_MESSAGE_DEAD:
+                        msg = "<font color=\"#cc0000\">*DEAD*</font><font color=\"#009933\">" +
+                                dp.getPlayer().getUsername() +
+                                ": </font><font color=\"#ffffff\">"
+                                + dp.getMessage() +
+                                "</font><br/>";
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtGameChat.append(Html.fromHtml(msg));
+                            }
+                        });
+                        break;
+                    case SEND_MESSAGE_KILLER:
+                        msg = "<font color=\"#ff3300\">" +
+                                dp.getPlayer().getUsername() +
+                                ": </font><font color=\"#ffffff\">" +
+                                dp.getMessage() +
+                                "</font><br/>";
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
                         break;
@@ -132,21 +165,51 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //day cycle - change GUI and chat
                         day = true;
-                        msg = getResources().getString(R.string.game_day_phase);
-                        if(GameActivity.this.player.isAlive())
+                        msg = "<font color=\"#0066ff\">*"+ getResources().getString(R.string.game_day_phase) + "*</font><br/>";
+                        if(GameActivity.this.player.isAlive()) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txtSendMessage.setEnabled(true);
+                                }
+                            });
+                        }
+
+                        //TODO: Animation + imageView
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                txtSendMessage.setEnabled(true);
+                                //imgvGamePhase.setImageResource();
                             }
                         });
-                        //TODO: Animation + chat alert + imageView + Timer update
+                        countDownTimer = new CountDownTimer(60000, 1000) {
+                            @Override
+                            public void onTick(long millisRemaining) {
+                                txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                new AsyncTask<Void, Void, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Void... voids) {
+                                        DataPacket dp = new DataPacket();
+                                        dp.setCommand(Commands.VOTE);
+                                        dp.setPlayer(GameActivity.this.target);
+                                        mService.sendPacket(dp);
+                                        return null;
+                                    }
+                                }.execute();
+                                GameActivity.this.target = null;
+                                txtGameTimer.setText("");
+                            }
+                        }.start();
                         break;
                     case NIGHT:
 
                         //night cycle - change GUI and chat
                         day = false;
-                        msg = getResources().getString(R.string.game_day_phase);
+                        msg = "<font color=\"#0066ff\">*" + getResources().getString(R.string.game_night_phase) + "*</font><br/>";
                         if(GameActivity.this.player.isAlive()) {
                             runOnUiThread(new Runnable() {
                                 public void run() {
@@ -154,7 +217,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
                         }
-                        //TODO: Animation + chat alert + imageView + Timer update
+                        //TODO: Animation + imageView
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //imgvGamePhase.setImageResource();
+                            }
+                        });
+
+                        countDownTimer = new CountDownTimer(30000, 1000) {
+                            @Override
+                            public void onTick(long millisRemaining) {
+                                txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                //TODO: send action
+                                new AsyncTask<Void, Void, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Void... voids) {
+                                        DataPacket dp = GameActivity.this.player.getRole().action(new DataPacket());
+                                        dp.setPlayer(GameActivity.this.target);
+                                        mService.sendPacket(dp);
+                                        return null;
+                                    }
+                                }.execute();
+                                GameActivity.this.target = null;
+                                txtGameTimer.setText("");
+                            }
+                        }.start();
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
@@ -168,8 +260,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //get player - get his role for the SNITCH
                         msg = String.format(
-                                getResources().getString(R.string.game_snitch_identity).toString(),
-                                dp.getPlayer());
+                                "<font color=\"#0066ff\">*" +
+                                getResources().getString(R.string.game_snitch_identity),dp.getPlayer());
                         Roles role = dp.getPlayer().getRole();
                         if(role == Roles.KILLER){
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_killer));
@@ -180,54 +272,78 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }else{
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_citizen));
                         }
-                        //TODO: Animation + Dialog with snitched player + Chat alert
+                        msg = msg.concat("*</font><br/>");
+                        //TODO: Dialog with snitched player
                         break;
                     case EXECUTE:
 
                         //player was executed - get datapacket with player who was killed
+                        msg = "<font color=\"#0066ff\">*";
                         if (player.equals(dp.getPlayer())) {
-                           msg = getResources().getString(R.string.game_executed_you);
+                           msg = msg.concat(getResources().getString(R.string.game_executed_you));
                         } else {
-                            msg = String.format(getResources().getString(R.string.game_executed_other), dp.getPlayer().getUsername());
+                            msg = msg.concat(String.format(
+                                    getResources().getString(R.string.game_executed_other),
+                                    dp.getPlayer().getUsername()));
                         }
-                        //TODO: Animation + Dialog with executed player + Chat alert
+                        msg = msg.concat("*</font><br/>");
+                        //TODO: Animation + Dialog with executed player
                         break;
                     case PLAYER_JOINED:
 
                         //get a player and players (alert about the player and set the players)
-                        msg = String.format(getResources().getString(R.string.game_player_joined), dp.getPlayer().getUsername());
+                        msg = String.format(
+                                "<font color=\"#0066ff\">*" +
+                                getResources().getString(R.string.game_player_joined) +
+                                "*</font><br/>", dp.getPlayer().getUsername());
                         game.getPlayers().add(dp.getPlayer());
                         game.getPlayers().remove(player);
-                        //TODO: Chat alert + (Maybe, txtTimer will be used as player count?)
+                        txtGameTimer.setText(game.getPlayers().size() + " / " + game.getMaxPlayers());
                         break;
                     case PLAYER_LEFT:
 
                         //get the player, alert about him/her
-                        msg = String.format(getResources().getString(R.string.game_player_left), dp.getPlayer().getUsername());
+                        msg = String.format(
+                                "<font color=\"#0066ff\">*" +
+                                getResources().getString(R.string.game_player_left) +
+                                "*</font><br/>", dp.getPlayer().getUsername());
                         game.getPlayers().remove(dp.getPlayer());
-                        //TODO: Chat alert + (Maybe, txtTimer will be used as player count?)
+                        txtGameTimer.setText(game.getPlayers().size() + " / " + game.getMaxPlayers());
                         break;
                     case READY:
 
                         //game begun (30 seconds wait and starting DAY phase) - get players
-                        msg = getResources().getString(R.string.game_ready_phase);
+                        msg =  "<font color=\"#0066ff\">*" +
+                                getResources().getString(R.string.game_ready_phase) +
+                                "*</font><br/>";
                         game.getPlayers().clear();
                         game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         game.getPlayers().remove(player);
                         gameStarted = true;
-                        //TODO: Animation + Chat alert + Timer update
+                        //TODO: Animation
+                        countDownTimer = new CountDownTimer(30000, 1000) {
+                            @Override
+                            public void onTick(long millisRemaining) {
+                                txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                txtGameTimer.setText("");
+                            }
+                        }.start();
                         break;
                     case WIN_CITIZENS:
 
                         //get refreshed players with stats and game history - check each one for this player
-                        msg = getResources().getString(R.string.game_ready_phase);
+                        msg = getResources().getString(R.string.game_citizens_win);
                         try {
                             Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        //TODO: Animation
+                        //TODO: Dialog
                         myIntent = new Intent(GameActivity.this, Lobby.class);
                         startActivity(myIntent);
                         finish();
@@ -235,13 +351,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     case WIN_KILLERS:
 
                         //get refreshed players with stats and game history - check each one for this player
-                        msg = getResources().getString(R.string.game_ready_phase);
+                        msg = getResources().getString(R.string.game_killers_win);
                         try {
                             Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        //TODO: Animation
+                        //TODO: Dialog
                         myIntent = new Intent(GameActivity.this, Lobby.class);
                         startActivity(myIntent);
                         finish();
@@ -273,17 +389,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.game_btn_send:
-                if(player.isAlive() == true) {
-                    if (day){
-                        out.setCommand(Commands.SEND_MESSAGE);
-                    }else if(player.getRole() == Roles.KILLER){
-                        out.setCommand(Commands.SEND_MESSAGE_KILLER);
-                    }
-                }else{
-                    out.setCommand(Commands.SEND_MESSAGE_DEAD);
+                if(!txtSendMessage.getText().toString().isEmpty()) {
+                    final String string = txtSendMessage.getText().toString();
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            DataPacket dp = new DataPacket();
+
+                            if (player.isAlive() == true) {
+                                if (day) {
+                                    dp.setCommand(Commands.SEND_MESSAGE);
+                                } else if (player.getRole() == Roles.KILLER) {
+                                    dp.setCommand(Commands.SEND_MESSAGE_KILLER);
+                                }
+                            } else {
+                                dp.setCommand(Commands.SEND_MESSAGE_DEAD);
+                            }
+                            dp.setMessage(string);
+                            mService.sendPacket(dp);
+                            return null;
+                        }
+                    }.execute();
+                    txtSendMessage.setText("");
                 }
-                out.setMessage(player.getUsername() + ": " + txtSendMessage.getText().toString());
-                mService.sendPacket(out);
                 break;
         }
     }
@@ -389,15 +517,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     if(GameActivity.this.gameStarted) {
                         if(GameActivity.this.player.isAlive()) {
                             if (user.isAlive()) {
-                                if (!day) {
-                                    GameActivity.this.player.getRole().action(GameActivity.this.out);
-                                    GameActivity.this.out.setPlayer(player);
-                                    GameActivity.this.mService.sendPacket(GameActivity.this.out);
-                                } else {
-                                    GameActivity.this.out.setCommand(Commands.VOTE);
-                                    GameActivity.this.out.setPlayer(player);
-                                    GameActivity.this.mService.sendPacket(GameActivity.this.out);
-                                }
+                                GameActivity.this.target = user;
                             } else {
                                 Toast.makeText(
                                         GameActivity.this,
@@ -450,8 +570,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    out.setCommand(Commands.DISCONNECT);
-                    mService.sendPacket(out);
+                    DataPacket dp = new DataPacket();
+                    dp.setCommand(Commands.DISCONNECT);
+                    mService.sendPacket(dp);
                     Intent myIntent = new Intent(GameActivity.this, Lobby.class);
                     startActivity(myIntent);
                     GameActivity.this.finish();

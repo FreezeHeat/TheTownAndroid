@@ -282,8 +282,16 @@ public class Player{
 
     @Override
     public String toString() {
-        return "Player [username=" + username + ", password=" + password + ",\nstats=" + stats + ",\n status=" + status
-                + ", role=" + role + ",\n gameHistory=" + gameHistory + ",\n friends=" + friends +
-                ",\n friendRequests=" + friendsRequests + ",\n alive=" + alive + "]";
+		String friendList = "";
+		if(friends != null) {
+			friendList = friendList.concat("[");
+			for (Player p : friends) {
+				friendList = friendList.concat(p.getUsername() + " ,");
+			}
+			friendList.concat("]");
+		}
+		return "Player [username=" + username + ", password=" + password + ",\nstats=" + stats + ",\n status=" + status
+				+ ", role=" + role + ",\n gameHistory=" + gameHistory + ",\n friends=" + friendList +
+				",\n friendRequests=" /*+ friendsRequests*/ + ",\n alive=" + alive + "]";
     }
 }

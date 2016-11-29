@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -32,14 +31,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,16 +46,13 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 import ben_and_asaf_ttp.thetownproject.shared_resources.PlayerStatus;
-import ben_and_asaf_ttp.thetownproject.shared_resources.Roles;
 
 
 public class Lobby extends AppCompatActivity implements View.OnClickListener {
-
     private Player player;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private TextView txtPlayer;
-    private GlobalResources globalResources;
     //private AlertDialog dialogHowManyPlayers;
     private ProgressDialog dialogProgress;
     //private int numPlayers = -1;
@@ -77,8 +71,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        globalResources = (GlobalResources) getApplication();
-        player = globalResources.getPlayer();
+        player = ((GlobalResources)getApplication()).getPlayer();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -198,7 +191,9 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                timer.cancel();
+                if(timer != null) {
+                    timer.cancel();
+                }
                 invalidateOptionsMenu();
             }
 
@@ -207,7 +202,9 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 super.onDrawerOpened(drawerView);
 
                 //When the drawer closes, it cancels the timer
-                timer = new Timer();
+                if(timer == null) {
+                    timer = new Timer();
+                }
                 new AsyncTask<Void, Void, Void>() {
 
                     @Override
@@ -223,7 +220,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                                 mService.sendPacket(dp);
                                 executor.execute(new LobbyLogic());
                             }
-                        }, 500, ((Lobby.this.player.getFriends() == null)? 20000 : 8000));
+                        }, 500, ((Lobby.this.player.getFriends().size() == 0) ? 20000 : 8000));
                         return null;
                     }
                 }.execute();
@@ -245,6 +242,21 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 new Thread(command).start();
             }
         };
+
+        //refresh friends upon start
+        if(GameService.isRunning && mBound) {
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    DataPacket dp = new DataPacket();
+                    dp.setCommand(Commands.REFRESH_FRIENDS);
+                    mService.sendPacket(dp);
+                    executor.execute(new LobbyLogic());
+                    return null;
+                }
+            }.execute();
+        }
     }
 
     class LobbyLogic implements Runnable{
@@ -264,19 +276,24 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                     if (((GlobalResources) getApplication()).getGame() != null) {
                         dialogProgress.dismiss();
                     }
+                    if(timer != null) {
+                        timer.cancel();
+                    }
                     myIntent = new Intent(Lobby.this, GameActivity.class);
                     startActivity(myIntent);
                     Lobby.this.finish();
                     break;
                 case REFRESH_FRIENDS:
                     Lobby.this.player.getFriends().clear();
-                    Lobby.this.player.getFriends().addAll(dp.getPlayers());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            myAdapter.notifyDataSetChanged();
-                        }
-                    });
+                    if(dp.getPlayers() != null) {
+                        Lobby.this.player.getFriends().addAll(dp.getPlayers());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
                     break;
                 case FRIEND_REQUEST:
                     //TODO: Snackbar with forward to activity that handles friend requests
@@ -460,9 +477,12 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                             dp.setCommand(Commands.JOIN_FRIEND);
                             dp.setPlayer(p);
                             mService.sendPacket(dp);
+                            executor.execute(new LobbyLogic());
                             return null;
                         }
                     }.execute();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    Lobby.this.dialogProgress.show();
                 }else{
                     Toast.makeText(this, "Friend is not playing",Toast.LENGTH_SHORT).show();
                 }
@@ -511,20 +531,39 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
             builder.setCancelable(false);
             builder.setPositiveButton(getResources().getString(R.string.lobby_addFriend), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    if(!username.getText().toString().isEmpty()) {
-                        final Player player = new Player(username.getText().toString(), "1");
-                        new AsyncTask<Void, Void, Void>() {
-
-                            @Override
-                            protected Void doInBackground(Void... params) {
-                                DataPacket dp = new DataPacket();
-                                dp.setCommand(Commands.ADD_FRIEND);
-                                dp.setPlayer(player);
-                                ClientConnection.getConnection().sendDataPacket(dp);
-                                return null;
-                            }
-                        }.execute();
+                    final Player player = new Player(username.getText().toString(), "1");
+                    //check if string is empty
+                    if(!player.getUsername().isEmpty()) {
+                        username.setText("");
+                    }else {
+                        Toast.makeText(Lobby.this, R.string.general_empty_details, Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
+                    //check if trying to add himself/herself
+                    if(player.getUsername().equals(Lobby.this.player.getUsername())){
+                        Toast.makeText(Lobby.this, R.string.lobby_friendlist_cant_add_yourself, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    //check if already befriended
+                    for(Player p : Collections.synchronizedCollection(Lobby.this.player.getFriends())){
+                        if(p.getUsername().equals(player.getUsername())){
+                            Toast.makeText(Lobby.this, R.string.lobby_friendlist_already_exists, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                    new AsyncTask<Void, Void, Void>() {
+
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            DataPacket dp = new DataPacket();
+                            dp.setCommand(Commands.ADD_FRIEND);
+                            dp.setPlayer(player);
+                            mService.sendPacket(dp);
+                            return null;
+                        }
+                    }.execute();
                 }
             });
             builder.setNegativeButton(getResources().getString(R.string.lobby_exitFriend), new DialogInterface.OnClickListener() {

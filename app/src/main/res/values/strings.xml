@@ -42,6 +42,8 @@
     <string name="lobby_addFriend">Add friend</string>
     <string name="lobby_exitFriend">Exit</string>
     <string name="lobby_dialog_wrong_details">No such user</string>
+    <string name="lobby_friendlist_already_exists">You are already friends</string>
+    <string name="lobby_friendlist_cant_add_yourself">You can\'t add yourself</string>
 
     <string name="game_txtSendMessage_hint">Enter your message here</string>
     <string name="game_btnSend">Send</string>
@@ -67,6 +69,8 @@
     <string name="game_player_joined">%1$s has joined</string>
     <string name="game_player_left">%1$s has left</string>
     <string name="game_game_disbanded">Game was disbanded</string>
+    <string name="game_citizens_win">Citizens win!</string>
+    <string name="game_killers_win">Killers win!</string>
 
     <string name="playercard_menu_get_stats">See Stats</string>
 

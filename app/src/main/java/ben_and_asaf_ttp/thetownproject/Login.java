@@ -33,7 +33,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private Player player = null;
     private DataPacket dp;
     private SharedPreferences myPrefs;
-    private GlobalResources globalResources;
     private GameService mService;
     private boolean mBound = false;
 
@@ -48,7 +47,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         player = new Player("", "");
         dp = new DataPacket();
         myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        globalResources = (GlobalResources)getApplication();
 
         Button btnSignIn = (Button) findViewById(R.id.login_btnSignIn);
         Button btnOptions = (Button) findViewById(R.id.login_btnOptions);
@@ -90,7 +88,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 Login.this.player = dataPacket.getPlayer();
                                 Login.this.player.setFriends(dataPacket.getPlayers());
                                 Login.this.player.setGameHistory(dataPacket.getGames());
-                                globalResources.setPlayer(player);
+                                ((GlobalResources)getApplication()).setPlayer(player);
 
                                 //check if user checked the checkbox to remember details
                                 if (checkBox.isChecked()) {

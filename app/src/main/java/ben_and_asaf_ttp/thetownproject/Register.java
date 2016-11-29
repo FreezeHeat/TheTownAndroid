@@ -19,9 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
+import ben_and_asaf_ttp.thetownproject.shared_resources.Game;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class Register extends AppCompatActivity implements View.OnClickListener{
@@ -31,7 +33,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     private EditText editUser;
     private EditText editPassword;
     private EditText editPassword2;
-    private GlobalResources globalResources;
     private AlertDialog.Builder builder;
     private GameService mService;
     private boolean mBound = false;
@@ -44,7 +45,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         player = new Player("", "");
         dp = new DataPacket();
-        globalResources = (GlobalResources)getApplication();
 
         editUser = (EditText)findViewById(R.id.register_editUser);
         editPassword = (EditText)findViewById(R.id.register_editPass);
@@ -100,7 +100,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                             switch (dataPacket.getCommand()) {
                                 case REGISTER:
                                     Register.this.player = dataPacket.getPlayer();
-                                    globalResources.setPlayer(player);
+                                    Register.this.player.setFriends(new ArrayList<Player>());
+                                    ((GlobalResources)getApplication()).setPlayer(player);
 
                                     //Save the information
                                     SharedPreferences.Editor editor = myPrefs.edit();
