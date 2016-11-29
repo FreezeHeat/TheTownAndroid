@@ -586,6 +586,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
+
     public void buildConfirmDialog(String msg) {
         builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
