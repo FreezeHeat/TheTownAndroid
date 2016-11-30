@@ -10,7 +10,6 @@ import java.util.List;
  * @version %I%
  * @since 1.0
  */
-
 public class Player{
 
 	/**
@@ -27,31 +26,31 @@ public class Player{
 	private String password;
 
 	/**
-     * {@code Stats} that hold the statistics of the player
-     * @see Stats
-     */
+	 * {@code Stats} that hold the statistics of the player
+	 * @see Stats
+	 */
 	@Expose
-    private Stats stats;
+	private Stats stats;
 
-    /**
-     * {@code PlayerStatus} holds information about the player's status in the server
-     * @see PlayerStatus
-     */
+	/**
+	 * {@code PlayerStatus} holds information about the player's status in the server
+	 * @see PlayerStatus
+	 */
 	@Expose
-    private PlayerStatus status;
-    
-    /**
-     * {@code Role} holds information about the player's role in the game
-     * @see Roles
-     */
+	private PlayerStatus status;
+
+	/**
+	 * {@code Role} holds information about the player's role in the game
+	 * @see Roles
+	 */
 	@Expose
-    private Roles role;
-	
-    /**
-     * This list holds all the games the players has played (Game history)
-     * @see Game
-     */
-    private List<Game> gameHistory;
+	private Roles role;
+
+	/**
+	 * This list holds all the games the players has played (Game history)
+	 * @see Game
+	 */
+	private List<Game> gameHistory;
 
 	/**
 	 * This list holds the player's friends list
@@ -63,16 +62,15 @@ public class Player{
 	 */
 	private List<Player> friendsRequests;
 
-    /**
-     * The player's status, alive or not
-     */
+	/**
+	 * The player's status, alive or not
+	 */
 	@Expose
-    private boolean alive;
-
-    /**
-     * This constructor creates an empty <code>Player</code>
-     */    
-    public Player(){}
+	private boolean alive;
+	/**
+	 * This constructor creates an empty <code>Player</code>
+	 */
+	public Player(){}
 
 	/**
 	 * Full constructor for the {@code Player}
@@ -153,21 +151,21 @@ public class Player{
 	}
 
 	/**
-     * Return the {@code Stats} of the player
-     * @return the player's stats
-     */
-    public Stats getStats(){
-    	return this.stats;
-    }
-    
-    /**
-     * Set the {@code Stats} of the player
-     * @param stats The player's statistics
-     */
+	 * Return the {@code Stats} of the player
+	 * @return the player's stats
+	 */
+	public Stats getStats(){
+		return this.stats;
+	}
+
+	/**
+	 * Set the {@code Stats} of the player
+	 * @param stats The player's statistics
+	 */
 	public void setStats(final Stats stats){
 		this.stats = stats;
 	}
-	
+
 	/**
 	 * Return the player's status (such as ONLINE, OFFLINE etc..)
 	 * @return the player's status
@@ -176,7 +174,7 @@ public class Player{
 	public PlayerStatus getStatus(){
 		return this.status;
 	}
-	
+
 	/**
 	 * Set the player's status (such as ONLINE, OFFLINE etc..)
 	 * @param status the player's status to be set
@@ -185,14 +183,14 @@ public class Player{
 	public void setStatus(final PlayerStatus status){
 		this.status = status;
 	}
-	
+
 	/**
 	 * Get the player's role
 	 * @return the player's role
 	 * @see Roles
 	 */
 	public Roles getRole() {
-		return role;
+		return this.role;
 	}
 
 	/**
@@ -209,7 +207,7 @@ public class Player{
 	 * @return The player's game history
 	 */
 	public List<Game> getGameHistory() {
-		return gameHistory;
+		return this.gameHistory;
 	}
 
 	/**
@@ -236,28 +234,28 @@ public class Player{
 		this.friends = friends;
 	}
 
-    /**
-     * Get the player's friends request list
-     * @return The player's friends request list
-     */
-    public List<Player> getFriendsRequests() {
-        return friendsRequests;
-    }
+	/**
+	 * Get the player's friends request list
+	 * @return The player's friends request list
+	 */
+	public List<Player> getFriendsRequests() {
+		return friendsRequests;
+	}
 
-    /**
-     * Set the player's friends request list
-     * @param friendsRequests The player's friends request list to be set
-     */
-    public void setFriendsRequests(List<Player> friendsRequests) {
-        this.friendsRequests = friendsRequests;
-    }
+	/**
+	 * Set the player's friends request list
+	 * @param friendsRequests The player's friends request list to be set
+	 */
+	public void setFriendsRequests(List<Player> friendsRequests) {
+		this.friendsRequests = friendsRequests;
+	}
 
 	/**
 	 * Check if the player is alive
 	 * @return true\false if alive
 	 */
 	public boolean isAlive() {
-		return alive;
+		return this.alive;
 	}
 
 	/**
@@ -269,19 +267,19 @@ public class Player{
 	}
 
 	@Override
-    public boolean equals(final Object o){
+	public boolean equals(final Object o){
 		if(o instanceof Player){
 			Player p = (Player) o;
-			if(this.getUsername().equals(p.getUsername())&& 
-			   this.getPassword().equals(p.getPassword())){
+			if(this.getUsername().equals(p.getUsername())&&
+					this.getPassword().equals(p.getPassword())){
 				return true;
 			}
 		}
 		return false;
 	}
 
-    @Override
-    public String toString() {
+	@Override
+	public String toString() {
 		String friendList = "";
 		if(friends != null) {
 			friendList = friendList.concat("[");
@@ -293,5 +291,5 @@ public class Player{
 		return "Player [username=" + username + ", password=" + password + ",\nstats=" + stats + ",\n status=" + status
 				+ ", role=" + role + ",\n gameHistory=" + gameHistory + ",\n friends=" + friendList +
 				",\n friendRequests=" /*+ friendsRequests*/ + ",\n alive=" + alive + "]";
-    }
+	}
 }

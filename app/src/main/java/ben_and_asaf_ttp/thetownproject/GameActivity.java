@@ -182,28 +182,33 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 //imgvGamePhase.setImageResource();
                             }
                         });
-                        countDownTimer = new CountDownTimer(60000, 1000) {
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void onTick(long millisRemaining) {
-                                txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                new AsyncTask<Void, Void, Void>() {
+                            public void run() {
+                                countDownTimer = new CountDownTimer(60000, 1000) {
                                     @Override
-                                    protected Void doInBackground(Void... voids) {
-                                        DataPacket dp = new DataPacket();
-                                        dp.setCommand(Commands.VOTE);
-                                        dp.setPlayer(GameActivity.this.target);
-                                        mService.sendPacket(dp);
-                                        return null;
+                                    public void onTick(long millisRemaining) {
+                                        txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
                                     }
-                                }.execute();
-                                GameActivity.this.target = null;
-                                txtGameTimer.setText("");
+
+                                    @Override
+                                    public void onFinish() {
+                                        new AsyncTask<Void, Void, Void>() {
+                                            @Override
+                                            protected Void doInBackground(Void... voids) {
+                                                DataPacket dp = new DataPacket();
+                                                dp.setCommand(Commands.VOTE);
+                                                dp.setPlayer(GameActivity.this.target);
+                                                mService.sendPacket(dp);
+                                                return null;
+                                            }
+                                        }.execute();
+                                        GameActivity.this.target = null;
+                                        txtGameTimer.setText("");
+                                    }
+                                }.start();
                             }
-                        }.start();
+                        });
                         break;
                     case NIGHT:
 
@@ -225,28 +230,33 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
 
-                        countDownTimer = new CountDownTimer(30000, 1000) {
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void onTick(long millisRemaining) {
-                                txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                //TODO: send action
-                                new AsyncTask<Void, Void, Void>() {
+                            public void run() {
+                                countDownTimer = new CountDownTimer(30000, 1000) {
                                     @Override
-                                    protected Void doInBackground(Void... voids) {
-                                        DataPacket dp = GameActivity.this.player.getRole().action(new DataPacket());
-                                        dp.setPlayer(GameActivity.this.target);
-                                        mService.sendPacket(dp);
-                                        return null;
+                                    public void onTick(long millisRemaining) {
+                                        txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
                                     }
-                                }.execute();
-                                GameActivity.this.target = null;
-                                txtGameTimer.setText("");
+
+                                    @Override
+                                    public void onFinish() {
+                                        //TODO: send action
+                                        new AsyncTask<Void, Void, Void>() {
+                                            @Override
+                                            protected Void doInBackground(Void... voids) {
+                                                DataPacket dp = GameActivity.this.player.getRole().action(new DataPacket());
+                                                dp.setPlayer(GameActivity.this.target);
+                                                mService.sendPacket(dp);
+                                                return null;
+                                            }
+                                        }.execute();
+                                        GameActivity.this.target = null;
+                                        txtGameTimer.setText("");
+                                    }
+                                }.start();
                             }
-                        }.start();
+                        });
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
@@ -298,7 +308,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 "*</font><br/>", dp.getPlayer().getUsername());
                         game.getPlayers().add(dp.getPlayer());
                         game.getPlayers().remove(player);
-                        txtGameTimer.setText(game.getPlayers().size() + " / " + game.getMaxPlayers());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtGameTimer.setText((game.getPlayers().size() + 1) + " / " + game.getMaxPlayers());
+                            }
+                        });
                         break;
                     case PLAYER_LEFT:
 
@@ -308,7 +323,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 getResources().getString(R.string.game_player_left) +
                                 "*</font><br/>", dp.getPlayer().getUsername());
                         game.getPlayers().remove(dp.getPlayer());
-                        txtGameTimer.setText(game.getPlayers().size() + " / " + game.getMaxPlayers());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtGameTimer.setText((game.getPlayers().size() + 1) + " / " + game.getMaxPlayers());
+                            }
+                        });
                         break;
                     case READY:
 
@@ -322,17 +342,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         game.getPlayers().remove(player);
                         gameStarted = true;
                         //TODO: Animation
-                        countDownTimer = new CountDownTimer(30000, 1000) {
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void onTick(long millisRemaining) {
-                                txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
-                            }
+                            public void run() {
+                                countDownTimer = new CountDownTimer(30000, 1000) {
+                                    @Override
+                                    public void onTick(long millisRemaining) {
+                                        txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
+                                    }
 
-                            @Override
-                            public void onFinish() {
-                                txtGameTimer.setText("");
+                                    @Override
+                                    public void onFinish() {
+                                        txtGameTimer.setText("");
+                                    }
+                                }.start();
                             }
-                        }.start();
+                        });
+
                         break;
                     case WIN_CITIZENS:
 
@@ -585,9 +611,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
     }
-
-
-
 
     public void buildConfirmDialog(String msg) {
         builder = new AlertDialog.Builder(this);

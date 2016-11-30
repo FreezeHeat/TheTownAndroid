@@ -1,5 +1,7 @@
 package ben_and_asaf_ttp.thetownproject.shared_resources;
 
+import com.google.gson.annotations.Expose;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -20,28 +22,32 @@ public class Game{
 	/**
 	 * An auto generated ID for a game, used to identify a {@code Game} instance
 	 */
+	@Expose
 	private int gameId;
-	
+
 	/**
 	 * The maximum amount of players to play the game
 	 */
+	@Expose
 	private int maxPlayers;
-	
+
 	/**
 	 * The role bank({@code ArrayList} format) for this game based on {@code maxPlayers}
 	 * (<b>Note:</b> this role bank is given by the server)
 	 * @see Roles
 	 */
-	private ArrayList<Roles> rolesBank;
-	
+	private transient ArrayList<Roles> rolesBank;
+
 	/**
 	 * This {@code ArrayList} holds all the players that are in the game
 	 */
+	@Expose
 	private List<Player> players;
-	
+
 	/**
 	 * The game's creation date
 	 */
+	@Expose
 	private Date date;
 
 	/**

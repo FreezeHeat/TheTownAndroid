@@ -202,9 +202,8 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 super.onDrawerOpened(drawerView);
 
                 //When the drawer closes, it cancels the timer
-                if(timer == null) {
-                    timer = new Timer();
-                }
+                timer = new Timer();
+
                 new AsyncTask<Void, Void, Void>() {
 
                     @Override

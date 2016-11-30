@@ -9,22 +9,22 @@ package ben_and_asaf_ttp.thetownproject.shared_resources;
  * @since 1.0
  */
 public enum Roles{
-	
+
 	/**
 	 * The citizen role
 	 */
 	CITIZEN,
-	
+
 	/**
 	 * The Killer role - kills people
 	 */
 	KILLER,
-	
+
 	/**
 	 * The Healer role - heals people
 	 */
 	HEALER,
-	
+
 	/**
 	 * The Snitch role - finds out his target's role
 	 */
@@ -48,3 +48,4 @@ public enum Roles{
 		return dp;
 	}
 }
+
