@@ -174,7 +174,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             unbindService(mConnection);
             mBound = false;
         }
-        stopService(new Intent(this, GameService.class));
     }
 
     /** Defines callbacks for service binding, passed to bindService() */

@@ -27,7 +27,13 @@ public enum Commands{
      * <p>Asks the server for top 10 list </p>
      */
     TOP10,
-    
+
+    /**
+     * Used with the server thread
+     * <p>Changes the user's password</p>
+     */
+    EDIT_PASSWORD,
+
      /**
      * Used with the server thread 
      * <p>Specifies the user wishes to disconnect from the game / lobby</p>

@@ -6,10 +6,10 @@
     android:weightSum="1">
 
     <TextView
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Player's Nickname"
         android:id="@+id/playerCard_txt_playerUsername"
         android:background="@drawable/menu"
@@ -17,10 +17,10 @@
         android:gravity="center_vertical|center_horizontal"/>
 
     <TextView
-        android:layout_weight="0.3"
+        android:layout_weight="0.4"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Player's Status"
         android:id="@+id/playerCard_txt_playerStatus"
         android:textColor="@android:color/white"
@@ -30,7 +30,7 @@
         android:layout_weight="0.2"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/playerCard_btn_action"
         android:text="Player's action"
         android:background="@drawable/border_rectangle_inverted"

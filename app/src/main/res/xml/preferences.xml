@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference android:title="@string/pref_title_clearLocalData"
-        android:defaultValue="false"
-        android:summary="@string/pref_summary_clearLocalData"
-        android:key="clearLocalData">
-    </CheckBoxPreference>
+    <EditTextPreference android:title="@string/pref_title_editPassword"
+        android:id="@+id/pref_editTxt_password"
+        android:defaultValue=""
+        android:summary="@string/pref_summary_editPassword"
+        android:key="newpassword">
+    </EditTextPreference>
 
 </PreferenceScreen>

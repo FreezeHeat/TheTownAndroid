@@ -64,14 +64,6 @@
         android:layout_weight="40"
         android:layout_gravity="center">
 
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_button"
-                android:textStyle="bold"
-                android:hint="@string/main_btnOptions"
-                android:textColorHint="@android:color/white"
-                android:id="@+id/main_btnOptions" />
     </LinearLayout>
 
 </LinearLayout>

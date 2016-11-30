@@ -152,9 +152,8 @@
         <item>10</item>
     </string-array>
 
-    <string name="pref_switch1">Clear Local Data</string>
-    <string name="pref_switch2">OK</string>
-    <string name="pref_btnBack">Back</string>
-    <string name="pref_title_clearLocalData">Delete Local Data</string>
-    <string name="pref_summary_clearLocalData">This option will delete local data, such as passwords.</string>
+    <string name="pref_title_editPassword">Change your password</string>
+    <string name="pref_summary_editPassword">This option will change your user\'s password.</string>
+    <string name="pref_password_empty_or_same">Password\'s empty or equal to the current one</string>
+    <string name="pref_password_changed">Password was changed</string>
 </resources>

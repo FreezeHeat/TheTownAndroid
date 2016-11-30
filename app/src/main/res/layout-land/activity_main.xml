@@ -63,16 +63,6 @@
         android:weightSum="1"
         android:layout_marginBottom="5dp">
 
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_button"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"
-                android:hint="@string/main_btnOptions"
-                android:textColorHint="@android:color/white"
-                android:id="@+id/main_btnOptions"
-                android:layout_weight="0.5"/>
     </LinearLayout>
 
     <LinearLayout

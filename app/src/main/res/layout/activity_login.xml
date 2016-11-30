@@ -89,17 +89,6 @@
             android:id="@+id/login_btnSignIn"
             android:layout_marginBottom="5dp" />
 
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_button"
-                android:textStyle="bold"
-                android:textSize="17sp"
-                android:layout_gravity="center_horizontal"
-                android:textColorHint="@android:color/white"
-                android:hint="@string/login_btnOptions"
-                android:id="@+id/login_btnOptions"
-                android:layout_weight="0.5"/>
     </LinearLayout>
 
 </LinearLayout>

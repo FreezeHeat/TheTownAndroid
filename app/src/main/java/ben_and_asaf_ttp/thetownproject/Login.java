@@ -49,9 +49,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         Button btnSignIn = (Button) findViewById(R.id.login_btnSignIn);
-        Button btnOptions = (Button) findViewById(R.id.login_btnOptions);
         btnSignIn.setOnClickListener(this);
-        btnOptions.setOnClickListener(this);
     }
 
     public void login()
@@ -214,10 +212,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.login_btnSignIn:
                 login();
-                break;
-            case R.id.login_btnOptions:
-                Intent btnOptions = new Intent(Login.this,SettingsActivity.class);
-                Login.this.startActivity(btnOptions);
                 break;
             default:
                 break;
