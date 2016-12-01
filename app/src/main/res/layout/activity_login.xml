@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bgsmall"
+    android:paddingTop="4dp"
     tools:context="ben_and_asaf_ttp.thetownproject.MainActivity">
 
     <ImageView
