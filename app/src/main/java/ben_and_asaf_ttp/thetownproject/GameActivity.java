@@ -179,7 +179,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //imgvGamePhase.setImageResource();
+                                imgvGamePhase.setImageResource(R.drawable.day);
                             }
                         });
                         runOnUiThread(new Runnable() {
@@ -226,7 +226,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //imgvGamePhase.setImageResource();
+                                imgvGamePhase.setImageResource(R.drawable.night);
                             }
                         });
 
@@ -307,11 +307,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 getResources().getString(R.string.game_player_joined) +
                                 "*</font><br/>", dp.getPlayer().getUsername());
                         game.getPlayers().add(dp.getPlayer());
-                        game.getPlayers().remove(player);
+                        game.getPlayers().remove(GameActivity.this.player);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 txtGameTimer.setText((game.getPlayers().size() + 1) + " / " + game.getMaxPlayers());
+                                myAdapter.notifyDataSetChanged();
                             }
                         });
                         break;
@@ -327,6 +328,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void run() {
                                 txtGameTimer.setText((game.getPlayers().size() + 1) + " / " + game.getMaxPlayers());
+                                myAdapter.notifyDataSetChanged();
                             }
                         });
                         break;
@@ -356,6 +358,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                         txtGameTimer.setText("");
                                     }
                                 }.start();
+                                myAdapter.notifyDataSetChanged();
                             }
                         });
 
