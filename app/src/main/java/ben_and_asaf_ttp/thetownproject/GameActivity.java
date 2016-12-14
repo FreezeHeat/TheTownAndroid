@@ -247,7 +247,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }
 
                         anim = new Intent(GameActivity.this,Pop.class);
-                        anim.putExtra("animation","file:///android_asset/sun.html");
+                        anim.putExtra("animation","file:///android_asset/moon.html");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
