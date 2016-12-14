@@ -181,12 +181,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
                         }
+
+                        anim = new Intent(GameActivity.this,Pop.class);
+                        anim.putExtra("animation","file:///android_asset/sun.html");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 myAdapter.notifyDataSetChanged();
                                 imgvGamePhase.setImageResource(R.drawable.day);
                                 txtGameChat.append(Html.fromHtml(msg));
+                                startActivity(anim);
                                 countDownTimer = new CountDownTimer(60000, 1000) {
                                     @Override
                                     public void onTick(long millisRemaining) {
@@ -233,12 +237,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             });
                         }
 
+                        anim = new Intent(GameActivity.this,Pop.class);
+                        anim.putExtra("animation","file:///android_asset/sun.html");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 myAdapter.notifyDataSetChanged();
                                 txtGameChat.append(Html.fromHtml(msg));
                                 imgvGamePhase.setImageResource(R.drawable.night);
+                                startActivity(anim);
                                 countDownTimer = new CountDownTimer(30000, 1000) {
                                     @Override
                                     public void onTick(long millisRemaining) {

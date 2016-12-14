@@ -44,7 +44,7 @@ public class Pop extends Activity{
             public void run() {
                 Pop.this.finish();
             }
-        }, 6500);
+        }, 5000);
 
     }
 }
