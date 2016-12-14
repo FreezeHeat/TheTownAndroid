@@ -162,10 +162,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         });
                         break;
                     case DAY:
+                        //reset target
+                        GameActivity.this.target = null;
 
                         //day cycle - change GUI and chat
                         day = true;
                         msg = "<font color=\"#0066ff\">*"+ getResources().getString(R.string.game_day_phase) + "*</font><br/>";
+                        game.getPlayers().clear();
+                        game.getPlayers().addAll(dp.getPlayers());
+                        player = game.getPlayers().get(game.getPlayers().indexOf(player));
+                        game.getPlayers().remove(player);
                         if(GameActivity.this.player.isAlive()) {
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -174,17 +180,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
                         }
-
-                        //TODO: Animation + imageView
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                myAdapter.notifyDataSetChanged();
                                 imgvGamePhase.setImageResource(R.drawable.day);
-                            }
-                        });
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                                txtGameChat.append(Html.fromHtml(msg));
                                 countDownTimer = new CountDownTimer(60000, 1000) {
                                     @Override
                                     public void onTick(long millisRemaining) {
@@ -203,7 +204,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                                 return null;
                                             }
                                         }.execute();
-                                        GameActivity.this.target = null;
                                         txtGameTimer.setText("");
                                     }
                                 }.start();
@@ -211,10 +211,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         });
                         break;
                     case NIGHT:
+                        //reset target
+                        GameActivity.this.target = null;
+
+                        //first night cycle is when the game truly starts
+                        gameStarted = true;
 
                         //night cycle - change GUI and chat
                         day = false;
                         msg = "<font color=\"#0066ff\">*" + getResources().getString(R.string.game_night_phase) + "*</font><br/>";
+                        game.getPlayers().clear();
+                        game.getPlayers().addAll(dp.getPlayers());
+                        player = game.getPlayers().get(game.getPlayers().indexOf(player));
+                        game.getPlayers().remove(player);
                         if(GameActivity.this.player.isAlive()) {
                             runOnUiThread(new Runnable() {
                                 public void run() {
@@ -222,17 +231,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
                         }
-                        //TODO: Animation + imageView
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                imgvGamePhase.setImageResource(R.drawable.night);
-                            }
-                        });
 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                myAdapter.notifyDataSetChanged();
+                                txtGameChat.append(Html.fromHtml(msg));
+                                imgvGamePhase.setImageResource(R.drawable.night);
                                 countDownTimer = new CountDownTimer(30000, 1000) {
                                     @Override
                                     public void onTick(long millisRemaining) {
@@ -251,7 +256,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                                 return null;
                                             }
                                         }.execute();
-                                        GameActivity.this.target = null;
                                         txtGameTimer.setText("");
                                     }
                                 }.start();
@@ -271,7 +275,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         //get player - get his role for the SNITCH
                         msg = String.format(
                                 "<font color=\"#0066ff\">*" +
-                                getResources().getString(R.string.game_snitch_identity),dp.getPlayer());
+                                getResources().getString(R.string.game_snitch_identity),dp.getPlayer().getUsername());
                         Roles role = dp.getPlayer().getRole();
                         if(role == Roles.KILLER){
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_killer));
@@ -283,6 +287,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_citizen));
                         }
                         msg = msg.concat("*</font><br/>");
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtGameChat.append(Html.fromHtml(msg));
+                            }
+                        });
                         //TODO: Dialog with snitched player
                         break;
                     case EXECUTE:
@@ -297,6 +308,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     dp.getPlayer().getUsername()));
                         }
                         msg = msg.concat("*</font><br/>");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtGameChat.append(Html.fromHtml(msg));
+                            }
+                        });
                         //TODO: Animation + Dialog with executed player
                         break;
                     case PLAYER_JOINED:
@@ -313,6 +330,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             public void run() {
                                 txtGameTimer.setText((game.getPlayers().size() + 1) + " / " + game.getMaxPlayers());
                                 myAdapter.notifyDataSetChanged();
+                                txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
                         break;
@@ -329,6 +347,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             public void run() {
                                 txtGameTimer.setText((game.getPlayers().size() + 1) + " / " + game.getMaxPlayers());
                                 myAdapter.notifyDataSetChanged();
+                                txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
                         break;
@@ -342,7 +361,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         game.getPlayers().remove(player);
-                        gameStarted = true;
                         //TODO: Animation
                         runOnUiThread(new Runnable() {
                             @Override
@@ -359,6 +377,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 }.start();
                                 myAdapter.notifyDataSetChanged();
+                                txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
 
@@ -517,23 +536,37 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             final Roles role = GameActivity.this.player.getRole();
 
             txtPlayerName.setText(user.getUsername());
+            txtPlayerStatus.setText("");
 
-            if(user.isAlive()) {
-                txtPlayerStatus.setText(getResources().getText(R.string.game_player_alive));
-                if (role != null) {
-                    if (role == Roles.KILLER) {
-                        btnPlayerAction.setText(getResources().getText(R.string.game_kill));
-                    } else if (role == Roles.HEALER) {
-                        btnPlayerAction.setText(getResources().getText(R.string.game_heal));
-                    } else if (role == Roles.SNITCH) {
-                        btnPlayerAction.setText(getResources().getText(R.string.game_snitch));
-                    } else {
-                        btnPlayerAction.setText(getResources().getText(R.string.game_vote));
+            if(gameStarted) {
+                if (user.isAlive()) {
+                    txtPlayerStatus.setText(getResources().getText(R.string.game_player_alive));
+
+                    //Day phase is only for voting, night phase is for actions
+                    if (role != null ) {
+                        if(!day) {
+                            btnPlayerAction.setVisibility(View.VISIBLE);
+                            if (role == Roles.KILLER) {
+                                btnPlayerAction.setText(getResources().getText(R.string.game_kill));
+                            } else if (role == Roles.HEALER) {
+                                btnPlayerAction.setText(getResources().getText(R.string.game_heal));
+                            } else if (role == Roles.SNITCH) {
+                                btnPlayerAction.setText(getResources().getText(R.string.game_snitch));
+                            }else{
+                                btnPlayerAction.setVisibility(View.INVISIBLE);
+                            }
+                        }else{
+                            btnPlayerAction.setText(getResources().getText(R.string.game_vote));
+                            btnPlayerAction.setVisibility(View.VISIBLE);
+                        }
                     }
+                } else {
+                    txtPlayerStatus.setText(getResources().getText(R.string.game_player_dead));
+                    btnPlayerAction.setVisibility(View.INVISIBLE);
                 }
-                btnPlayerAction.setVisibility(View.VISIBLE);
+                txtPlayerStatus.setVisibility(View.VISIBLE);
             }else{
-                txtPlayerStatus.setText(getResources().getText(R.string.game_player_dead));
+                txtPlayerStatus.setVisibility(View.INVISIBLE);
                 btnPlayerAction.setVisibility(View.INVISIBLE);
             }
 
@@ -541,25 +574,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onClick(View v) {
 
-                    //Check if the game started and user is alive or not as well as the user the
-                    //action is set upon
-                    if(GameActivity.this.gameStarted) {
-                        if(GameActivity.this.player.isAlive()) {
-                            if (user.isAlive()) {
-                                GameActivity.this.target = user;
-                            } else {
-                                Toast.makeText(
-                                        GameActivity.this,
-                                        getResources().getText(R.string.game_action_upon_dead),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }else{
-                            Toast.makeText(
-                                    GameActivity.this,
-                                    getResources().getText(R.string.game_action_you_dead),
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                // Check if the user is alive or not as well as the user the
+                //action is set upon
+                if(GameActivity.this.player.isAlive()) {
+                    if (user.isAlive()) {
+                        GameActivity.this.target = user;
+                        Log.i(GameActivity.this.getClass().getName(), GameActivity.this.target.toString());
+                    } else {
+                        Toast.makeText(
+                                GameActivity.this,
+                                getResources().getText(R.string.game_action_upon_dead),
+                                Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    Toast.makeText(
+                            GameActivity.this,
+                            getResources().getText(R.string.game_action_you_dead),
+                            Toast.LENGTH_SHORT).show();
+                }
+
 
                 }
             });
