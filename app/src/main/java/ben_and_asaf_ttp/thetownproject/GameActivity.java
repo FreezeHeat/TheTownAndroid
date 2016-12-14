@@ -62,6 +62,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean day;
     private boolean gameStarted;
     private String msg;
+    private Intent anim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,7 +247,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                                     @Override
                                     public void onFinish() {
-                                        //TODO: send action
+
                                         new AsyncTask<Void, Void, Void>() {
                                             @Override
                                             protected Void doInBackground(Void... voids) {
@@ -295,7 +296,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                         //TODO: Dialog with snitched player
-                        break;
+
+
+
+                    break;
                     case EXECUTE:
 
                         //player was executed - get datapacket with player who was killed
@@ -308,13 +312,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     dp.getPlayer().getUsername()));
                         }
                         msg = msg.concat("*</font><br/>");
+                        anim = new Intent(GameActivity.this,Pop.class);
+                        anim.putExtra("animation","file:///android_asset/execute.html");
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 txtGameChat.append(Html.fromHtml(msg));
+                                startActivity(anim);
+
                             }
                         });
                         //TODO: Animation + Dialog with executed player
+
+
+
+
+
                         break;
                     case PLAYER_JOINED:
 
