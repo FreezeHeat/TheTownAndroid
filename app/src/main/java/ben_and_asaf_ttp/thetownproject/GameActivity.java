@@ -161,6 +161,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 myAdapter.notifyDataSetChanged();
                             }
                         });
+
+                        //Animation if player was murdered
+                        if(dp.getPlayer() != null) {
+                            anim = new Intent(GameActivity.this, Pop.class);
+                            anim.putExtra("animation", "file:///android_asset/murder.html");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(anim);
+                                }
+                            });
+                        }
                         break;
                     case DAY:
                         //reset target
@@ -182,15 +194,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             });
                         }
 
-                        anim = new Intent(GameActivity.this,Pop.class);
-                        anim.putExtra("animation","file:///android_asset/sun.html");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 myAdapter.notifyDataSetChanged();
                                 imgvGamePhase.setImageResource(R.drawable.day);
                                 txtGameChat.append(Html.fromHtml(msg));
-                                startActivity(anim);
                                 countDownTimer = new CountDownTimer(60000, 1000) {
                                     @Override
                                     public void onTick(long millisRemaining) {
@@ -238,7 +247,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }
 
                         anim = new Intent(GameActivity.this,Pop.class);
-                        anim.putExtra("animation","file:///android_asset/sun.html");
+                        anim.putExtra("animation","file:///android_asset/moon.html");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
