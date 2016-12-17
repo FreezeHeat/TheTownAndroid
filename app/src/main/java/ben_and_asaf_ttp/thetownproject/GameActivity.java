@@ -208,17 +208,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                                     @Override
                                     public void onFinish() {
-                                        new AsyncTask<Void, Void, Void>() {
-                                            @Override
-                                            protected Void doInBackground(Void... voids) {
-                                                DataPacket dp = new DataPacket();
-                                                dp.setCommand(Commands.VOTE);
-                                                dp.setPlayer(GameActivity.this.target);
-                                                mService.sendPacket(dp);
-                                                return null;
-                                            }
-                                        }.execute();
-                                        txtGameTimer.setText("");
+                                        if(GameActivity.this.player.isAlive()) {
+                                            new AsyncTask<Void, Void, Void>() {
+                                                @Override
+                                                protected Void doInBackground(Void... voids) {
+                                                    DataPacket dp = new DataPacket();
+                                                    dp.setCommand(Commands.VOTE);
+                                                    dp.setPlayer(GameActivity.this.target);
+                                                    mService.sendPacket(dp);
+                                                    return null;
+                                                }
+                                            }.execute();
+                                            txtGameTimer.setText("");
+                                        }
                                     }
                                 }.start();
                             }
@@ -263,17 +265,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                                     @Override
                                     public void onFinish() {
-
-                                        new AsyncTask<Void, Void, Void>() {
-                                            @Override
-                                            protected Void doInBackground(Void... voids) {
-                                                DataPacket dp = GameActivity.this.player.getRole().action(new DataPacket());
-                                                dp.setPlayer(GameActivity.this.target);
-                                                mService.sendPacket(dp);
-                                                return null;
-                                            }
-                                        }.execute();
-                                        txtGameTimer.setText("");
+                                        if (GameActivity.this.player.isAlive()) {
+                                            new AsyncTask<Void, Void, Void>() {
+                                                @Override
+                                                protected Void doInBackground(Void... voids) {
+                                                    DataPacket dp = GameActivity.this.player.getRole().action(new DataPacket());
+                                                    dp.setPlayer(GameActivity.this.target);
+                                                    mService.sendPacket(dp);
+                                                    return null;
+                                                }
+                                            }.execute();
+                                            txtGameTimer.setText("");
+                                        }
                                     }
                                 }.start();
                             }
@@ -296,12 +299,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         Roles role = dp.getPlayer().getRole();
                         if(role == Roles.KILLER){
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_killer));
-                        }else if (role == Roles.HEALER){
-                            msg = msg.concat(" " + getResources().getString(R.string.game_role_healer));
-                        }else if (role == Roles.SNITCH){
-                            msg = msg.concat(" " + getResources().getString(R.string.game_role_snitch));
                         }else{
-                            msg = msg.concat(" " + getResources().getString(R.string.game_role_citizen));
+                            msg = msg.concat(" " + getResources().getString(R.string.game_role_notKiller));
                         }
                         msg = msg.concat("*</font><br/>");
 
@@ -314,8 +313,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                         //TODO: Dialog with snitched player
-
-
 
                     break;
                     case EXECUTE:
@@ -448,7 +445,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         myIntent = new Intent(GameActivity.this, Lobby.class);
                         startActivity(myIntent);
                         finish();
-                        break;
+                        return;
+                    case DISCONNECT:
+                        ((GlobalResources)getApplication()).getPlayer().setStats(dp.getPlayer().getStats());
+                        return;
                     case SERVER_SHUTDOWN:
                         buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
                         builder.show();
@@ -625,7 +625,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.LENGTH_SHORT).show();
                 }
 
-
                 }
             });
             return convertView;
@@ -664,6 +663,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
+                    countDownTimer.cancel();
                     DataPacket dp = new DataPacket();
                     dp.setCommand(Commands.DISCONNECT);
                     mService.sendPacket(dp);
