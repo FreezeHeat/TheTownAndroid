@@ -7,17 +7,34 @@
     android:weightSum="100"
     tools:context="ben_and_asaf_ttp.thetownproject.GameActivity">
 
+
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:orientation="vertical">
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/gamePlayerRole"
+            android:gravity="center_vertical"
+
+             />
 
         <GridView
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:layout_width="300dp"
             android:id="@+id/game_playerGrid"
             android:background="@drawable/bgsmall"
             android:numColumns="1" />
     </LinearLayout>
+
+
+
+
 
     <LinearLayout
         android:orientation="vertical"
