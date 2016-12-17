@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -643,6 +644,13 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 ((GlobalResources)getApplication()).setStatsPlayer(Lobby.this.player);
                 Lobby.this.startActivity(btnStats);
                 break;
+
+            case R.id.lobby_btn_website:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("10.0.3.2"));
+                startActivity(intent);
             default:
                 break;
         }
