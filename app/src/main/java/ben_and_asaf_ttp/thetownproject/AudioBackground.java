@@ -47,7 +47,6 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        mPlayer.start();
     }
 
     @Override
