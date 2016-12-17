@@ -277,6 +277,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                     }
                     if(timer != null) {
                         timer.cancel();
+                        timer.purge();
                     }
                     myIntent = new Intent(Lobby.this, GameActivity.class);
                     startActivity(myIntent);
@@ -591,6 +592,10 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                         return null;
                     }
                 }.execute();
+                if(timer != null){
+                    timer.cancel();
+                    timer.purge();
+                }
                 Lobby.this.finish();
                 Intent intent = new Intent(Lobby.this, MainActivity.class);
                 startActivity(intent);
