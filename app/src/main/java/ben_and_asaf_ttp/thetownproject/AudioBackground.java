@@ -6,9 +6,10 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 
 public class AudioBackground extends Service implements MediaPlayer.OnPreparedListener{
-    private static final String play = "ben_and_asaf_ttp.thetownproject.PLAY";
-    private static final String pause = "ben_and_asaf_ttp.thetownproject.PAUSE";
-    private MediaPlayer mPlayer = null;
+    private static final String bgType = "BG";
+    private static final String fxType = "FX";
+    private MediaPlayer bg = null;
+    private MediaPlayer fx = null;
 
     public AudioBackground() {}
 
@@ -19,19 +20,29 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mPlayer.create(this, R.raw.bg);
-        mPlayer.setLooping(true);
-        mPlayer.setVolume(0.5f, 0.5f);
-        mPlayer.setOnPreparedListener(this);
-        mPlayer.prepareAsync();
+        switch (intent.getStringExtra("type")){
+            case bgType:
+
+                break;
+            case fxType:
+
+                break;
+        }
+//        mPlayer.create(this, R.raw.bg);
+//        mPlayer.setLooping(true);
+//        mPlayer.setVolume(0.5f, 0.5f);
+//        mPlayer.setOnPreparedListener(this);
+//        mPlayer.prepareAsync();
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPlayer.release();
-        mPlayer = null;
+        bg.release();
+        bg = null;
+        fx.release();
+        fx = null;
     }
 
     @Override
