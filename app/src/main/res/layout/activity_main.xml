@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
-                android:background="@drawable/round_button"
+                android:background="@drawable/round_button_left"
                 android:textStyle="bold"
 
                 android:layout_gravity="center_horizontal"

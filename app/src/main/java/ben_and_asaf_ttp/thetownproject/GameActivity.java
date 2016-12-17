@@ -305,6 +305,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         msg = msg.concat("*</font><br/>");
 
+
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
