@@ -39,8 +39,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         password = new String(preferences.getString(APP_PASSWORD, ""));
         final EditTextPreference editTextPass = (EditTextPreference)findPreference(APP_NEWPASSWORD);
         editTextPass.setText(password);
-        preferences.registerOnSharedPreferenceChangeListener(this);
-
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
@@ -130,6 +128,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             unbindService(mConnection);
             mBound = false;
         }
+        preferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        preferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         preferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 }

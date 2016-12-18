@@ -5,4 +5,9 @@
         android:id="@+id/lobby_add_friend"
         android:icon="@android:drawable/ic_menu_add"></item>
 
+    <item
+        android:title="@string/lobby_menu_website"
+        android:id="@+id/lobby_menu_website"
+        android:icon="@android:drawable/ic_menu_add"></item>
+
 </menu>

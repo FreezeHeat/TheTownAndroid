@@ -107,7 +107,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                 }
             }
         });
-        return START_STICKY;
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
