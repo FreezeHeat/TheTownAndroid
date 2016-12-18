@@ -63,6 +63,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean gameStarted;
     private String msg;
     private Intent anim;
+    private TextView playerRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         txtGameTimer = (TextView)findViewById(R.id.game_txt_timer);
         imgvGamePhase = (ImageView)findViewById(R.id.game_imgv_phase);
         txtGameChat = (TextView)findViewById(R.id.game_chat_txt);
-
+        playerRole = (TextView)findViewById(R.id.gamePlayerRole);
         txtGameChat.setMovementMethod(new ScrollingMovementMethod());
         txtSendMessage.setMovementMethod(new ScrollingMovementMethod());
 
@@ -389,6 +390,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         game.getPlayers().clear();
                         game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
+                        final String gameRole = String.format(
+                                getResources().getString(R.string.game_player_role) , player.getRole().name());
                         game.getPlayers().remove(player);
                         //TODO: Animation
                         runOnUiThread(new Runnable() {
@@ -407,6 +410,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 }.start();
                                 myAdapter.notifyDataSetChanged();
                                 txtGameChat.append(Html.fromHtml(msg));
+                                playerRole.setText(gameRole);
                             }
                         });
 

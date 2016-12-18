@@ -69,6 +69,8 @@
     <string name="game_game_disbanded">Game was disbanded</string>
     <string name="game_citizens_win">Citizens win!</string>
     <string name="game_killers_win">Killers win!</string>
+    <string name="game_player_role">My Role: %1$s</string>
+
 
     <string name="playercard_menu_get_stats">See Stats</string>
 

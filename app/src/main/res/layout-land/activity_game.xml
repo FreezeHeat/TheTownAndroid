@@ -20,7 +20,9 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:id="@+id/gamePlayerRole"
-            android:gravity="center_vertical"
+            android:gravity="center"
+            android:layout_marginBottom="50dp"
+
 
              />
 
