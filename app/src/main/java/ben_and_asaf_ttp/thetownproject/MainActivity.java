@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             builder.setCancelable(false);
             builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-            MainActivity.this.finish();
             ClientConnection.getConnection().closeSocket();
-
+            stopService(new Intent(MainActivity.this, AudioBackground.class));
+            MainActivity.this.finish();
                 }
             });
             builder.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {

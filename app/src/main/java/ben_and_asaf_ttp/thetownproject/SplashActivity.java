@@ -105,6 +105,10 @@ public class SplashActivity extends AppCompatActivity {
                 //Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
                 Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(myIntent);
+                myIntent.setClass(SplashActivity.this, AudioBackground.class);
+                myIntent.putExtra("type", "BG");
+                myIntent.putExtra("sound", R.raw.bg);
+                startService(myIntent);
             }
             else{
 
