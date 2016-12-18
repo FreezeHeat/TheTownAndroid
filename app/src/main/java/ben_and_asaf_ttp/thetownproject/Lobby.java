@@ -344,9 +344,15 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         }
         switch(item.getItemId()){
             case R.id.lobby_add_friend:
-                //TODO: Dialog add friend
                 buildAddFriendDialog();
                 dialog.show();
+                break;
+            case R.id.lobby_menu_website:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("http://10.0.3.2"));
+                startActivity(intent);
                 break;
         }
 
@@ -367,6 +373,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         menu.findItem(R.id.lobby_add_friend).setVisible(drawerOpen);
+        menu.findItem(R.id.lobby_menu_website).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -644,13 +651,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 ((GlobalResources)getApplication()).setStatsPlayer(Lobby.this.player);
                 Lobby.this.startActivity(btnStats);
                 break;
-
-            case R.id.lobby_btn_website:
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse("10.0.3.2"));
-                startActivity(intent);
             default:
                 break;
         }

@@ -80,16 +80,6 @@
                 android:layout_margin="2dp"
                 android:layout_weight="20" />
 
-            <Button
-                android:text="Website"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:background="@drawable/round_button_extrasmall"
-                android:layout_gravity="left"
-                android:id="@+id/lobby_btn_website"
-                android:layout_weight="20"
-                android:layout_marginLeft="40dp" />
         </LinearLayout>
 
         <ListView android:id="@+id/left_drawer"
