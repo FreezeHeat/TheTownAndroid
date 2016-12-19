@@ -8,4 +8,16 @@
         android:key="newpassword">
     </EditTextPreference>
 
+    <ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference android:title="@string/pref_title_bgVolumeBar"
+        android:id="@+id/pref_bgVolumeBar"
+        android:defaultValue="1.0f"
+        android:summary="@string/pref_summary_bgVolumeBar"
+        android:key="bgVolume"></ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference>
+
+    <ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference android:title="@string/pref_title_fxVolumeBar"
+        android:id="@+id/pref_fxVolumeBar"
+        android:defaultValue="1.0f"
+        android:summary="@string/pref_summary_fxVolumeBar"
+        android:key="fxVolume"></ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference>
+
 </PreferenceScreen>

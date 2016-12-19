@@ -21,6 +21,8 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
     private static final String APP_PASSWORD = "password";
     private static final String APP_NEWPASSWORD = "newpassword";
+    private static final String BG_VOLUME = "bgVolume";
+    private static final String FX_VOLUME = "fxVolume";
     private SharedPreferences preferences;
     private String password;
     private String toastMsg;
@@ -90,6 +92,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                     editor.commit();
                 }
             }.execute();
+        }else if(key.equals(BG_VOLUME)){
+            final float vol = getPreferenceScreen().getSharedPreferences().getFloat(key, 1.0f);
+            AudioBackground.getBg().setVolume(vol, vol);
+        }else if(key.equals(FX_VOLUME)){
+            final float vol = getPreferenceScreen().getSharedPreferences().getFloat(key, 1.0f);
         }
     }
 

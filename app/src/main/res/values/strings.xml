@@ -155,4 +155,9 @@
     <string name="pref_summary_editPassword">This option will change your user\'s password.</string>
     <string name="pref_password_empty_or_same">Password\'s empty or equal to the current one</string>
     <string name="pref_password_changed">Password was changed</string>
+    <string name="pref_title_bgVolumeBar">Background Music</string>
+    <string name="pref_summary_bgVolumeBar">Change the background music\'s volume</string>
+    <string name="pref_title_fxVolumeBar">Sound Effects</string>
+    <string name="pref_summary_fxVolumeBar">Change the sound effects\' volume</string>
+
 </resources>

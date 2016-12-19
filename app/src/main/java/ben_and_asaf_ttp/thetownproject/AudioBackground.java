@@ -14,26 +14,26 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
     private static final String fxType = "FX";
     private static int sound = 0;
     private static String type = null;
-    private MediaPlayer bg = null;
-    private MediaPlayer fx = null;
+    private static MediaPlayer bg = null;
+    private static MediaPlayer fx = null;
     SharedPreferences myPrefs;
     private Executor executor;
 
     public AudioBackground() {}
 
-    public MediaPlayer getBg() {
+    public synchronized static MediaPlayer getBg() {
         return bg;
     }
 
-    public void setBg(MediaPlayer bg) {
+    public synchronized void setBg(MediaPlayer bg) {
         this.bg = bg;
     }
 
-    public MediaPlayer getFx() {
+    public synchronized static MediaPlayer getFx() {
         return fx;
     }
 
-    public void setFx(MediaPlayer fx) {
+    public synchronized void setFx(MediaPlayer fx) {
         this.fx = fx;
     }
 
@@ -83,7 +83,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                             getBg().setLooping(true);
                             getBg().setOnPreparedListener(AudioBackground.this);
                         }else{
-                            if(volBg > 0.0f) {
+                            if(volBg <= 0.0f) {
                                 //User wants NO background music
                                 getBg().release();
                                 setBg(null);
@@ -92,7 +92,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                         break;
                     case fxType:
                         final float volFx = myPrefs.getFloat("fxVolume", 1.0f);
-                        if(volFx > 0.0f) {
+                        if(volFx <= 0.0f) {
                             setFx(getFx().create(AudioBackground.this, getSound()));
                             getFx().setVolume(volFx, volFx);
                             getFx().setOnPreparedListener(AudioBackground.this);
