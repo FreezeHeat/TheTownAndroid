@@ -212,6 +212,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     txtSendMessage.setEnabled(true);
                                 }
                             });
+
+                            //Play sound effect
+                            intent.setClass(GameActivity.this, AudioBackground.class);
+                            intent.putExtra("type", "FX");
+                            intent.putExtra("sound", R.raw.morning);
+
                         }
 
                         runOnUiThread(new Runnable() {
@@ -266,6 +272,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     txtSendMessage.setEnabled(false);
                                 }
                             });
+                            //Play sound effect
+                            intent.setClass(GameActivity.this, AudioBackground.class);
+                            intent.putExtra("type", "FX");
+                            intent.putExtra("sound", R.raw.night);
                         }
 
                         anim = new Intent(GameActivity.this,Pop.class);
@@ -333,7 +343,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                         //TODO: Dialog with snitched player
-
+                        //Play sound effect
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.action);
                     break;
                     case EXECUTE:
 
@@ -361,7 +374,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         //TODO: Animation + Dialog with executed player
 
 
-
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.action);
 
 
                         break;
@@ -382,6 +397,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
+
+
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.action);
+
                         break;
                     case PLAYER_LEFT:
 
@@ -448,6 +469,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.removeExtra("type");
                         intent.removeExtra("sound");
                         startActivity(intent);
+
+                        //Play sound effect
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.victory);
+
                         finish();
                         return;
                     case WIN_KILLERS:
@@ -464,6 +491,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.removeExtra("type");
                         intent.removeExtra("sound");
                         startActivity(intent);
+
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.victory);
+
                         finish();
                         return;
                     case GAME_DISBANDED:
