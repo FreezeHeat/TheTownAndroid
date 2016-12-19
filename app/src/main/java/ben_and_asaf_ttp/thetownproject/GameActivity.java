@@ -213,12 +213,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void run() {
                                     txtSendMessage.setEnabled(true);
-                                    txtSendMessage.setText("");
-
-                                    //reset button highlight
-                                    if(btn_target != null) {
-                                        btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
-                                    }
                                 }
                             });
 
@@ -235,6 +229,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 myAdapter.notifyDataSetChanged();
                                 imgvGamePhase.setImageResource(R.drawable.day);
                                 txtGameChat.append(Html.fromHtml(msg));
+                                txtSendMessage.setText("");
+
+                                //reset button highlight
+                                if(btn_target != null) {
+                                    btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                                }
                                 countDownTimer = new CountDownTimer(60000, 1000) {
                                     @Override
                                     public void onTick(long millisRemaining) {
@@ -279,12 +279,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     txtSendMessage.setEnabled(false);
-                                    txtSendMessage.setText(R.string.game_txtSendMessage_blocked);
-
-                                    //reset button highlight
-                                    if(btn_target != null) {
-                                        btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
-                                    }
                                 }
                             });
                             //Play sound effect
@@ -303,6 +297,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 txtGameChat.append(Html.fromHtml(msg));
                                 imgvGamePhase.setImageResource(R.drawable.night);
                                 startActivity(anim);
+                                txtSendMessage.setText(R.string.game_txtSendMessage_blocked);
+
+                                //reset button highlight
+                                if(btn_target != null) {
+                                    btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                                }
                                 countDownTimer = new CountDownTimer(30000, 1000) {
                                     @Override
                                     public void onTick(long millisRemaining) {
@@ -671,7 +671,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     txtPlayerStatus.setText(getResources().getText(R.string.game_player_alive));
 
                     //Day phase is only for voting, night phase is for actions
-                    if (role != null ) {
+                    if (role != null) {
                         if(!day) {
                             btnPlayerAction.setVisibility(View.VISIBLE);
                             if (role == Roles.KILLER) {
@@ -692,6 +692,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     txtPlayerStatus.setText(getResources().getText(R.string.game_player_dead));
                     btnPlayerAction.setVisibility(View.INVISIBLE);
                 }
+
+                if(!GameActivity.this.player.isAlive()){
+                    btnPlayerAction.setVisibility(View.INVISIBLE);
+                }
+
                 txtPlayerStatus.setVisibility(View.VISIBLE);
             }else{
                 txtPlayerStatus.setVisibility(View.INVISIBLE);
