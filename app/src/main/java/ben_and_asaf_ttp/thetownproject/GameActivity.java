@@ -104,11 +104,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             //start game service
             DataPacket dp = null;
+            final Intent intent = new Intent();
 
             while(true){
                 dp = mService.getPacket();
-                Intent myIntent;
-
                 switch(dp.getCommand()){
                     case SEND_MESSAGE:
                         msg = "<font color=\"#009933\">" +
@@ -122,6 +121,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
+
+                        //Play sound effect
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.msg);
+                        startService(intent);
                         break;
                     case SEND_MESSAGE_DEAD:
                         msg = "<font color=\"#cc0000\">*DEAD*</font><font color=\"#009933\">" +
@@ -135,6 +140,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
+
+                        //Play sound effect
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.msg);
                         break;
                     case SEND_MESSAGE_KILLER:
                         msg = "<font color=\"#ff3300\">" +
@@ -148,6 +158,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
+
+                        //Play sound effect
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.msg);
                         break;
                     case REFRESH_PLAYERS:
 
@@ -425,8 +440,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             e.printStackTrace();
                         }
                         //TODO: Dialog
-                        myIntent = new Intent(GameActivity.this, Lobby.class);
-                        startActivity(myIntent);
+                        intent.setClass(GameActivity.this, Lobby.class);
+                        intent.removeExtra("type");
+                        intent.removeExtra("sound");
+                        startActivity(intent);
                         finish();
                         return;
                     case WIN_KILLERS:
@@ -439,15 +456,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             e.printStackTrace();
                         }
                         //TODO: Dialog
-                        myIntent = new Intent(GameActivity.this, Lobby.class);
-                        startActivity(myIntent);
+                        intent.setClass(GameActivity.this, Lobby.class);
+                        intent.removeExtra("type");
+                        intent.removeExtra("sound");
+                        startActivity(intent);
                         finish();
                         return;
                     case GAME_DISBANDED:
                         msg = getResources().getString(R.string.game_game_disbanded);
                         //TODO: AlertDialog
-                        myIntent = new Intent(GameActivity.this, Lobby.class);
-                        startActivity(myIntent);
+                        intent.setClass(GameActivity.this, Lobby.class);
+                        intent.removeExtra("type");
+                        intent.removeExtra("sound");
+                        startActivity(intent);
                         finish();
                         return;
                     case DISCONNECT:
