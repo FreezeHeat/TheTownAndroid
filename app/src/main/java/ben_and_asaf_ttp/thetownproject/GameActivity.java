@@ -213,6 +213,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void run() {
                                     txtSendMessage.setEnabled(true);
+                                    txtSendMessage.setText("");
+
+                                    //reset button highlight
+                                    if(btn_target != null) {
+                                        btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                                    }
                                 }
                             });
 
@@ -273,6 +279,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     txtSendMessage.setEnabled(false);
+                                    txtSendMessage.setText(R.string.game_txtSendMessage_blocked);
+
+                                    //reset button highlight
+                                    if(btn_target != null) {
+                                        btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                                    }
                                 }
                             });
                             //Play sound effect
@@ -384,6 +396,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("sound", R.raw.action);
                         startService(intent);
                         break;
+                    case HEAL:
+                        msg = String.format(
+                                "<font color=\"#0066ff\">*" +
+                                        getResources().getString(R.string.game_attemptedMurder) +
+                                "*</font><br/>");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtGameChat.append(Html.fromHtml(msg));
+                                //TODO: Add dialog
+                            }
+                        });
+
+
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.action);
+                        startService(intent);
+                        break;
                     case PLAYER_JOINED:
 
                         //get a player and players (alert about the player and set the players)
@@ -407,7 +438,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.action);
                         startService(intent);
-
                         break;
                     case PLAYER_LEFT:
 

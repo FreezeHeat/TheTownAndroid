@@ -47,12 +47,14 @@
     <string name="lobby_menu_website">Visit website</string>
 
     <string name="game_txtSendMessage_hint">Enter your message here</string>
+    <string name="game_txtSendMessage_blocked">*Blocked in night phase*</string>
     <string name="game_btnSend">Send</string>
     <string name="game_exitDialog">Are you sure? It will harm your rating..</string>
     <string name="game_kill">Kill</string>
     <string name="game_heal">Heal</string>
     <string name="game_snitch">Snitch</string>
     <string name="game_vote">Vote</string>
+    <string name="game_attemptedMurder">Healer healed the survivor of an attempted murder...</string>
     <string name="game_action_you_dead">You can\'t do anything, you are dead</string>
     <string name="game_action_upon_dead">This player is dead</string>
     <string name="game_player_dead">Dead</string>
