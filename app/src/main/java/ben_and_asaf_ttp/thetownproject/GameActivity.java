@@ -667,7 +667,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    countDownTimer.cancel();
+                    if(countDownTimer != null) {
+                        countDownTimer.cancel();
+                    }
                     DataPacket dp = new DataPacket();
                     dp.setCommand(Commands.DISCONNECT);
                     mService.sendPacket(dp);
