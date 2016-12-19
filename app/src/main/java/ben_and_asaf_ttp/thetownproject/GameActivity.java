@@ -150,6 +150,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.msg);
+                        startService(intent);
                         break;
                     case SEND_MESSAGE_KILLER:
                         msg = "<font color=\"#ff3300\">" +
@@ -168,6 +169,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.msg);
+                        startService(intent);
                         break;
                     case REFRESH_PLAYERS:
 
@@ -218,7 +220,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             intent.setClass(GameActivity.this, AudioBackground.class);
                             intent.putExtra("type", "FX");
                             intent.putExtra("sound", R.raw.morning);
-
+                            startService(intent);
                         }
 
                         runOnUiThread(new Runnable() {
@@ -277,6 +279,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             intent.setClass(GameActivity.this, AudioBackground.class);
                             intent.putExtra("type", "FX");
                             intent.putExtra("sound", R.raw.night);
+                            startService(intent);
                         }
 
                         anim = new Intent(GameActivity.this,Pop.class);
@@ -348,6 +351,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.action);
+                        startService(intent);
                     break;
                     case EXECUTE:
 
@@ -378,8 +382,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.action);
-
-
+                        startService(intent);
                         break;
                     case PLAYER_JOINED:
 
@@ -403,6 +406,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.action);
+                        startService(intent);
 
                         break;
                     case PLAYER_LEFT:
@@ -475,7 +479,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.victory);
-
+                        startService(intent);
                         finish();
                         return;
                     case WIN_KILLERS:
@@ -496,7 +500,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.victory);
-
+                        startService(intent);
                         finish();
                         return;
                     case GAME_DISBANDED:

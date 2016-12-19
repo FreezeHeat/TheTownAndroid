@@ -92,7 +92,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                         break;
                     case fxType:
                         final float volFx = myPrefs.getFloat("fxVolume", 1.0f);
-                        if(volFx <= 0.0f) {
+                        if(volFx > 0.0f) {
                             setFx(getFx().create(AudioBackground.this, getSound()));
                             getFx().setVolume(volFx, volFx);
                             getFx().setOnPreparedListener(AudioBackground.this);
