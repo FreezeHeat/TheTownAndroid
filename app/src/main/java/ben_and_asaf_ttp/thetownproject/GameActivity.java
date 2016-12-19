@@ -7,9 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.provider.CalendarContract;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -635,8 +639,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 //action is set upon
                 if(GameActivity.this.player.isAlive()) {
                     if (user.isAlive()) {
-                        GameActivity.this.target = user;
-                        Log.i(GameActivity.this.getClass().getName(), GameActivity.this.target.toString());
+                        if(GameActivity.this.target.getUsername().equals(user.getUsername())){
+                            GameActivity.this.target = null;
+                            btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                        }else {
+                            GameActivity.this.target = user;
+                            btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_red);
+                            Log.i(GameActivity.this.getClass().getName(), "Target: " + GameActivity.this.target.toString());
+                        }
                     } else {
                         Toast.makeText(
                                 GameActivity.this,
