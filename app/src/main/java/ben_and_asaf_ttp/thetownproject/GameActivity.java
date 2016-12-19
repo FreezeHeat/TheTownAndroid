@@ -200,6 +200,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     startService(announce);
                                 }
                             });
+                            //Play sound effect
+                            intent.setClass(GameActivity.this, AudioBackground.class);
+                            intent.putExtra("type", "FX");
+                            intent.putExtra("sound", R.raw.murder);
+                            startService(intent);
                         }
                         break;
                     case DAY:
