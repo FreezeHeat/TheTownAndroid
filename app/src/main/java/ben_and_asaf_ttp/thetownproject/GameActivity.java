@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Game game;
     private Player player;
     private Player target;
+    private Button btn_target;
     private AlertDialog.Builder builder;
     private GridView grid;
     private EditText txtSendMessage;
@@ -625,7 +626,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             final TextView txtPlayerName = (TextView) convertView.findViewById(R.id.playerCard_txt_playerUsername);
             final TextView txtPlayerStatus = (TextView) convertView.findViewById(R.id.playerCard_txt_playerStatus);
-            final TextView btnPlayerAction = (Button) convertView.findViewById(R.id.playerCard_btn_action);
+            final Button btnPlayerAction = (Button) convertView.findViewById(R.id.playerCard_btn_action);
             final Roles role = GameActivity.this.player.getRole();
 
             txtPlayerName.setText(user.getUsername());
@@ -671,11 +672,21 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 //action is set upon
                 if(GameActivity.this.player.isAlive()) {
                     if (user.isAlive()) {
-                        if(GameActivity.this.target.getUsername().equals(user.getUsername())){
+
+                        //If target is the same, set to null and affect GUI
+                        if(GameActivity.this.target != null && GameActivity.this.target.getUsername().equals(user.getUsername())){
                             GameActivity.this.target = null;
                             btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_inverted);
                         }else {
+
+                            //if target is not the same, affect GUI of previous target if there was any
+                            if(GameActivity.this.target != null){
+
+                                //change GUI from previous target
+                                GameActivity.this.btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                            }
                             GameActivity.this.target = user;
+                            GameActivity.this.btn_target = btnPlayerAction;
                             btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_red);
                             Log.i(GameActivity.this.getClass().getName(), "Target: " + GameActivity.this.target.toString());
                         }
