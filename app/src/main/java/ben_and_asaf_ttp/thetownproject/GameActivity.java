@@ -68,6 +68,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean gameStarted;
     private String msg;
     private Intent anim;
+    private Intent announce;
     private TextView playerRole;
 
     @Override
@@ -189,10 +190,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         if(dp.getPlayer() != null) {
                             anim = new Intent(GameActivity.this, Pop.class);
                             anim.putExtra("animation", "file:///android_asset/murder.html");
+                            announce = new Intent(GameActivity.this, Announce.class);
+                            announce.putExtra("msg", "");
+                            announce.putExtra("icon", "");
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     startActivity(anim);
+                                    startService(announce);
                                 }
                             });
                         }
@@ -499,17 +504,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        //TODO: Dialog
-                        intent.setClass(GameActivity.this, Lobby.class);
-                        intent.removeExtra("type");
-                        intent.removeExtra("sound");
-                        startActivity(intent);
+
+                        //Update user's stats
+                        GameActivity.this.player = dp.getPlayers().get(dp.getPlayers().indexOf(GameActivity.this.player));
+                        ((GlobalResources)getApplication()).setPlayer(GameActivity.this.player);
 
                         //Play sound effect
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.victory);
                         startService(intent);
+
+                        //TODO: Dialog
+                        intent.setClass(GameActivity.this, Lobby.class);
+                        intent.removeExtra("type");
+                        intent.removeExtra("sound");
+                        startActivity(intent);
                         finish();
                         return;
                     case WIN_KILLERS:
@@ -521,16 +531,21 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        //TODO: Dialog
-                        intent.setClass(GameActivity.this, Lobby.class);
-                        intent.removeExtra("type");
-                        intent.removeExtra("sound");
-                        startActivity(intent);
+
+                        //Update user's stats
+                        GameActivity.this.player = dp.getPlayers().get(dp.getPlayers().indexOf(GameActivity.this.player));
+                        ((GlobalResources)getApplication()).setPlayer(GameActivity.this.player);
 
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.victory);
                         startService(intent);
+
+                        //TODO: Dialog
+                        intent.setClass(GameActivity.this, Lobby.class);
+                        intent.removeExtra("type");
+                        intent.removeExtra("sound");
+                        startActivity(intent);
                         finish();
                         return;
                     case GAME_DISBANDED:
