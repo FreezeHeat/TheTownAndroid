@@ -34,6 +34,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private DataPacket dp;
     private SharedPreferences myPrefs;
     private GameService mService;
+    private Button btnSignIn;
     private boolean mBound = false;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +49,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         dp = new DataPacket();
         myPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Button btnSignIn = (Button) findViewById(R.id.login_btnSignIn);
+        btnSignIn = (Button) findViewById(R.id.login_btnSignIn);
         btnSignIn.setOnClickListener(this);
     }
 
     public void login()
     {
+        this.btnSignIn.setEnabled(false);
         this.player.setUsername(this.editUser.getText().toString());
         this.player.setPassword(this.editPassword.getText().toString());
 
@@ -121,7 +123,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     }else{
                         buildExitDialog();
                         builder.show();
+                        return;
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Login.this.btnSignIn.setEnabled(true);
+                        }
+                    });
                 }
             }.execute(this.dp);
         }else{

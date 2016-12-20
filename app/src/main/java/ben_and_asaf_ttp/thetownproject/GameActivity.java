@@ -66,10 +66,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private CountDownTimer countDownTimer;
     private boolean day;
     private boolean gameStarted;
+    private boolean online;
     private String msg;
     private Intent anim;
     private Intent announce;
     private TextView playerRole;
+    private DataPacket dp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         myAdapter = new MyPlayerAdapter(this, R.layout.player_card, game.getPlayers());
         grid.setAdapter(myAdapter);
         registerForContextMenu(grid);
-        day = true;
+        day = false;
 
         executor = new Executor() {
             @Override
@@ -112,11 +114,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         public void run() {
 
             //start game service
-            DataPacket dp = null;
+            dp = null;
             final Intent intent = new Intent();
 
             while(true){
                 dp = mService.getPacket();
+
                 if(dp != null) {
                     Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
                 }else{
@@ -618,7 +621,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     case DISCONNECT:
 
                         //In-case the user disconnected mid-game, update stats (negative rating)
-                        ((GlobalResources)getApplication()).getPlayer().setStats(dp.getPlayer().getStats());
+                        if(dp.getPlayer() != null) {
+                            ((GlobalResources) getApplication()).getPlayer().setStats(dp.getPlayer().getStats());
+                        }
                         return;
                     case SERVER_SHUTDOWN:
                         buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));

@@ -65,6 +65,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private ActionBarDrawerToggle mDrawerToggle;
     private Timer timer;
     private EditText username;
+    private Button btnJoinGame;
     private Executor executor;
 
     @Override
@@ -86,7 +87,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         registerForContextMenu(mDrawerList);
         mDrawerLayout.setOnClickListener(this);
 
-        Button btnJoinGame = (Button) findViewById(R.id.lobby_btn_joinGame);
+        btnJoinGame = (Button) findViewById(R.id.lobby_btn_joinGame);
         Button btnOptions = (Button) findViewById(R.id.lobby_btn_options);
         Button btnStats = (Button) findViewById(R.id.lobby_btn_stats);
         btnJoinGame.setOnClickListener(this);
@@ -179,6 +180,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         ((GlobalResources) ((GlobalResources) getApplication())).setGame(null);
                         dialogProgress.dismiss();
+                        btnJoinGame.setEnabled(true);
                     }
                 });
 
@@ -621,7 +623,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()){
            case R.id.lobby_btn_joinGame:
-
+               btnJoinGame.setEnabled(false);
                //Use this in-case multi-choice of players is needed, for now only 5
                //this.dialogHowManyPlayers.show();
                Lobby.this.dialogProgress.show();
