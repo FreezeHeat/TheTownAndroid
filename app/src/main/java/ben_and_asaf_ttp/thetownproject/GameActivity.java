@@ -246,7 +246,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             });
                         }
 
-                        anim.putExtra("animation","file:///android_asset/moon.html");
+                        anim.putExtra("animation","file:///android_asset/sun.html");
                         startActivity(anim);
                         runOnUiThread(new Runnable() {
                             @Override
@@ -624,6 +624,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         if(dp.getPlayer() != null) {
                             ((GlobalResources) getApplication()).getPlayer().setStats(dp.getPlayer().getStats());
                         }
+                        Intent myIntent = new Intent(GameActivity.this, Lobby.class);
+                        startActivity(myIntent);
+                        GameActivity.this.finish();
                         return;
                     case SERVER_SHUTDOWN:
                         buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
@@ -851,7 +854,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void buildExitDialog() {
         if(builder == null) {
             builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getText(R.string.game_exitDialog));
+            if( (player.isAlive()) || (gameStarted) ) {
+                builder.setMessage(getResources().getText(R.string.game_exitDialog));
+            }else{
+                builder.setMessage(getResources().getText(R.string.general_exitDialog));
+            }
             builder.setCancelable(false);
 
             builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
@@ -862,9 +869,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     DataPacket dp = new DataPacket();
                     dp.setCommand(Commands.DISCONNECT);
                     mService.sendPacket(dp);
-                    Intent myIntent = new Intent(GameActivity.this, Lobby.class);
-                    startActivity(myIntent);
-                    GameActivity.this.finish();
                 }
             });
             builder.setNegativeButton(getResources().getString(R.string.general_no), new DialogInterface.OnClickListener() {
