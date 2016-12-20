@@ -532,11 +532,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     @Override
                                     public void onFinish() {
                                         txtGameTimer.setText("");
-
-                                        //first night cycle is when the game truly starts
-                                        gameStarted = true;
                                     }
                                 }.start();
+
+                                //first night cycle is when the game truly starts
+                                gameStarted = true;
                                 myAdapter.notifyDataSetChanged();
                                 txtGameChat.append(Html.fromHtml(msg));
                                 playerRole.setText(gameRole);
