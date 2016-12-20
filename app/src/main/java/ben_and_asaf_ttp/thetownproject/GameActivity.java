@@ -202,12 +202,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //Animation if player was murdered
                         if(dp.getPlayer() != null) {
-                            msg = String.format(
+                            final String message = String.format(
                                     "<font color=\"#0066ff\">*" +
                                             getResources().getString(R.string.game_murdered) +
                                     "*</font><br/>", dp.getPlayer().getUsername());
                             anim.putExtra("animation", "file:///android_asset/murder.html");
-                            announce.putExtra("msg", Html.fromHtml(msg).toString());
+                            announce.putExtra("msg", Html.fromHtml(message).toString());
                             announce.removeExtra("icon");
                             startActivity(anim);
                             startActivity(announce);
@@ -215,7 +215,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void run() {
                                     myAdapter.notifyDataSetChanged();
-                                    txtGameChat.append(Html.fromHtml(msg));
+                                    txtGameChat.append(Html.fromHtml(message));
                                 }
                             });
 
@@ -293,6 +293,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         startService(intent);
                         break;
                     case NIGHT:
+                        //fixes problems with player buttons appearing / disappearing in the wrong phases
+                        gameStarted = true;
+
                         //reset target
                         GameActivity.this.target = null;
 
@@ -536,7 +539,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 }.start();
 
                                 //first night cycle is when the game truly starts
-                                gameStarted = true;
                                 myAdapter.notifyDataSetChanged();
                                 txtGameChat.append(Html.fromHtml(msg));
                                 playerRole.setText(gameRole);

@@ -26,8 +26,6 @@ public class Announce extends Activity {
         txtMsg = (TextView)findViewById(R.id.announce_txt_gameAnnounce);
         imgvIcon = (ImageView)findViewById(R.id.announce_imgv_icon);
 
-        Log.i("Announce", this.getIntent().getStringExtra("msg"));
-
         txtMsg.setText(this.getIntent().getStringExtra("msg"));
         final int icon = this.getIntent().getIntExtra("icon", -1);
         if(icon != -1){
