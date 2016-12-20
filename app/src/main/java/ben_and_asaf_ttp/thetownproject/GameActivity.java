@@ -903,4 +903,21 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         buildExitDialog();
         builder.show();
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        final Intent myIntent = new Intent(GameActivity.this, AudioBackground.class);
+        myIntent.setClass(GameActivity.this, AudioBackground.class);
+        stopService(myIntent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final Intent myIntent = new Intent(GameActivity.this, AudioBackground.class);
+        myIntent.setClass(GameActivity.this, AudioBackground.class);
+        myIntent.putExtra("type", "BG");
+        myIntent.putExtra("sound", R.raw.bg);
+        startService(myIntent);
+    }
 }

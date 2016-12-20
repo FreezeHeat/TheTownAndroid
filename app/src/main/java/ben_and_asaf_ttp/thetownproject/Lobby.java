@@ -657,4 +657,21 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 break;
         }
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        final Intent myIntent = new Intent(Lobby.this, AudioBackground.class);
+        myIntent.setClass(Lobby.this, AudioBackground.class);
+        stopService(myIntent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final Intent myIntent = new Intent(Lobby.this, AudioBackground.class);
+        myIntent.setClass(Lobby.this, AudioBackground.class);
+        myIntent.putExtra("type", "BG");
+        myIntent.putExtra("sound", R.raw.bg);
+        startService(myIntent);
+    }
 }
