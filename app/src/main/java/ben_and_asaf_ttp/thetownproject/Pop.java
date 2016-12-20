@@ -11,11 +11,6 @@ import android.webkit.WebView;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-/**
- * Created by user on 26/11/2016.
- */
-
 public class Pop extends Activity{
 
     WebView webView;
@@ -30,12 +25,6 @@ public class Pop extends Activity{
 
         webView = (WebView)findViewById(R.id.webView);
         webView.loadUrl(this.getIntent().getStringExtra("animation"));
-
-
-        //webView.loadUrl("file:///android_asset/moon.html");
-        //webView.loadUrl("file:///android_asset/execute.html");
-        //webView.loadUrl("file:///android_asset/sun.html");
-        //webView.loadUrl("file:///android_asset/murder.html");
 
         Timer t = new Timer();
         t.schedule(new TimerTask() {

@@ -87,6 +87,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         txtGameChat.setMovementMethod(new ScrollingMovementMethod());
         txtSendMessage.setMovementMethod(new ScrollingMovementMethod());
 
+        anim = new Intent(GameActivity.this, Pop.class);
+        announce = new Intent(GameActivity.this, Announce.class);
+
         game = ((GlobalResources)getApplication()).getGame();
         player = ((GlobalResources)getApplication()).getPlayer();
         gameLogic = new GameLogic();
@@ -114,6 +117,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             while(true){
                 dp = mService.getPacket();
+                if(dp != null) {
+                    Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
+                }else{
+                    Log.e(this.getClass().getName(), "DataPacket is null");
+                    buildConfirmDialog(getResources().getString(R.string.general_connection_problem));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.show();
+                        }
+                    });
+                    return;
+                }
+
                 switch(dp.getCommand()){
                     case SEND_MESSAGE:
                         msg = "<font color=\"#009933\">" +
@@ -179,27 +196,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         game.getPlayers().remove(player);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myAdapter.notifyDataSetChanged();
-                            }
-                        });
 
                         //Animation if player was murdered
                         if(dp.getPlayer() != null) {
-                            anim = new Intent(GameActivity.this, Pop.class);
+                            msg = String.format(
+                                    "<font color=\"#0066ff\">*" +
+                                            getResources().getString(R.string.game_murdered) +
+                                    "*</font><br/>", dp.getPlayer().getUsername());
                             anim.putExtra("animation", "file:///android_asset/murder.html");
-                            announce = new Intent(GameActivity.this, Announce.class);
-                            announce.putExtra("msg", "");
-                            announce.putExtra("icon", "");
+                            announce.putExtra("msg", Html.fromHtml(msg).toString());
+                            announce.removeExtra("icon");
+                            startActivity(anim);
+                            startActivity(announce);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    startActivity(anim);
-                                    startService(announce);
+                                    myAdapter.notifyDataSetChanged();
+                                    txtGameChat.append(Html.fromHtml(msg));
                                 }
                             });
+
                             //Play sound effect
                             intent.setClass(GameActivity.this, AudioBackground.class);
                             intent.putExtra("type", "FX");
@@ -225,14 +241,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     txtSendMessage.setEnabled(true);
                                 }
                             });
-
-                            //Play sound effect
-                            intent.setClass(GameActivity.this, AudioBackground.class);
-                            intent.putExtra("type", "FX");
-                            intent.putExtra("sound", R.raw.morning);
-                            startService(intent);
                         }
 
+                        anim.putExtra("animation","file:///android_asset/moon.html");
+                        startActivity(anim);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -264,19 +276,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                                     return null;
                                                 }
                                             }.execute();
-                                            txtGameTimer.setText("");
                                         }
+                                        txtGameTimer.setText("");
                                     }
                                 }.start();
                             }
                         });
+
+                        //Play sound effect
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.morning);
+                        startService(intent);
                         break;
                     case NIGHT:
                         //reset target
                         GameActivity.this.target = null;
-
-                        //first night cycle is when the game truly starts
-                        gameStarted = true;
 
                         //night cycle - change GUI and chat
                         day = false;
@@ -291,22 +306,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     txtSendMessage.setEnabled(false);
                                 }
                             });
-                            //Play sound effect
-                            intent.setClass(GameActivity.this, AudioBackground.class);
-                            intent.putExtra("type", "FX");
-                            intent.putExtra("sound", R.raw.night);
-                            startService(intent);
                         }
 
-                        anim = new Intent(GameActivity.this,Pop.class);
                         anim.putExtra("animation","file:///android_asset/moon.html");
+                        startActivity(anim);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 myAdapter.notifyDataSetChanged();
                                 txtGameChat.append(Html.fromHtml(msg));
                                 imgvGamePhase.setImageResource(R.drawable.night);
-                                startActivity(anim);
                                 txtSendMessage.setText(R.string.game_txtSendMessage_blocked);
 
                                 //reset button highlight
@@ -331,12 +340,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                                     return null;
                                                 }
                                             }.execute();
-                                            txtGameTimer.setText("");
                                         }
+                                        txtGameTimer.setText("");
                                     }
                                 }.start();
                             }
                         });
+
+                        //Play sound effect
+                        intent.setClass(GameActivity.this, AudioBackground.class);
+                        intent.putExtra("type", "FX");
+                        intent.putExtra("sound", R.raw.night);
+                        startService(intent);
+
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
@@ -359,22 +375,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_notKiller));
                         }
                         msg = msg.concat("*</font><br/>");
-
-
-
+                        announce.putExtra("msg", Html.fromHtml(msg).toString());
+                        announce.removeExtra("icon");
+                        startActivity(announce);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
-                        //TODO: Dialog with snitched player
+
                         //Play sound effect
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.action);
                         startService(intent);
-                    break;
+                        break;
                     case EXECUTE:
 
                         //player was executed - get datapacket with player who was killed
@@ -387,19 +403,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     dp.getPlayer().getUsername()));
                         }
                         msg = msg.concat("*</font><br/>");
-                        anim = new Intent(GameActivity.this,Pop.class);
                         anim.putExtra("animation","file:///android_asset/execute.html");
+                        announce.putExtra("msg", Html.fromHtml(msg).toString());
+                        announce.removeExtra("icon");
+                        startActivity(anim);
+                        startActivity(announce);
 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 txtGameChat.append(Html.fromHtml(msg));
-                                startActivity(anim);
+
 
                             }
                         });
-                        //TODO: Animation + Dialog with executed player
-
 
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
@@ -411,14 +428,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 "<font color=\"#0066ff\">*" +
                                         getResources().getString(R.string.game_attemptedMurder) +
                                 "*</font><br/>");
+                        announce.putExtra("msg", Html.fromHtml(msg).toString());
+                        announce.removeExtra("icon");
+                        startActivity(announce);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 txtGameChat.append(Html.fromHtml(msg));
-                                //TODO: Add dialog
                             }
                         });
-
 
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
@@ -469,16 +487,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     case READY:
 
                         //game begun (30 seconds wait and starting DAY phase) - get players
-                        msg =  "<font color=\"#0066ff\">*" +
-                                getResources().getString(R.string.game_ready_phase) +
-                                "*</font><br/>";
                         game.getPlayers().clear();
                         game.getPlayers().addAll(dp.getPlayers());
                         player = game.getPlayers().get(game.getPlayers().indexOf(player));
                         final String gameRole = String.format(
                                 getResources().getString(R.string.game_player_role) , player.getRole().name());
                         game.getPlayers().remove(player);
-                        //TODO: Animation
+
+                        int icon = -1;
+                        switch (player.getRole()){
+                            case KILLER:
+                                icon = R.drawable.killer;
+                                break;
+                            case CITIZEN:
+                                icon = R.drawable.citizen;
+                                break;
+                            case HEALER:
+                                icon = R.drawable.doctor;
+                                break;
+                            case SNITCH:
+                                icon = R.drawable.snitch;
+                                break;
+                        }
+                        msg = String.format(getResources().getString(R.string.game_player_role), player.getRole().name());
+                        announce.putExtra("msg", Html.fromHtml(msg).toString());
+                        announce.putExtra("icon", icon);
+
+                        msg =  "<font color=\"#0066ff\">*" +
+                                getResources().getString(R.string.game_ready_phase) +
+                                "*</font><br/>";
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -491,11 +529,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     @Override
                                     public void onFinish() {
                                         txtGameTimer.setText("");
+
+                                        //first night cycle is when the game truly starts
+                                        gameStarted = true;
                                     }
                                 }.start();
                                 myAdapter.notifyDataSetChanged();
                                 txtGameChat.append(Html.fromHtml(msg));
                                 playerRole.setText(gameRole);
+                                startActivity(announce);
                             }
                         });
 
@@ -512,7 +554,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //Update user's stats
                         GameActivity.this.player = dp.getPlayers().get(dp.getPlayers().indexOf(GameActivity.this.player));
-                        ((GlobalResources)getApplication()).setPlayer(GameActivity.this.player);
+                        ((GlobalResources)getApplication()).getPlayer().setStats(GameActivity.this.player.getStats());
+
+                        announce.putExtra("msg", msg);
+                        announce.removeExtra("icon");
+                        startActivity(announce);
 
                         //Play sound effect
                         intent.setClass(GameActivity.this, AudioBackground.class);
@@ -520,7 +566,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("sound", R.raw.victory);
                         startService(intent);
 
-                        //TODO: Dialog
                         intent.setClass(GameActivity.this, Lobby.class);
                         intent.removeExtra("type");
                         intent.removeExtra("sound");
@@ -539,14 +584,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //Update user's stats
                         GameActivity.this.player = dp.getPlayers().get(dp.getPlayers().indexOf(GameActivity.this.player));
-                        ((GlobalResources)getApplication()).setPlayer(GameActivity.this.player);
+                        ((GlobalResources)getApplication()).getPlayer().setStats(GameActivity.this.player.getStats());
+
+                        announce.putExtra("msg", msg);
+                        announce.removeExtra("icon");
+                        startActivity(announce);
 
                         intent.setClass(GameActivity.this, AudioBackground.class);
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.victory);
                         startService(intent);
 
-                        //TODO: Dialog
                         intent.setClass(GameActivity.this, Lobby.class);
                         intent.removeExtra("type");
                         intent.removeExtra("sound");
@@ -554,27 +602,32 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         finish();
                         return;
                     case GAME_DISBANDED:
-                        msg = getResources().getString(R.string.game_game_disbanded);
-                        //TODO: AlertDialog
+                        buildConfirmDialog(getResources().getString(R.string.game_game_disbanded));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                builder.show();
+                            }
+                        });
+
                         intent.setClass(GameActivity.this, Lobby.class);
                         intent.removeExtra("type");
                         intent.removeExtra("sound");
                         startActivity(intent);
-                        finish();
                         return;
                     case DISCONNECT:
+
+                        //In-case the user disconnected mid-game, update stats (negative rating)
                         ((GlobalResources)getApplication()).getPlayer().setStats(dp.getPlayer().getStats());
                         return;
                     case SERVER_SHUTDOWN:
                         buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
-                        builder.show();
-                        return;
-                    default:
-                        if(dp != null) {
-                            Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
-                        }else{
-                            Log.e(this.getClass().getName(), "DataPacket is null");
-                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                builder.show();
+                            }
+                        });
                         return;
                 }
             }
@@ -689,34 +742,32 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             if(gameStarted) {
                 if (user.isAlive()) {
                     txtPlayerStatus.setText(getResources().getText(R.string.game_player_alive));
-
-                    //Day phase is only for voting, night phase is for actions
-                    if (role != null) {
-                        if(!day) {
-                            btnPlayerAction.setVisibility(View.VISIBLE);
-                            if (role == Roles.KILLER) {
-                                btnPlayerAction.setText(getResources().getText(R.string.game_kill));
-                            } else if (role == Roles.HEALER) {
-                                btnPlayerAction.setText(getResources().getText(R.string.game_heal));
-                            } else if (role == Roles.SNITCH) {
-                                btnPlayerAction.setText(getResources().getText(R.string.game_snitch));
-                            }else{
-                                btnPlayerAction.setVisibility(View.INVISIBLE);
+                    if(GameActivity.this.player.isAlive()){
+                        //Day phase is only for voting, night phase is for actions
+                        if (role != null) {
+                            if (!day) {
+                                btnPlayerAction.setVisibility(View.VISIBLE);
+                                if (role == Roles.KILLER) {
+                                    btnPlayerAction.setText(getResources().getText(R.string.game_kill));
+                                } else if (role == Roles.HEALER) {
+                                    btnPlayerAction.setText(getResources().getText(R.string.game_heal));
+                                } else if (role == Roles.SNITCH) {
+                                    btnPlayerAction.setText(getResources().getText(R.string.game_snitch));
+                                } else {
+                                    btnPlayerAction.setVisibility(View.INVISIBLE);
+                                }
+                            } else {
+                                btnPlayerAction.setText(getResources().getText(R.string.game_vote));
+                                btnPlayerAction.setVisibility(View.VISIBLE);
                             }
-                        }else{
-                            btnPlayerAction.setText(getResources().getText(R.string.game_vote));
-                            btnPlayerAction.setVisibility(View.VISIBLE);
                         }
+                    }else{
+                        btnPlayerAction.setVisibility(View.INVISIBLE);
                     }
                 } else {
                     txtPlayerStatus.setText(getResources().getText(R.string.game_player_dead));
                     btnPlayerAction.setVisibility(View.INVISIBLE);
                 }
-
-                if(!GameActivity.this.player.isAlive()){
-                    btnPlayerAction.setVisibility(View.INVISIBLE);
-                }
-
                 txtPlayerStatus.setVisibility(View.VISIBLE);
             }else{
                 txtPlayerStatus.setVisibility(View.INVISIBLE);
@@ -819,14 +870,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void buildConfirmDialog(String msg) {
+    public void buildConfirmDialog(final String msg) {
         builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         builder.setMessage(msg);
         builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 GameActivity.this.finish();
-                ClientConnection.getConnection().closeSocket();
+                if(!msg.equals(R.string.game_game_disbanded)) {
+                    ClientConnection.getConnection().closeSocket();
+                }
             }
         });
         if(countDownTimer != null) {

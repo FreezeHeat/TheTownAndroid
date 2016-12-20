@@ -67,6 +67,7 @@
     <string name="game_role_killer">Killer</string>
     <string name="game_executed_other">%1$s was executed!</string>
     <string name="game_executed_you">You were executed!</string>
+    <string name="game_murdered">%1$s was murdered</string>
     <string name="game_player_joined">%1$s has joined</string>
     <string name="game_player_left">%1$s has left</string>
     <string name="game_game_disbanded">Game was disbanded</string>
