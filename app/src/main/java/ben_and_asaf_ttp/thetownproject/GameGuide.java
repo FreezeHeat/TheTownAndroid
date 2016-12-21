@@ -174,68 +174,65 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
 
             case 5:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase2));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
                 break;
 
             case 6:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase3));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(txtGameChat), true);
                 break;
 
             case 7:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase4));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(btnPlayerAction), true);
                 break;
 
             case 8:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase5));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(imgvGamePhase), true);
                 break;
 
             case 9:
                 showcaseView.setContentText(getString(R.string.gameGuide_timer1));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(txtGameTimer), true);
                 break;
 
             case 10:
                 showcaseView.setContentText(getString(R.string.gameGuide_timer2));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
                 break;
             case 11:
                 showcaseView.setContentText(getString(R.string.gameGuide_timer3));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
                 break;
             case 12:
                 showcaseView.setContentText(getString(R.string.gameGuide_role1));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(imgvGamePhase), true);
                 break;
             case 13:
                 showcaseView.setContentText(getString(R.string.gameGuide_role2));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(playerRole), true);
                 break;
             case 14:
                 showcaseView.setContentText(getString(R.string.gameGuide_role3));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 15:
                 showcaseView.setContentText(getString(R.string.gameGuide_role4));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 16:
                 showcaseView.setContentText(getString(R.string.gameGuide_role5));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 17:
                 showcaseView.setContentText(getString(R.string.gameGuide_role6));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 18:
                 showcaseView.setContentText(getString(R.string.gameGuide_role7));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 19:
                 showcaseView.setContentText(getString(R.string.gameGuide_role8));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(imgvGamePhase), true);
                 break;
             case 20:
                 showcaseView.setTarget(Target.NONE);
