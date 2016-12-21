@@ -165,4 +165,27 @@
     <string name="pref_title_fxVolumeBar">Sound Effects</string>
     <string name="pref_summary_fxVolumeBar">Change the sound effects\' volume</string>
 
+    <string name="gameGuide_btn_next">Next</string>
+    <string name="gameGuide_btn_close">Close</string>
+    <string name="gameGuide_gameChat">This the game\'s chat, There are user messages and game event messages</string>
+    <string name="gameGuide_timer1">This is the phase\'s timer, it tells how much time\'s left to act until the next phase</string>
+    <string name="gameGuide_timer2">Note that there's a READY phase before the game starts, where you can chat and see your role</string>
+    <string name="gameGuide_timer3">The timer also serves as a player counter, each game requires 5 players</string>
+    <string name="gameGuide_gamePhase1">This is the current game\'s phase, which can be NIGHT or DAY</string>
+    <string name="gameGuide_gamePhase2">Current phase is the NIGHT phase, where you can play your role's action</string>
+    <string name="gameGuide_gamePhase3">Chat is blocked when it's NIGHT and unlocked when it's DAY</string>
+    <string name="gameGuide_gamePhase4">In the DAY phase, you will have the chance to vote against another player</string>
+    <string name="gameGuide_gamePhase5">Most voted player will be executed by the town\'s people</string>
+    <string name="gameGuide_grid1">This is the players list, all players except you are listed here</string>
+    <string name="gameGuide_grid2">You can see the player\'s username, status(Alive or Dead) and the action button</string>
+    <string name="gameGuide_grid3">Your action will differ based on your role</string>
+    <string name="gameGuide_role1">The game\'s players are split between the KILLER and CITIZENS</string>
+    <string name="gameGuide_role2">KILLER - his goal is to kill all CITIZENS</string>
+    <string name="gameGuide_role3">CITIZENS - this group includes 3 roles CITIZEN, HEALER and SNITCH</string>
+    <string name="gameGuide_role4">CITIZEN - no night abilities, but can still vote and affect the game</string>
+    <string name="gameGuide_role5">HEALER - can heal a player who was murdered in the same night, cannot heal dead people</string>
+    <string name="gameGuide_role6">SNITCH - can find out if someone\'s the killer or not</string>
+    <string name="gameGuide_role7">The CITIZENS\' goal is to execute the killer by vote</string>
+    <string name="gameGuide_role8">Whoever reaches the goal wins the game</string>
+
 </resources>

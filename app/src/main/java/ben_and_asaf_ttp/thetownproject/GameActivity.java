@@ -466,12 +466,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
-
-
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.action);
-                        startService(intent);
                         break;
                     case PLAYER_LEFT:
 
@@ -523,6 +517,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 getResources().getString(R.string.game_ready_phase) +
                                 "*</font><br/>";
 
+                        startActivity(announce);
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -542,7 +538,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 myAdapter.notifyDataSetChanged();
                                 txtGameChat.append(Html.fromHtml(msg));
                                 playerRole.setText(gameRole);
-                                startActivity(announce);
                             }
                         });
 
@@ -692,6 +687,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             mBound = false;
         }
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!AudioBackground.isPlaying()) {
+            final Intent myIntent = new Intent(GameActivity.this, AudioBackground.class);
+            myIntent.setClass(GameActivity.this, AudioBackground.class);
+            myIntent.putExtra("type", "BG");
+            myIntent.putExtra("sound", R.raw.bg);
+            startService(myIntent);
+        }
     }
 
     /** Defines callbacks for service binding, passed to bindService() */
@@ -902,22 +909,5 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         buildExitDialog();
         builder.show();
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        final Intent myIntent = new Intent(GameActivity.this, AudioBackground.class);
-        myIntent.setClass(GameActivity.this, AudioBackground.class);
-        stopService(myIntent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        final Intent myIntent = new Intent(GameActivity.this, AudioBackground.class);
-        myIntent.setClass(GameActivity.this, AudioBackground.class);
-        myIntent.putExtra("type", "BG");
-        myIntent.putExtra("sound", R.raw.bg);
-        startService(myIntent);
     }
 }

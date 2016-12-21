@@ -6,7 +6,13 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:background="@android:color/black"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:windowIsTranslucent="true"
+    android:windowBackground="@android:color/transparent"
+    android:windowContentOverlay="@null"
+    android:windowNoTitle="true"
+    android:windowIsFloating="true"
+    android:backgroundDimEnabled="false" >
 
     <ImageView
         android:layout_width="wrap_content"

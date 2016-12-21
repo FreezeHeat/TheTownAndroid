@@ -142,20 +142,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     protected void onResume() {
         super.onResume();
         preferences.registerOnSharedPreferenceChangeListener(this);
-        final Intent myIntent = new Intent(SettingsActivity.this, AudioBackground.class);
-        myIntent.setClass(SettingsActivity.this, AudioBackground.class);
-        myIntent.putExtra("type", "BG");
-        myIntent.putExtra("sound", R.raw.bg);
-        startService(myIntent);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         preferences.unregisterOnSharedPreferenceChangeListener(this);
-        final Intent myIntent = new Intent(SettingsActivity.this, AudioBackground.class);
-        myIntent.setClass(SettingsActivity.this, AudioBackground.class);
-        stopService(myIntent);
     }
 
 }

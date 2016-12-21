@@ -16,6 +16,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
     private static String type = null;
     private static MediaPlayer bg = null;
     private static MediaPlayer fx = null;
+    private static boolean isPlaying;
     SharedPreferences myPrefs;
     private Executor executor;
 
@@ -35,6 +36,10 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
 
     public synchronized void setFx(MediaPlayer fx) {
         this.fx = fx;
+    }
+
+    public static boolean isPlaying() {
+        return isPlaying;
     }
 
     private synchronized String getType(){
@@ -69,7 +74,6 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
     public int onStartCommand(Intent intent, int flags, int startId) {
         setType(intent.getStringExtra("type"));
         setSound(intent.getIntExtra("sound", -1));
-
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -77,17 +81,20 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                 switch (getType()){
                     case bgType:
                         final float volBg = myPrefs.getFloat("bgVolume", 1.0f);
-                        if(getBg() == null) {
-                            setBg(getBg().create(AudioBackground.this, getSound()));
-                            getBg().setVolume(volBg, volBg);
-                            getBg().setLooping(true);
-                            getBg().setOnPreparedListener(AudioBackground.this);
-                        }else{
-                            if(volBg <= 0.0f) {
-                                //User wants NO background music
-                                getBg().release();
-                                setBg(null);
+                        if( (!isPlaying) && volBg > 0.0f ) {
+                            if (getBg() == null) {
+                                setBg(getBg().create(AudioBackground.this, getSound()));
+                                getBg().setVolume(volBg, volBg);
+                                getBg().setLooping(true);
+                                getBg().setOnPreparedListener(AudioBackground.this);
                             }
+                        }else{
+                                if (volBg <= 0.0f) {
+                                    //User wants NO background music
+                                    isPlaying = false;
+                                    getBg().release();
+                                    setBg(null);
+                                }
                         }
                         break;
                     case fxType:
@@ -107,13 +114,14 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                 }
             }
         });
-        return super.onStartCommand(intent, flags, startId);
+        return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         if(getBg() != null) {
+            isPlaying = false;
             getBg().release();
             setBg(null);
         }
@@ -132,6 +140,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                 switch (getType()){
                     case bgType:
                         getBg().start();
+                        isPlaying = true;
                         break;
                     case fxType:
                         getFx().start();

@@ -32,7 +32,7 @@ public class ClientConnection {
     //10.0.2.2 - is the IP for the external localhost, because the VIRTUAL MACHINE of the android device
     //already is the 127.0.0.1 - the external IP to the "real" localhost is 10.0.2.2
     //For GENYMOTION - use 10.0.3.2
-    private String hostname = "94.230.85.87";
+    private String hostname = "10.0.3.2";
 
     /**
      * Port number, used with hostname <i>e.g. (127.0.0.1:5555)</i>

@@ -69,21 +69,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        final Intent myIntent = new Intent(MainActivity.this, AudioBackground.class);
-        myIntent.setClass(MainActivity.this, AudioBackground.class);
-        stopService(myIntent);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        final Intent myIntent = new Intent(MainActivity.this, AudioBackground.class);
-        myIntent.setClass(MainActivity.this, AudioBackground.class);
-        myIntent.putExtra("type", "BG");
-        myIntent.putExtra("sound", R.raw.bg);
-        startService(myIntent);
+        if(!AudioBackground.isPlaying()) {
+            final Intent myIntent = new Intent(MainActivity.this, AudioBackground.class);
+            myIntent.setClass(MainActivity.this, AudioBackground.class);
+            myIntent.putExtra("type", "BG");
+            myIntent.putExtra("sound", R.raw.bg);
+            startService(myIntent);
+        }
     }
 
     @Override

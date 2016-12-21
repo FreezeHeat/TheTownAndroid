@@ -4,18 +4,19 @@
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-
-
-
-    >
+    android:windowIsTranslucent="true"
+    android:windowBackground="@android:color/transparent"
+    android:windowContentOverlay="@null"
+    android:windowNoTitle="true"
+    android:windowIsFloating="true"
+    android:backgroundDimEnabled="false" >
 <WebView
 
     android:id="@+id/webView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    >
+    android:layout_centerVertical="true">
 
 </WebView>
 

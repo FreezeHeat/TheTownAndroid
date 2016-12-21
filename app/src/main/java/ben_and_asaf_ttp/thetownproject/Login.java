@@ -170,11 +170,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             editPassword.setText("");
         }
 
-        final Intent myIntent = new Intent(Login.this, AudioBackground.class);
-        myIntent.setClass(Login.this, AudioBackground.class);
-        myIntent.putExtra("type", "BG");
-        myIntent.putExtra("sound", R.raw.bg);
-        startService(myIntent);
+        if(!AudioBackground.isPlaying()) {
+            final Intent myIntent = new Intent(Login.this, AudioBackground.class);
+            myIntent.setClass(Login.this, AudioBackground.class);
+            myIntent.putExtra("type", "BG");
+            myIntent.putExtra("sound", R.raw.bg);
+            startService(myIntent);
+        }
     }
 
     @Override
@@ -231,12 +233,5 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             default:
                 break;
         }
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        final Intent myIntent = new Intent(Login.this, AudioBackground.class);
-        myIntent.setClass(Login.this, AudioBackground.class);
-        stopService(myIntent);
     }
 }

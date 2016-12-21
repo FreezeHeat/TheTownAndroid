@@ -19,7 +19,7 @@
         <activity
             android:name=".Announce"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Holo.Dialog"></activity>
+            android:theme="@android:style/Theme.Holo.Dialog" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
@@ -54,7 +54,6 @@
             android:name=".GameService"
             android:exported="false" />
 
-        <activity android:name=".Test" />
         <activity
             android:name=".StatsActivity"
             android:screenOrientation="landscape"
@@ -63,7 +62,9 @@
         <service
             android:name=".AudioBackground"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".GameGuide"></activity>
     </application>
 
 </manifest>

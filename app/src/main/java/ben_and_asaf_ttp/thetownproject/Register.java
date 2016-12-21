@@ -203,6 +203,18 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(!AudioBackground.isPlaying()) {
+            final Intent myIntent = new Intent(Register.this, AudioBackground.class);
+            myIntent.setClass(Register.this, AudioBackground.class);
+            myIntent.putExtra("type", "BG");
+            myIntent.putExtra("sound", R.raw.bg);
+            startService(myIntent);
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.register_btnConfirm:
@@ -214,22 +226,5 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             default:
                 break;
         }
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        final Intent myIntent = new Intent(Register.this, AudioBackground.class);
-        myIntent.setClass(Register.this, AudioBackground.class);
-        stopService(myIntent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        final Intent myIntent = new Intent(Register.this, AudioBackground.class);
-        myIntent.setClass(Register.this, AudioBackground.class);
-        myIntent.putExtra("type", "BG");
-        myIntent.putExtra("sound", R.raw.bg);
-        startService(myIntent);
     }
 }
