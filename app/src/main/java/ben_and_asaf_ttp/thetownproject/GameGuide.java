@@ -40,13 +40,16 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
     TextView txtPlayerStatus;
     Button btnPlayerAction;
     ImageView imgvGamePhase;
-    View playerLine;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
 
         final ArrayList<Player> list = new ArrayList<Player>();
         list.add(new Player("Dan", "1"));
@@ -60,7 +63,7 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
 
         grid = (GridView)findViewById(R.id.game_playerGrid);
         grid.setAdapter(new MyPlayerAdapter(this, R.layout.player_card, list));
-
+        grid.setAlpha(0.4f);
         txtGameTimer = (TextView)findViewById(R.id.game_txt_timer);
         txtGameTimer.setText("28");
 
@@ -91,6 +94,16 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
                 .setOnClickListener(this)
                 .build();
         showcaseView.setButtonText(getResources().getString(R.string.gameGuide_btn_next));
+
+
+        grid.setAlpha(0.4f);
+        txtGameTimer.setAlpha(0.4f);
+        txtGameChat.setAlpha(1f);
+        playerRole.setAlpha(0.4f);
+        imgvGamePhase.setAlpha(0.4f);
+
+        showcaseView.setContentText(getString(R.string.gameGuide_gameChat));
+        showcaseView.setShowcase(new ViewTarget(txtGameChat), true);
 
     }
 
@@ -132,10 +145,13 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
 
             btnPlayerAction.setText("KILL");
 
-            playerLine = convertView;
             return convertView;
         }
     }
+
+
+
+
 
     private void setAlpha(float alpha, View... views) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -149,18 +165,19 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (counter) {
             case 0:
-                showcaseView.setContentText(getString(R.string.gameGuide_gameChat));
+
                 showcaseView.setShowcase(new ViewTarget(txtGameChat), true);
                 break;
 
             case 1:
                 showcaseView.setContentText(getString(R.string.gameGuide_grid1));
                 showcaseView.setShowcase(new ViewTarget(grid), true);
+                setAlpha(1f,txtGameChat);
+                setAlpha(0.4f,txtGameTimer,txtGameChat,playerRole,txtPlayerName,txtPlayerStatus,btnPlayerAction,imgvGamePhase);
                 break;
 
             case 2:
                 showcaseView.setContentText(getString(R.string.gameGuide_grid2));
-                showcaseView.setShowcase(new ViewTarget(playerLine), true);
                 break;
 
             case 3:
@@ -170,79 +187,90 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
             case 4:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase1));
                 showcaseView.setShowcase(new ViewTarget(imgvGamePhase), true);
+                setAlpha(1f,grid);
+                setAlpha(0.4f,grid,txtGameTimer,txtGameChat,playerRole,txtPlayerName,txtPlayerStatus,btnPlayerAction);
                 break;
 
             case 5:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase2));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
                 break;
 
             case 6:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase3));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(txtGameChat), true);
+                setAlpha(1f,imgvGamePhase);
+                setAlpha(0.4f,grid,txtGameTimer,playerRole,txtPlayerName,txtPlayerStatus,btnPlayerAction,imgvGamePhase);
                 break;
 
             case 7:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase4));
                 showcaseView.setShowcase(new ViewTarget(grid), true);
+                setAlpha(1f,txtGameChat);
+                setAlpha(0.4f,txtGameTimer,txtGameChat,playerRole,txtPlayerName,txtPlayerStatus,imgvGamePhase);
                 break;
 
             case 8:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase5));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
 
             case 9:
                 showcaseView.setContentText(getString(R.string.gameGuide_timer1));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(txtGameTimer), true);
+                setAlpha(1f,grid);
+                setAlpha(0.4f,grid,txtGameChat,playerRole,txtPlayerName,txtPlayerStatus,btnPlayerAction,imgvGamePhase);
                 break;
 
             case 10:
                 showcaseView.setContentText(getString(R.string.gameGuide_timer2));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
                 break;
             case 11:
                 showcaseView.setContentText(getString(R.string.gameGuide_timer3));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
                 break;
             case 12:
                 showcaseView.setContentText(getString(R.string.gameGuide_role1));
                 showcaseView.setShowcase(new ViewTarget(grid), true);
+                setAlpha(1f,txtGameChat);
+                setAlpha(0.4f,grid,txtGameTimer,txtGameChat,playerRole,txtPlayerName,txtPlayerStatus,btnPlayerAction,imgvGamePhase);
                 break;
             case 13:
                 showcaseView.setContentText(getString(R.string.gameGuide_role2));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(playerRole), true);
+                setAlpha(1f,imgvGamePhase);
+                setAlpha(0.4f,grid,txtGameTimer,txtGameChat,txtPlayerName,txtPlayerStatus,btnPlayerAction,imgvGamePhase);
                 break;
             case 14:
                 showcaseView.setContentText(getString(R.string.gameGuide_role3));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 15:
                 showcaseView.setContentText(getString(R.string.gameGuide_role4));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 16:
                 showcaseView.setContentText(getString(R.string.gameGuide_role5));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 17:
                 showcaseView.setContentText(getString(R.string.gameGuide_role6));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 18:
                 showcaseView.setContentText(getString(R.string.gameGuide_role7));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+
                 break;
             case 19:
                 showcaseView.setContentText(getString(R.string.gameGuide_role8));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(playerRole), true);
+                setAlpha(1f,txtGameChat);
+                setAlpha(0.4f,grid,txtGameTimer,txtGameChat,playerRole,txtPlayerName,txtPlayerStatus,btnPlayerAction);
                 break;
             case 20:
                 showcaseView.setTarget(Target.NONE);
                 showcaseView.setButtonText(getString(R.string.gameGuide_btn_close));
                 showcaseView.hide();
-//                setAlpha(1.0f, textView1, textView2, textView3);
-                break;
+                finish();
+                return;
         }
         counter++;
     }
