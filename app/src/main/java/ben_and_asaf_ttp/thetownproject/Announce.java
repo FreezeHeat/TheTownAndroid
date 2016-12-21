@@ -38,6 +38,7 @@ public class Announce extends Activity {
 
             @Override
             public void run() {
+                setResult(RESULT_OK, getIntent());
                 Announce.this.finish();
             }
         }, 5000);

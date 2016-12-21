@@ -396,6 +396,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.action);
                         startService(intent);
+
+                        try {
+                            Thread.sleep(2500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case EXECUTE:
 
@@ -447,6 +453,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("type", "FX");
                         intent.putExtra("sound", R.raw.action);
                         startService(intent);
+
+                        try {
+                            Thread.sleep(2500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case PLAYER_JOINED:
 
@@ -508,8 +520,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 icon = R.drawable.snitch;
                                 break;
                         }
-                        msg = String.format(getResources().getString(R.string.game_player_role), player.getRole().name());
-                        announce.putExtra("msg", Html.fromHtml(msg).toString());
+                        announce.putExtra("msg", gameRole);
                         announce.putExtra("icon", icon);
 
                         final String readyMsg =  "<font color=\"#0066ff\">*" +
@@ -545,11 +556,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //get refreshed players with stats and game history - check each one for this player
                         msg = getResources().getString(R.string.game_citizens_win);
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
 
                         //Update user's stats
                         GameActivity.this.player = dp.getPlayers().get(dp.getPlayers().indexOf(GameActivity.this.player));
@@ -565,21 +571,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("sound", R.raw.victory);
                         startService(intent);
 
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                         intent.setClass(GameActivity.this, Lobby.class);
                         intent.removeExtra("type");
                         intent.removeExtra("sound");
                         startActivity(intent);
+
+                        if(countDownTimer != null){
+                            countDownTimer.cancel();
+                        }
                         finish();
                         return;
                     case WIN_KILLERS:
 
                         //get refreshed players with stats and game history - check each one for this player
                         msg = getResources().getString(R.string.game_killers_win);
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
 
                         //Update user's stats
                         GameActivity.this.player = dp.getPlayers().get(dp.getPlayers().indexOf(GameActivity.this.player));
@@ -594,10 +605,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("sound", R.raw.victory);
                         startService(intent);
 
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                         intent.setClass(GameActivity.this, Lobby.class);
                         intent.removeExtra("type");
                         intent.removeExtra("sound");
                         startActivity(intent);
+
+                        if(countDownTimer != null){
+                            countDownTimer.cancel();
+                        }
                         finish();
                         return;
                     case GAME_DISBANDED:
@@ -650,7 +671,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             DataPacket dp = new DataPacket();
 
                             if (player.isAlive() == true) {
-                                if (day) {
+                                if (day || (!(gameStarted))) {
                                     dp.setCommand(Commands.SEND_MESSAGE);
                                 } else if (player.getRole() == Roles.KILLER) {
                                     dp.setCommand(Commands.SEND_MESSAGE_KILLER);
@@ -662,8 +683,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             mService.sendPacket(dp);
                             return null;
                         }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            txtSendMessage.setText("");
+                        }
                     }.execute();
-                    txtSendMessage.setText("");
                 }
                 break;
         }
