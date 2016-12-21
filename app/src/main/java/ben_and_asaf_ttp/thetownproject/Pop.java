@@ -31,6 +31,7 @@ public class Pop extends Activity{
 
             @Override
             public void run() {
+                setResult(RESULT_OK, getIntent());
                 Pop.this.finish();
             }
         }, 5000);

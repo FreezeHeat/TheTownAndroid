@@ -165,12 +165,11 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
 
             case 3:
                 showcaseView.setContentText(getString(R.string.gameGuide_grid3));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
                 break;
 
             case 4:
                 showcaseView.setContentText(getString(R.string.gameGuide_gamePhase1));
-                showcaseView.setShowcase(new ViewTarget(grid), true);
+                showcaseView.setShowcase(new ViewTarget(imgvGamePhase), true);
                 break;
 
             case 5:

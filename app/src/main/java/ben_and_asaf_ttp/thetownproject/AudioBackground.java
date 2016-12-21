@@ -92,8 +92,10 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                                 if (volBg <= 0.0f) {
                                     //User wants NO background music
                                     isPlaying = false;
-                                    getBg().release();
-                                    setBg(null);
+                                    if(getBg() != null) {
+                                        getBg().release();
+                                        setBg(null);
+                                    }
                                 }
                         }
                         break;

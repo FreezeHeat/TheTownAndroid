@@ -72,6 +72,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Intent announce;
     private TextView playerRole;
     private DataPacket dp;
+    private static final int ANIMATION_AND_ANNOUNCE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,10 +208,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                             getResources().getString(R.string.game_murdered) +
                                     "*</font><br/>", dp.getPlayer().getUsername());
                             anim.putExtra("animation", "file:///android_asset/murder.html");
-                            announce.putExtra("msg", Html.fromHtml(message).toString());
-                            announce.removeExtra("icon");
-                            startActivity(anim);
-                            startActivity(announce);
+                            anim.putExtra("msg", Html.fromHtml(message).toString());
+                            anim.removeExtra("icon");
+                            startActivityForResult(anim, ANIMATION_AND_ANNOUNCE);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -410,10 +410,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         msg = msg.concat("*</font><br/>");
                         anim.putExtra("animation","file:///android_asset/execute.html");
-                        announce.putExtra("msg", Html.fromHtml(msg).toString());
-                        announce.removeExtra("icon");
-                        startActivity(anim);
-                        startActivity(announce);
+                        anim.putExtra("msg", Html.fromHtml(msg).toString());
+                        anim.removeExtra("icon");
+                        startActivityForResult(anim, ANIMATION_AND_ANNOUNCE);
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -513,7 +512,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         announce.putExtra("msg", Html.fromHtml(msg).toString());
                         announce.putExtra("icon", icon);
 
-                        msg =  "<font color=\"#0066ff\">*" +
+                        final String readyMsg =  "<font color=\"#0066ff\">*" +
                                 getResources().getString(R.string.game_ready_phase) +
                                 "*</font><br/>";
 
@@ -536,7 +535,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                                 //first night cycle is when the game truly starts
                                 myAdapter.notifyDataSetChanged();
-                                txtGameChat.append(Html.fromHtml(msg));
+                                txtGameChat.append(Html.fromHtml(readyMsg));
                                 playerRole.setText(gameRole);
                             }
                         });
@@ -667,6 +666,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     txtSendMessage.setText("");
                 }
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ANIMATION_AND_ANNOUNCE){
+            if(resultCode == RESULT_OK){
+                announce.putExtra("msg", data.getStringExtra("msg"));
+                announce.putExtra("icon", data.getStringExtra("icon"));
+            }
+            startActivity(announce);
         }
     }
 
