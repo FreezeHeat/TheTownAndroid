@@ -161,13 +161,84 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
             case 2:
                 showcaseView.setContentText(getString(R.string.gameGuide_grid2));
                 showcaseView.setShowcase(new ViewTarget(playerLine), true);
-
-                showcaseView.setContentTitle("Check it out");
-                showcaseView.setContentText("You don't always need a target to showcase");
-//                setAlpha(0.4f, textView1, textView2, textView3);
                 break;
 
             case 3:
+                showcaseView.setContentText(getString(R.string.gameGuide_grid3));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+
+            case 4:
+                showcaseView.setContentText(getString(R.string.gameGuide_gamePhase1));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+
+            case 5:
+                showcaseView.setContentText(getString(R.string.gameGuide_gamePhase2));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+
+            case 6:
+                showcaseView.setContentText(getString(R.string.gameGuide_gamePhase3));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+
+            case 7:
+                showcaseView.setContentText(getString(R.string.gameGuide_gamePhase4));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+
+            case 8:
+                showcaseView.setContentText(getString(R.string.gameGuide_gamePhase5));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+
+            case 9:
+                showcaseView.setContentText(getString(R.string.gameGuide_timer1));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+
+            case 10:
+                showcaseView.setContentText(getString(R.string.gameGuide_timer2));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 11:
+                showcaseView.setContentText(getString(R.string.gameGuide_timer3));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 12:
+                showcaseView.setContentText(getString(R.string.gameGuide_role1));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 13:
+                showcaseView.setContentText(getString(R.string.gameGuide_role2));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 14:
+                showcaseView.setContentText(getString(R.string.gameGuide_role3));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 15:
+                showcaseView.setContentText(getString(R.string.gameGuide_role4));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 16:
+                showcaseView.setContentText(getString(R.string.gameGuide_role5));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 17:
+                showcaseView.setContentText(getString(R.string.gameGuide_role6));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 18:
+                showcaseView.setContentText(getString(R.string.gameGuide_role7));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 19:
+                showcaseView.setContentText(getString(R.string.gameGuide_role8));
+                showcaseView.setShowcase(new ViewTarget(grid), true);
+                break;
+            case 20:
                 showcaseView.setTarget(Target.NONE);
                 showcaseView.setButtonText(getString(R.string.gameGuide_btn_close));
                 showcaseView.hide();
