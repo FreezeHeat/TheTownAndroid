@@ -1,10 +1,7 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
 

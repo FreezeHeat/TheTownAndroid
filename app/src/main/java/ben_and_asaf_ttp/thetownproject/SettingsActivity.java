@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.EditTextPreference;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -38,65 +37,71 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         getListView().setCacheColorHint(Color.TRANSPARENT);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         addPreferencesFromResource(R.xml.preferences);
-        password = new String(preferences.getString(APP_PASSWORD, ""));
+        password = (preferences.getString(APP_PASSWORD, ""));
         final EditTextPreference editTextPass = (EditTextPreference)findPreference(APP_NEWPASSWORD);
         editTextPass.setText(password);
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
-        if (key.equals(APP_NEWPASSWORD)) {
-            final SharedPreferences.Editor editor = getPreferenceScreen().getSharedPreferences().edit();
-            final String pass = preferences.getString(APP_NEWPASSWORD, "");
-            valid = true;
-            toastMsg = "";
+        switch (key) {
+            case APP_NEWPASSWORD:
+                final SharedPreferences.Editor editor = getPreferenceScreen().getSharedPreferences().edit();
+                final String pass = preferences.getString(APP_NEWPASSWORD, "");
+                valid = true;
+                toastMsg = "";
 
-            //System.out.print(pass.equals(password));
+                //System.out.print(pass.equals(password));
 
-            if( ( (!pass.isEmpty()) && (!pass.equals(password)) )) {
-                if (pass.length() < 6) {
-                    toastMsg = getResources().getString(R.string.general_password_too_few_characters);
-                    valid = false;
-                } else if (pass.length() > 30) {
-                    toastMsg = getResources().getString(R.string.general_password_too_much_characters);
-                    valid = false;
-                }
-            }else{
-                toastMsg = getResources().getString(R.string.pref_password_empty_or_same);
-                valid = false;
-            }
-
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    if(valid) {
-                        DataPacket dp = new DataPacket();
-                        dp.setCommand(Commands.EDIT_PASSWORD);
-                        dp.setMessage(pass);
-                        if (GameService.isRunning) {
-                            mService.sendPacket(dp);
-                            password = pass;
-                            toastMsg = getResources().getString(R.string.pref_password_changed);
-                        } else {
-                            toastMsg = getResources().getString(R.string.general_connection_problem);
-                        }
+                if (((!pass.isEmpty()) && (!pass.equals(password)))) {
+                    if (pass.length() < 6) {
+                        toastMsg = getResources().getString(R.string.general_password_too_few_characters);
+                        valid = false;
+                    } else if (pass.length() > 30) {
+                        toastMsg = getResources().getString(R.string.general_password_too_much_characters);
+                        valid = false;
                     }
-                    return null;
+                } else {
+                    toastMsg = getResources().getString(R.string.pref_password_empty_or_same);
+                    valid = false;
                 }
 
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    super.onPostExecute(aVoid);
-                    Toast.makeText(SettingsActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
-                    editor.putString(APP_PASSWORD, password);
-                    editor.commit();
-                }
-            }.execute();
-        }else if(key.equals(BG_VOLUME)){
-            final float vol = getPreferenceScreen().getSharedPreferences().getFloat(key, 1.0f);
-            AudioBackground.getBg().setVolume(vol, vol);
-        }else if(key.equals(FX_VOLUME)){
-            final float vol = getPreferenceScreen().getSharedPreferences().getFloat(key, 1.0f);
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        if (valid) {
+                            DataPacket dp = new DataPacket();
+                            dp.setCommand(Commands.EDIT_PASSWORD);
+                            dp.setMessage(pass);
+                            if (GameService.isRunning) {
+                                mService.sendPacket(dp);
+                                password = pass;
+                                toastMsg = getResources().getString(R.string.pref_password_changed);
+                            } else {
+                                toastMsg = getResources().getString(R.string.general_connection_problem);
+                            }
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        Toast.makeText(SettingsActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+                        editor.putString(APP_PASSWORD, password);
+                        editor.commit();
+                    }
+                }.execute();
+                break;
+            case BG_VOLUME: {
+                final float vol = getPreferenceScreen().getSharedPreferences().getFloat(key, 1.0f);
+                AudioBackground.getBg().setVolume(vol, vol);
+                break;
+            }
+            case FX_VOLUME: {
+                final float vol = getPreferenceScreen().getSharedPreferences().getFloat(key, 1.0f);
+                break;
+            }
         }
     }
 

@@ -64,7 +64,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".GameGuide"></activity>
+        <activity android:name=".GameGuide" />
     </application>
 
 </manifest>

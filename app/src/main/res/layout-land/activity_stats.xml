@@ -5,14 +5,12 @@
     style="@style/myBackgroundSmall"
     android:weightSum="1"
     tools:context=".StatsActivity"
-    android:id="@+id/tableLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:shrinkColumns="*"
     android:stretchColumns="*" >
 
     <TableRow
-        android:id="@+id/tableRow1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal" >
@@ -33,34 +31,30 @@
 
 
     <TableRow
-        android:id="@+id/tableRow2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:background="@android:color/black">
 
         <TextView
-            android:id="@+id/statsWins"
             android:gravity="center"
             android:textSize="22sp"
             android:textColor="#b30000"
             android:textStyle="bold"
             android:typeface="serif"
-            android:text="@string/statsWins" >
+            android:text="@string/statsWon" >
         </TextView>
 
         <TextView
-            android:id="@+id/statsLost"
             android:textSize="22sp"
             android:textColor="#b30000"
             android:gravity="center"
-            android:text="Lost"
+            android:text="@string/statsLost"
             android:textStyle="bold"
             android:typeface="serif" >
         </TextView>
 
         <TextView
-            android:id="@+id/statsKills"
             android:textSize="22sp"
             android:textColor="#b30000"
             android:gravity="center"
@@ -70,7 +64,6 @@
         </TextView>
 
         <TextView
-            android:id="@+id/statsHeals"
             android:gravity="center"
             android:textSize="22sp"
             android:textColor="#b30000"
@@ -80,7 +73,6 @@
         </TextView>
 
         <TextView
-            android:id="@+id/statsRating"
             android:gravity="center"
             android:textSize="22sp"
             android:textColor="#b30000"

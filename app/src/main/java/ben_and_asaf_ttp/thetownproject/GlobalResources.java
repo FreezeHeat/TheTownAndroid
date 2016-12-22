@@ -2,8 +2,6 @@ package ben_and_asaf_ttp.thetownproject;
 
 import android.app.Application;
 
-import java.util.List;
-
 import ben_and_asaf_ttp.thetownproject.shared_resources.Game;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
@@ -16,7 +14,7 @@ public class GlobalResources extends Application {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(final Player player) {
         this.player = player;
     }
 
@@ -24,7 +22,7 @@ public class GlobalResources extends Application {
         return statsPlayer;
     }
 
-    public void setStatsPlayer(Player statsPlayer) {
+    public void setStatsPlayer(final Player statsPlayer) {
         this.statsPlayer = statsPlayer;
     }
 
@@ -32,7 +30,7 @@ public class GlobalResources extends Application {
         return game;
     }
 
-    public void setGame(Game game) {
+    public void setGame(final Game game) {
         this.game = game;
     }
 }

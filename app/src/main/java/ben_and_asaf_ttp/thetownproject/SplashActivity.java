@@ -1,19 +1,21 @@
 package ben_and_asaf_ttp.thetownproject;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -21,8 +23,11 @@ public class SplashActivity extends AppCompatActivity {
 
     private TextView txtSplashScreen;
     private ProgressBar pbSplashScreen;
-    private ImageView imgSplashScreen;
     private AlertDialog.Builder builder;
+    private final String server = "94.230.85.87";
+    private final String port = "55555";
+    private final String webService = "http://94.230.85.87:8080/TTWS";
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +36,8 @@ public class SplashActivity extends AppCompatActivity {
 
         txtSplashScreen = (TextView)findViewById(R.id.txtSplashScreen);
         pbSplashScreen = (ProgressBar)findViewById(R.id.pbSplashScreen);
-        imgSplashScreen = (ImageView)findViewById(R.id.imgSplashScreen);
-
+        final ImageView imgSplashScreen = (ImageView) findViewById(R.id.imgSplashScreen);
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
         MyLoaderTask myTask = new MyLoaderTask();
         myTask.execute();
     }
@@ -70,7 +75,14 @@ public class SplashActivity extends AppCompatActivity {
             }
 
             try {
-                ClientConnection.getConnection().startConnection();
+                final String serverIp = sp.getString("serverIp", server);
+                final String serverPort = sp.getString("serverPort", port);
+
+                //if the defaults are set
+                if(serverIp.equals(server) && serverPort.equals(port)){
+                    sp.edit().putString("serverWs", webService);
+                }
+                ClientConnection.getConnection().startConnection(serverIp, Integer.decode(serverPort));
             } catch (IOException e) {
                 e.printStackTrace();
                 publishProgress("-1", getResources().getString(R.string.splash_socket_failed));
@@ -93,7 +105,7 @@ public class SplashActivity extends AppCompatActivity {
             if(result)
             {
                 pbSplashScreen.setProgress(100);
-                txtSplashScreen.setText("Successful - starting the game");
+                txtSplashScreen.setText(getResources().getString(R.string.splash_socket_startGame));
 
                 try {
                     Thread.sleep(2500);
@@ -105,10 +117,6 @@ public class SplashActivity extends AppCompatActivity {
                 //Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
                 Intent myIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(myIntent);
-                myIntent.setClass(SplashActivity.this, AudioBackground.class);
-                myIntent.putExtra("type", "BG");
-                myIntent.putExtra("sound", R.raw.bg);
-                startService(myIntent);
             }
             else{
 
@@ -127,13 +135,72 @@ public class SplashActivity extends AppCompatActivity {
             builder.setCancelable(false);
             builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-            SplashActivity.this.finish();
-            if(ClientConnection.getConnection().getOutput() != null) {
-                ClientConnection.getConnection().closeSocket();
-            }
+                    buildServerDialog();
+                    builder.show();
                 }
             });
         }
+    }
+
+    public void buildServerDialog(){
+        if(builder == null){
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setMessage("Do you wish to change the target server's IP and PORT and target WEBSERVICE address?");
+        final LinearLayout layout = new LinearLayout(this);
+        final EditText ip = new EditText(this);
+        final EditText port = new EditText(this);
+        final EditText ws = new EditText(this);
+        ip.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        port.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ws.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ip.setHint("IP Address");
+        port.setHint("Port Number");
+        ws.setHint("e.g. http://10.0.0.0:8080/Service");
+
+        final SharedPreferences.Editor editor = sp.edit();
+        ip.setText(sp.getString("serverIp", ""));
+        port.setText(sp.getString("serverPort", ""));
+        ws.setText(sp.getString("serverWs", ""));
+
+        layout.addView(ip);
+        layout.addView(port);
+        layout.addView(ws);
+        layout.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton(getString(R.string.general_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                editor.putString("serverIp", ip.getText().toString());
+                editor.putString("serverPort", port.getText().toString());
+                editor.putString("serverWs", ws.getText().toString());
+                editor.apply();
+
+                SplashActivity.this.finish();
+                if(ClientConnection.getConnection().getOutput() != null) {
+                    ClientConnection.getConnection().closeSocket();
+                }
+            }
+        });
+
+        builder.setNegativeButton("Restore to default", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                editor.putString("serverIp", SplashActivity.this.server);
+                editor.putString("serverPort", SplashActivity.this.port);
+                editor.putString("serverWs", SplashActivity.this.webService);
+                editor.apply();
+
+                SplashActivity.this.finish();
+                if(ClientConnection.getConnection().getOutput() != null) {
+                    ClientConnection.getConnection().closeSocket();
+                }
+            }
+        });
     }
 
     @Override

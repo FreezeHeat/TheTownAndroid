@@ -22,40 +22,40 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
 
     public AudioBackground() {}
 
-    public synchronized static MediaPlayer getBg() {
-        return bg;
-    }
-
-    public synchronized void setBg(MediaPlayer bg) {
-        this.bg = bg;
-    }
-
-    public synchronized static MediaPlayer getFx() {
-        return fx;
-    }
-
-    public synchronized void setFx(MediaPlayer fx) {
-        this.fx = fx;
-    }
-
-    public static boolean isPlaying() {
+    public static synchronized boolean isPlaying() {
         return isPlaying;
     }
 
+    public static synchronized  MediaPlayer getBg() {
+        return bg;
+    }
+
+    public static synchronized MediaPlayer getFx() {
+        return fx;
+    }
+
+    private synchronized void setBg(MediaPlayer bg) {
+        AudioBackground.bg = bg;
+    }
+
+    private synchronized void setFx(MediaPlayer fx) {
+        AudioBackground.fx = fx;
+    }
+
     private synchronized String getType(){
-        return this.type;
+        return type;
     }
 
     private synchronized void setType(String type){
-        this.type = type;
+        AudioBackground.type = type;
     }
 
     private synchronized int getSound(){
-        return this.sound;
+        return sound;
     }
 
     private synchronized void setSound(int sound){
-        this.sound = sound;
+        AudioBackground.sound = sound;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                         final float volBg = myPrefs.getFloat("bgVolume", 1.0f);
                         if( (!isPlaying) && volBg > 0.0f ) {
                             if (getBg() == null) {
-                                setBg(getBg().create(AudioBackground.this, getSound()));
+                                setBg(MediaPlayer.create(AudioBackground.this, getSound()));
                                 getBg().setVolume(volBg, volBg);
                                 getBg().setLooping(true);
                                 getBg().setOnPreparedListener(AudioBackground.this);
@@ -102,7 +102,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                     case fxType:
                         final float volFx = myPrefs.getFloat("fxVolume", 1.0f);
                         if(volFx > 0.0f) {
-                            setFx(getFx().create(AudioBackground.this, getSound()));
+                            setFx(MediaPlayer.create(AudioBackground.this, getSound()));
                             getFx().setVolume(volFx, volFx);
                             getFx().setOnPreparedListener(AudioBackground.this);
                         }else{

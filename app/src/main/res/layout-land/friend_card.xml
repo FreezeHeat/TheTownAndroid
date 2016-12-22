@@ -26,5 +26,5 @@
         android:id="@+id/friendcard_txt_status"
         android:textColor="@android:color/white"
         android:layout_weight="50"
-        android:gravity="right" />
+        android:gravity="end" />
 </LinearLayout>

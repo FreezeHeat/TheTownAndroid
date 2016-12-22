@@ -7,13 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
-import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import android.provider.CalendarContract;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -33,8 +29,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -71,7 +65,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Intent anim;
     private Intent announce;
     private TextView playerRole;
-    private DataPacket dp;
     private static final int ANIMATION_AND_ANNOUNCE = 1;
 
     @Override
@@ -115,7 +108,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         public void run() {
 
             //start game service
-            dp = null;
+            DataPacket dp = null;
             final Intent intent = new Intent();
 
             while(true){
@@ -373,7 +366,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         //get player - get his role for the SNITCH
                         msg = String.format(
                                 "<font color=\"#0066ff\">*" +
-                                getResources().getString(R.string.game_snitch_identity),dp.getPlayer().getUsername());
+                                getResources().getString(R.string.game_snitch_identity), dp.getPlayer().getUsername());
                         Roles role = dp.getPlayer().getRole();
                         if(role == Roles.KILLER){
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_killer));
@@ -435,10 +428,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         startService(intent);
                         break;
                     case HEAL:
-                        msg = String.format(
-                                "<font color=\"#0066ff\">*" +
+                        msg = "<font color=\"#0066ff\">*" +
                                         getResources().getString(R.string.game_attemptedMurder) +
-                                "*</font><br/>");
+                               "*</font><br/>";
                         announce.putExtra("msg", Html.fromHtml(msg).toString());
                         announce.removeExtra("icon");
                         startActivity(announce);
@@ -670,7 +662,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         protected Void doInBackground(Void... voids) {
                             DataPacket dp = new DataPacket();
 
-                            if (player.isAlive() == true) {
+                            if (player.isAlive()) {
                                 if (day || (!(gameStarted))) {
                                     dp.setCommand(Commands.SEND_MESSAGE);
                                 } else if (player.getRole() == Roles.KILLER) {
@@ -932,7 +924,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 GameActivity.this.finish();
-                if(!msg.equals(R.string.game_game_disbanded)) {
+                if(!msg.equals(getString(R.string.game_game_disbanded))) {
                     ClientConnection.getConnection().closeSocket();
                 }
             }

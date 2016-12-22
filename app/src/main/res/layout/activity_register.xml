@@ -8,7 +8,6 @@
 
 
     <ImageView
-        android:id="@+id/login_phone_icon"
         android:layout_gravity="center"
         android:layout_width="110dp"
         android:layout_height="40dp"
@@ -18,7 +17,7 @@
         android:layout_weight=".13" />
 
     <EditText
-        android:hint="Username"
+        android:hint="@string/lobby_insertUsername"
         android:textColorHint="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +28,7 @@
 
 
     <EditText
-        android:hint="Password"
+        android:hint="@string/register_password"
         android:textColorHint="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +39,7 @@
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
 
     <EditText
-        android:hint="Re-Type Password"
+        android:hint="@string/register_password_retype"
         android:textColorHint="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,6 +69,7 @@
         android:hint="@string/register_btnConfirm"
         android:id="@+id/register_btnConfirm"
         android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:textColorHint="@android:color/white"
         android:layout_weight="50"/>
 
@@ -83,6 +83,7 @@
         android:hint="@string/register_btnClear"
         android:id="@+id/register_btnClear"
         android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:textColorHint="@android:color/white"
         android:layout_weight="50"/>
 

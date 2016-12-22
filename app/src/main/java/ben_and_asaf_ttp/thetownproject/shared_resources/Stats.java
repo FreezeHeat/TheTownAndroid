@@ -139,10 +139,10 @@ public class Stats{
     /**
      * Sets heals done by the user
      *
-     * @param heales Heals done
+     * @param heals Heals done
      */
-    public void setHeals(final long heales) {
-        this.heals = heales;
+    public void setHeals(final long heals) {
+        this.heals = heals;
     }
 
     /**

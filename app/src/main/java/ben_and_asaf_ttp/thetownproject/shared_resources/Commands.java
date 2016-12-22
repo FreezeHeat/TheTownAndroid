@@ -92,7 +92,7 @@ public enum Commands{
 
     /**
      * Used with the main server
-     * <p>Specifices the user received a friend request</p>
+     * <p>Specifies the user received a friend request</p>
      */
     FRIEND_REQUEST,
 
@@ -160,7 +160,7 @@ public enum Commands{
     
     /**
      * Used with the {@code GameThread} thread 
-     * <p>Specifies that a player has joined the gmae</p>
+     * <p>Specifies that a player has joined the game</p>
      */
     PLAYER_JOINED,
     
@@ -235,5 +235,5 @@ public enum Commands{
      * <p>Specifies that a user's identity will be revealed by the 
        {@code Snitch}</p>
      */
-    SNITCH;
+    SNITCH
 }

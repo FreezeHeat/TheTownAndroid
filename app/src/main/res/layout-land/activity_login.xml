@@ -9,7 +9,6 @@
     tools:context="ben_and_asaf_ttp.thetownproject.MainActivity">
 
     <ImageView
-        android:id="@+id/login_phone_icon"
         android:layout_gravity="center"
         android:layout_width="110dp"
         android:layout_height="40dp"
@@ -25,7 +24,6 @@
         android:textStyle="bold"
         android:layout_weight="10"
         android:textColorHint="@android:color/white"
-        android:id="@+id/login_txtUser"
         android:hint="@string/login_txtUser"
         android:gravity="center"
         android:layout_gravity="center_horizontal" />
@@ -38,14 +36,13 @@
         android:textSize="15sp"
         android:layout_weight="10"
         android:id="@+id/login_editUser"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:gravity="center"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_txtPass"
         android:hint="@string/login_txtPass"
         android:gravity="center"
         android:textSize="22sp"
@@ -88,7 +85,7 @@
         android:weightSum="90">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/round_button_small"
             android:textStyle="bold"
@@ -98,17 +95,8 @@
             android:textColorHint="@android:color/white"
             android:id="@+id/login_btnSignIn"
             android:layout_marginRight="3dp"
+            android:layout_marginEnd="3dp"
             android:layout_weight="30"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_weight="10"
-        android:layout_height="wrap_content"
-        android:touchscreenBlocksFocus="true"
-        android:gravity="center_vertical|center_horizontal">
 
     </LinearLayout>
 

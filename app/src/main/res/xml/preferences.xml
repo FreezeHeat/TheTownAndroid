@@ -2,22 +2,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference android:title="@string/pref_title_editPassword"
-        android:id="@+id/pref_editTxt_password"
         android:defaultValue=""
         android:summary="@string/pref_summary_editPassword"
         android:key="newpassword">
     </EditTextPreference>
 
-    <ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference android:title="@string/pref_title_bgVolumeBar"
-        android:id="@+id/pref_bgVolumeBar"
+    <ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference
+        android:title="@string/pref_title_bgVolumeBar"
         android:defaultValue="1.0f"
         android:summary="@string/pref_summary_bgVolumeBar"
-        android:key="bgVolume"></ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference>
+        android:key="bgVolume" />
 
-    <ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference android:title="@string/pref_title_fxVolumeBar"
-        android:id="@+id/pref_fxVolumeBar"
+    <ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference
+        android:title="@string/pref_title_fxVolumeBar"
         android:defaultValue="1.0f"
         android:summary="@string/pref_summary_fxVolumeBar"
-        android:key="fxVolume"></ben_and_asaf_ttp.thetownproject.customDialogs.VolumeBarPreference>
+        android:key="fxVolume" />
 
 </PreferenceScreen>

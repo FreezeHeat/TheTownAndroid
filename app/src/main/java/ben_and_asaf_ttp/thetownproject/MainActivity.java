@@ -4,17 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
-import java.io.IOException;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
@@ -71,13 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if(!AudioBackground.isPlaying()) {
-            final Intent myIntent = new Intent(MainActivity.this, AudioBackground.class);
-            myIntent.setClass(MainActivity.this, AudioBackground.class);
-            myIntent.putExtra("type", "BG");
-            myIntent.putExtra("sound", R.raw.bg);
-            startService(myIntent);
-        }
     }
 
     @Override

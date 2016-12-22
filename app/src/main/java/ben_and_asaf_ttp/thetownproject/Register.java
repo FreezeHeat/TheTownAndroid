@@ -15,15 +15,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
-import ben_and_asaf_ttp.thetownproject.shared_resources.Game;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class Register extends AppCompatActivity implements View.OnClickListener{
@@ -59,8 +56,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     public void register()
     {
         //Check if empty
-        if((!editUser.getText().toString().equals("")) && ((!editPassword.getText().equals("")) ||
-            (!editPassword2.getText().equals("")))){
+        if((!editUser.getText().toString().equals("")) && ((!editPassword.getText().toString().equals("")) ||
+            (!editPassword2.getText().toString().equals("")))){
 
             //check if passwords match, if so run register function
             if(editPassword.getText().toString().equals(editPassword2.getText().toString())){
@@ -107,7 +104,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                                     SharedPreferences.Editor editor = myPrefs.edit();
                                     editor.putString("username", player.getUsername());
                                     editor.putString("password", player.getPassword());
-                                    editor.commit();
+                                    editor.apply();
 
                                     //start lobby intent
                                     Register.this.finish();
@@ -200,18 +197,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         // Bind to LocalService
         Intent intent = new Intent(this, GameService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(!AudioBackground.isPlaying()) {
-            final Intent myIntent = new Intent(Register.this, AudioBackground.class);
-            myIntent.setClass(Register.this, AudioBackground.class);
-            myIntent.putExtra("type", "BG");
-            myIntent.putExtra("sound", R.raw.bg);
-            startService(myIntent);
-        }
     }
 
     @Override

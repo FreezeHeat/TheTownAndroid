@@ -5,7 +5,6 @@ import android.util.Log;
 import java.io.*;
 import java.net.Socket;
 
-import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 
 public class ClientConnection {
@@ -28,16 +27,6 @@ public class ClientConnection {
     /**
      * Specifies the hostname to connect to (Server IP)
      */
-
-    //10.0.2.2 - is the IP for the external localhost, because the VIRTUAL MACHINE of the android device
-    //already is the 127.0.0.1 - the external IP to the "real" localhost is 10.0.2.2
-    //For GENYMOTION - use 10.0.3.2
-    private String hostname = "10.0.3.2";
-
-    /**
-     * Port number, used with hostname <i>e.g. (127.0.0.1:5555)</i>
-     */
-    private int port = 55555;
 
     /**
      * Create a <b>Singleton</b> connection of the class
@@ -75,14 +64,25 @@ public class ClientConnection {
      * Retry the connection to the server
      * @throws java.io.IOException
      */
-    public void startConnection() throws IOException {
+    public void startConnection(final String hostname, final int port) throws IOException {
+
+        //10.0.2.2 - is the IP for the external localhost, because the VIRTUAL MACHINE of the android device
+        //already is the 127.0.0.1 - the external IP to the "real" localhost is 10.0.2.2
+        //For GENYMOTION - use 10.0.3.2
+        //final String hostname = ip;
+
+        /**
+         * Port number, used with hostname <i>e.g. (127.0.0.1:5555)</i>
+         */
+       // final int port = protocol;
+
         connection = new Socket(hostname, port);
 
         //wait 5 seconds for the connection to respond
         connection.setSoTimeout(5000);
         out = new ObjectOutputStream(connection.getOutputStream());
         in = new ObjectInputStream(connection.getInputStream());
-        Log.i(this.getClass().getName(), "Socket connection successful " + this.hostname+ ":" + this.port);
+        Log.i(this.getClass().getName(), "Socket connection successful " + hostname+ ":" + port);
         connection.setSoTimeout(0);
         dpIn = new DataPacket();
     }
@@ -110,9 +110,8 @@ public class ClientConnection {
             e.printStackTrace();
             dpIn = null;
             Log.e(this.getClass().getName(), "DataPacket IOException");
-        }finally {
-            return dpIn;
         }
+        return dpIn;
     }
 
     /**

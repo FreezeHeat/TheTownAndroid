@@ -60,7 +60,7 @@ public class Game{
 	 */
 	public Game(){
 		this.date = new Date();
-		this.players = new ArrayList<Player>();
+		this.players = new ArrayList<>();
 	}
 
 	/**

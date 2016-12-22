@@ -2,8 +2,6 @@ package ben_and_asaf_ttp.thetownproject;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;

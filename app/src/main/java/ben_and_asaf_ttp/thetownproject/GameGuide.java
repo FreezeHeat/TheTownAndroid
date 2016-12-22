@@ -6,18 +6,14 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
@@ -27,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
-import ben_and_asaf_ttp.thetownproject.shared_resources.Roles;
 
 public class GameGuide extends AppCompatActivity implements View.OnClickListener{
     ShowcaseView showcaseView;
@@ -51,7 +46,7 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 
-        final ArrayList<Player> list = new ArrayList<Player>();
+        final ArrayList<Player> list = new ArrayList<>();
         list.add(new Player("Dan", "1"));
         list.add(new Player("Garry", "2"));
         list.add(new Player("Sammy", "3"));

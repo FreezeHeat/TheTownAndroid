@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">The Town Project</string>
+    <string name="app_name" translatable="false">The Town Project</string>
 
     <string name="general_empty_details">Nothing was entered</string>
     <string name="general_password_too_few_characters">Minimum password length is 6</string>
@@ -11,34 +11,30 @@
     <string name="general_yes">Yes</string>
     <string name="general_no">No</string>
     <string name="general_cancel">Cancel</string>
-    <string name="general_options">Options</string>
 
     <string name="splash_socket_connection">Starting Socket Connection</string>
     <string name="splash_socket_failed">Failed to connect, Shutting down</string>
     <string name="splash_socket_success">Connection Established</string>
+    <string name="splash_socket_startGame">Successful - starting the game</string>
+    <string name="splash_dialog_btn_defaults">Restore to default</string>
+    <string name="splash_dialog_explanation">Do you wish to change the target server\'s IP, PORT and WEBSERVICE address?"</string>
 
     <string name="login_wrong_details">Details sent do not match</string>
     <string name="login_already_connected">This user is already connected</string>
 
     <string name="register_user_already_exists">This username already exists</string>
     <string name="register_passwords_do_not_match">Passwords do not match</string>
+    <string name="register_password">Password</string>
+    <string name="register_password_retype">Re-Type Password</string>
 
     <string name="lobby_btn_joinGame">Join A Game</string>
     <string name="lobby_btn_options">Options</string>
     <string name="lobby_btn_stats">My Stats</string>
-    <string name="lobby_stats_won">Won</string>
-    <string name="lobby_stats_lost">Lost</string>
-    <string name="lobby_stats_ratio">Win/Lose Ratio</string>
-    <string name="lobby_stats_kills">Kills</string>
-    <string name="lobby_stats_heals">Heals</string>
-    <string name="lobby_stats_rating">Rating</string>
     <string name="lobby_matchMaking_progress_title">Searching for a game</string>
-    <string name="lobby_matchMaking_progress_message">Searching...</string>
+    <string name="lobby_matchMaking_progress_message">Searching…</string>
     <string name="lobby_matchMaking_cancel">Cancel</string>
-    <string name="lobby_matchMaking_howManyPlayers_title">How many players?</string>
     <string name="lobby_disconnect">Are you sure you want to disconnect?</string>
     <string name="lobby_friendlist_add_friend">Add a friend</string>
-    <string name="lobby_friendlist_title">Friends List</string>
     <string name="lobby_addFriend">Add friend</string>
     <string name="lobby_exitFriend">Exit</string>
     <string name="lobby_dialog_wrong_details">No such user</string>
@@ -54,89 +50,45 @@
     <string name="game_heal">Heal</string>
     <string name="game_snitch">Snitch</string>
     <string name="game_vote">Vote</string>
-    <string name="game_attemptedMurder">Healer healed the survivor of an attempted murder...</string>
+    <string name="game_attemptedMurder">Doctor healed a survivor of an attempted murder…</string>
     <string name="game_action_you_dead">You can\'t do anything, you are dead</string>
     <string name="game_action_upon_dead">This player is dead</string>
     <string name="game_player_dead">Dead</string>
     <string name="game_player_alive">Alive</string>
-    <string name="game_day_phase">DAY PHASE STARTED!</string>
-    <string name="game_night_phase">NIGHT PHASE STARTED!</string>
-    <string name="game_ready_phase">Game will start in 30 seconds!</string>
+    <string name="game_day_phase">DAY PHASE STARTED</string>
+    <string name="game_night_phase">NIGHT PHASE STARTED</string>
+    <string name="game_ready_phase">Game will start in 30 seconds</string>
     <string name="game_snitch_identity">%1$s role is:</string>
     <string name="game_role_notKiller">Not a killer</string>
     <string name="game_role_killer">Killer</string>
-    <string name="game_executed_other">%1$s was executed!</string>
-    <string name="game_executed_you">You were executed!</string>
+    <string name="game_executed_other">%1$s was executed</string>
+    <string name="game_executed_you">You were executed</string>
     <string name="game_murdered">%1$s was murdered</string>
     <string name="game_player_joined">%1$s has joined</string>
     <string name="game_player_left">%1$s has left</string>
     <string name="game_game_disbanded">Game was disbanded</string>
-    <string name="game_citizens_win">Citizens win!</string>
-    <string name="game_killers_win">Killers win!</string>
+    <string name="game_citizens_win">Citizens win</string>
+    <string name="game_killers_win">Killers win</string>
     <string name="game_player_role">My Role: %1$s</string>
 
 
     <string name="playercard_menu_get_stats">See Stats</string>
 
-    <string name="login_btnOptions">Options</string>
-    <string name="login_btnForgot">Forgot Pass</string>
     <string name="login_btnLogin2">Sign in</string>
     <string name="login_checkboxRemember">Remember Username ?</string>
     <string name="login_txtUser">Username</string>
     <string name="login_txtPass">Password</string>
-    <string name="login_txtUser_land">Username</string>
-    <string name="login_txtPass_land">Password</string>
-    <string name="login_checkboxRemember_land">Remember Username ?</string>
-    <string name="login_btnSignIn_land">Sign in</string>
-    <string name="login_btnForgot_land">Forgot Pass</string>
-    <string name="login_btnOptions_land">Options</string>
 
-    <string name="main_exit">Exit</string>
     <string name="main_btnLogin">Login</string>
     <string name="main_btnRegister">Register</string>
-    <string name="main_btnForgot">Forogt Pass</string>
-    <string name="main_btnOptions">Options</string>
-    <string name="main_btnLogin_land">Login</string>
     <string name="main_btnRegister_land">Register</string>
-    <string name="main_btnForgot_land">Forogt Pass</string>
-    <string name="main_btnOptions_land">Options</string>
     <string name="lobby_insertUsername">Username</string>
 
 
-    <string name="register_txtUsername">Username</string>
-    <string name="register_txtPass">Password</string>
-    <string name="register_txtReg">Please enter the following:</string>
-    <string name="register_txtReg1">Confirmation has been sent to your Email address.</string>
-    <string name="register_txtRepass">Re-type Password</string>
-    <string name="register_txtEmail">Email</string>
     <string name="register_btnConfirm">Confirm</string>
-    <string name="register_btnConfirm_land">Confirm</string>
     <string name="register_btnClear">Clear</string>
-    <string name="register_btnBack">Back</string>
-    <string name="register_btnRegister_land">Register</string>
-    <string name="register_checkboxRemember_land">Remember Username ?</string>
-    <string name="register_btnForgot_land">Forgot Pass</string>
-    <string name="register_btnOptions_land">Options</string>
-    <string name="register_txtReg_land">Please enter the following:</string>
-    <string name="register_txtReg1_land">Confirmation has been sent to your Email address.</string>
-    <string name="register_txtRepass_land">Re-type Password</string>
-    <string name="register_txtCheckEmail_land">Confirmation email has been sent to email.</string>
-    <string name="register_btnBack_land">Back</string>
 
-    <string name="forgot_txtForgot_1">Please enter account email.</string>
-    <string name="forgot_txtEmail1">Email</string>
-    <string name="forgot_txtEmailResponse">An email has been sent to the address.</string>
-    <string name="forgot_btnReLogin">Confirm</string>
-    <string name="forgot_btnClear">Clear</string>
-    <string name="forgot_btnBack">Back</string>
-    <string name="forgot_txtForgot_1_land">Please enter account email.</string>
-    <string name="forgot_txtEmail1_land">Email</string>
-    <string name="forgot_txtEmailResponse_land">An email has been sent to the address.</string>
-    <string name="forgot_btnReLogin_land">Confirm</string>
-    <string name="forgot_btnClear_land">Clear</string>
-    <string name="forgot_btnBack_land">Back</string>
-
-    <string name="statsWins">Wins</string>
+    <string name="statsWon">Won</string>
     <string name="statsLost">Lost</string>
     <string name="statsKills">Kills</string>
     <string name="statsHeals">Heals</string>
@@ -148,13 +100,6 @@
 
     <string name="accessibility_open_drawer">Open friend list</string>
     <string name="accessibility_close_drawer">Close friend list</string>
-
-    <string-array name="lobby_array_how_many_players">
-        <item>Quick-Join</item>
-        <item>5</item>
-        <item>8</item>
-        <item>10</item>
-    </string-array>
 
     <string name="pref_title_editPassword">Change your password</string>
     <string name="pref_summary_editPassword">This option will change your user\'s password.</string>
@@ -169,8 +114,8 @@
     <string name="gameGuide_btn_close">Close</string>
     <string name="gameGuide_gameChat">This the game\'s chat, There are user messages and game event messages</string>
     <string name="gameGuide_timer1">This is the phase\'s timer, it tells how much time\'s left to act until the next phase</string>
-    <string name="gameGuide_timer2">Note that there\'s a READY phase before the game starts, where you can chat and see your role</string>
-    <string name="gameGuide_timer3">The timer also serves as a player counter, each game requires 5 players</string>
+    <string name="gameGuide_timer2">Note that there\'s a READY phase before the game starts, where you can chat and know your role</string>
+    <string name="gameGuide_timer3">The timer also serves as a player counter, each game requires 5 players to play</string>
     <string name="gameGuide_gamePhase1">This is the current game\'s phase, which can be NIGHT or DAY</string>
     <string name="gameGuide_gamePhase2">Current phase is the NIGHT phase, where you can play your role\'s action</string>
     <string name="gameGuide_gamePhase3">Chat is blocked when it\'s NIGHT and unlocked when it\'s DAY</string>
@@ -181,11 +126,12 @@
     <string name="gameGuide_grid3">Your action will differ based on your role</string>
     <string name="gameGuide_role1">The game\'s players are split between the KILLER and CITIZENS</string>
     <string name="gameGuide_role2">KILLER - his goal is to kill all CITIZENS</string>
-    <string name="gameGuide_role3">CITIZENS - this group includes 3 roles CITIZEN, HEALER and SNITCH</string>
+    <string name="gameGuide_role3">CITIZENS - this group includes 3 roles CITIZEN, DOCTOR and SNITCH</string>
     <string name="gameGuide_role4">CITIZEN - no night abilities, but can still vote and affect the game</string>
-    <string name="gameGuide_role5">HEALER - can heal a player who was murdered in the same night, cannot heal dead people</string>
+    <string name="gameGuide_role5">DOCTOR - can heal a player who was murdered in the same night, cannot heal dead people</string>
     <string name="gameGuide_role6">SNITCH - can find out if someone\'s the killer or not</string>
     <string name="gameGuide_role7">The CITIZENS\' goal is to execute the killer by vote</string>
     <string name="gameGuide_role8">Whoever reaches the goal wins the game</string>
+    <string name="statsWins"></string>
 
 </resources>

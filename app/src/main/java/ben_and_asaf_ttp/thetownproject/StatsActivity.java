@@ -8,31 +8,25 @@ import android.widget.TextView;
 import ben_and_asaf_ttp.thetownproject.shared_resources.Player;
 
 public class StatsActivity extends AppCompatActivity {
-    private TextView txtPlayer;
-    private TextView statsKills;
-    private TextView statsHeals;
-    private TextView statsRating;
-    private TextView statsWon;
-    private TextView statsLost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        txtPlayer = (TextView)findViewById(R.id.stats_PlayerName);
-        statsKills = (TextView)findViewById(R.id.stats_Kills);
-        statsHeals = (TextView)findViewById(R.id.stats_Heals);
-        statsRating = (TextView)findViewById(R.id.stats_Rating);
-        statsWon = (TextView)findViewById(R.id.stats_Wins);
-        statsLost = (TextView)findViewById(R.id.stats_Lost);
+        final TextView txtPlayer = (TextView) findViewById(R.id.stats_PlayerName);
+        final TextView statsKills = (TextView) findViewById(R.id.stats_Kills);
+        final TextView statsHeals = (TextView) findViewById(R.id.stats_Heals);
+        final TextView statsRating = (TextView) findViewById(R.id.stats_Rating);
+        final TextView statsWon = (TextView) findViewById(R.id.stats_Wins);
+        final TextView statsLost = (TextView) findViewById(R.id.stats_Lost);
 
         Player p = ((GlobalResources)getApplication()).getStatsPlayer();
-        this.txtPlayer.setText(p.getUsername());
-        this.statsWon.setText(String.valueOf(p.getStats().getWon()));
-        this.statsLost.setText(String.valueOf(p.getStats().getLost()));
-        this.statsKills.setText(String.valueOf(p.getStats().getKills()));
-        this.statsHeals.setText(String.valueOf(p.getStats().getHeals()));
-        this.statsRating.setText(String.valueOf(p.getStats().getRating()));
+        txtPlayer.setText(p.getUsername());
+        statsWon.setText(String.valueOf(p.getStats().getWon()));
+        statsLost.setText(String.valueOf(p.getStats().getLost()));
+        statsKills.setText(String.valueOf(p.getStats().getKills()));
+        statsHeals.setText(String.valueOf(p.getStats().getHeals()));
+        statsRating.setText(String.valueOf(p.getStats().getRating()));
     }
 }

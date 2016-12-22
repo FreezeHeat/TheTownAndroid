@@ -9,7 +9,6 @@
     tools:context="ben_and_asaf_ttp.thetownproject.MainActivity">
 
     <ImageView
-        android:id="@+id/login_phone_icon"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="130dp"
@@ -21,7 +20,6 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textColorHint="@android:color/white"
-        android:id="@+id/login_txtUser"
         android:hint="@string/login_txtUser"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
@@ -34,7 +32,7 @@
         android:textAlignment="center"
         android:textSize="15sp"
         android:id="@+id/login_editUser"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:layout_marginBottom="2dp"
         android:gravity="center"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
@@ -42,7 +40,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_txtPass"
         android:hint="@string/login_txtPass"
         android:gravity="center"
         android:textSize="20sp"

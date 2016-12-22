@@ -16,10 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.IOException;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
 import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
@@ -100,7 +97,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                     SharedPreferences.Editor editor = myPrefs.edit();
                                     editor.putString("username", "");
                                     editor.putString("password", "");
-                                    editor.commit();
+                                    editor.apply();
                                 }
                                 Login.this.finish();
                                 Intent myIntent = new Intent(Login.this, Lobby.class);
@@ -138,10 +135,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    public void checkboxClicked(View v){
-        boolean checked = ((CheckBox)v).isChecked();
-    }
-
     public void buildExitDialog() {
         if(builder == null) {
             builder = new AlertDialog.Builder(this);
@@ -162,20 +155,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         //if there's a username and password
         String username = myPrefs.getString("username", "");
-        if(username != null && !username.equals("")){
+        if(!username.equals("")){
             editUser.setText(username);
             editPassword.setText(myPrefs.getString("password",""));
         }else{
             editUser.setText("");
             editPassword.setText("");
-        }
-
-        if(!AudioBackground.isPlaying()) {
-            final Intent myIntent = new Intent(Login.this, AudioBackground.class);
-            myIntent.setClass(Login.this, AudioBackground.class);
-            myIntent.putExtra("type", "BG");
-            myIntent.putExtra("sound", R.raw.bg);
-            startService(myIntent);
         }
     }
 

@@ -286,7 +286,7 @@ public class Player{
 			for (Player p : friends) {
 				friendList = friendList.concat(p.getUsername() + " ,");
 			}
-			friendList.concat("]");
+			friendList = friendList.concat("]");
 		}
 		return "Player [username=" + username + ", password=" + password + ",\nstats=" + stats + ",\n status=" + status
 				+ ", role=" + role + ",\n gameHistory=" + gameHistory + ",\n friends=" + friendList +

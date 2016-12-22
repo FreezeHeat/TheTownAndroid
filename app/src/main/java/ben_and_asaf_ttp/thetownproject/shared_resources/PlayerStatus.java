@@ -27,5 +27,5 @@ public enum PlayerStatus{
 	/**
 	 * Indicates the {@code User} is playing a game right now
 	 */
-	INGAME;
+	INGAME
 }

@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +23,6 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,7 +54,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private Player player;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private TextView txtPlayer;
     //private AlertDialog dialogHowManyPlayers;
     private ProgressDialog dialogProgress;
     //private int numPlayers = -1;
@@ -95,7 +95,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         btnStats.setOnClickListener(this);
 
         //set the player's name as a greeting
-        txtPlayer = (TextView) findViewById(R.id.lobby_txt_player);
+        TextView txtPlayer = (TextView) findViewById(R.id.lobby_txt_player);
         txtPlayer.setText(player.getUsername());
 
         //How many players dialog that handles the player's request
@@ -178,7 +178,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ((GlobalResources) ((GlobalResources) getApplication())).setGame(null);
+                        ((GlobalResources) getApplication()).setGame(null);
                         dialogProgress.dismiss();
                         btnJoinGame.setEnabled(true);
                     }
@@ -259,6 +259,13 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 }
             }.execute();
         }
+
+        //media player
+        final Intent myIntent = new Intent(Lobby.this, AudioBackground.class);
+        myIntent.setClass(Lobby.this, AudioBackground.class);
+        myIntent.putExtra("type", "BG");
+        myIntent.putExtra("sound", R.raw.bg);
+        startService(myIntent);
     }
 
     class LobbyLogic implements Runnable{
@@ -268,7 +275,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
 
             //start game service
             DataPacket dp = mService.getPacket();
-            String msg;
             Intent myIntent;
 
             switch(dp.getCommand()){
@@ -290,13 +296,13 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                     Lobby.this.player.getFriends().clear();
                     if(dp.getPlayers() != null) {
                         Lobby.this.player.getFriends().addAll(dp.getPlayers());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myAdapter.notifyDataSetChanged();
-                            }
-                        });
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            myAdapter.notifyDataSetChanged();
+                        }
+                    });
                     break;
                 case FRIEND_REQUEST:
                     //TODO: Snackbar with forward to activity that handles friend requests
@@ -313,14 +319,8 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                         }
                     });
                     break;
-                default:
-                    if(dp != null) {
-                        Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
-                    }else{
-                        Log.e(this.getClass().getName(), "DataPacket is null");
-                    }
-                    return;
             }
+            Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
         }
     }
 
@@ -353,7 +353,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse("http://10.0.3.2"));
+                intent.setData(Uri.parse(PreferenceManager.getDefaultSharedPreferences(this).getString("serverWs", "127.0.0.1")));
                 startActivity(intent);
                 break;
         }
@@ -380,13 +380,31 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     }
 
     @Override
+    protected void onDestroy() {
+        final Intent intent = new Intent(Lobby.this, AudioBackground.class);
+        stopService(intent);
+        super.onDestroy();
+    }
+
+    @Override
     protected void onStop() {
         // Unbind from the service
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
         }
+        if(AudioBackground.isPlaying()) {
+            AudioBackground.getBg().pause();
+        }
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        if(AudioBackground.isPlaying()) {
+            AudioBackground.getBg().start();
+        }
+        super.onResume();
     }
 
     /** Defines callbacks for service binding, passed to bindService() */
@@ -491,7 +509,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                             return null;
                         }
                     }.execute();
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
                     Lobby.this.dialogProgress.show();
                 }else{
                     Toast.makeText(this, "Friend is not playing",Toast.LENGTH_SHORT).show();
@@ -655,18 +673,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 break;
             default:
                 break;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(!AudioBackground.isPlaying()) {
-            final Intent myIntent = new Intent(Lobby.this, AudioBackground.class);
-            myIntent.setClass(Lobby.this, AudioBackground.class);
-            myIntent.putExtra("type", "BG");
-            myIntent.putExtra("sound", R.raw.bg);
-            startService(myIntent);
         }
     }
 }
