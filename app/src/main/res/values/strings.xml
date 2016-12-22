@@ -41,6 +41,8 @@
     <string name="lobby_friendlist_already_exists">You are already friends</string>
     <string name="lobby_friendlist_cant_add_yourself">You can\'t add yourself</string>
     <string name="lobby_menu_website">Visit website</string>
+    <string name="lobby_btn_gameguide">Game Guide</string>
+
 
     <string name="game_txtSendMessage_hint">Enter your message here</string>
     <string name="game_txtSendMessage_blocked">*Blocked in night phase*</string>

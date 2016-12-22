@@ -66,6 +66,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private Timer timer;
     private EditText username;
     private Button btnJoinGame;
+    private Button btnGameGuide;
     private Executor executor;
 
     @Override
@@ -87,6 +88,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         registerForContextMenu(mDrawerList);
         mDrawerLayout.setOnClickListener(this);
 
+        btnGameGuide = (Button)findViewById(R.id.lobby_btn_gameguide);
         btnJoinGame = (Button) findViewById(R.id.lobby_btn_joinGame);
         Button btnOptions = (Button) findViewById(R.id.lobby_btn_options);
         Button btnStats = (Button) findViewById(R.id.lobby_btn_stats);
@@ -670,6 +672,10 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 Intent btnStats = new Intent(Lobby.this, StatsActivity.class);
                 ((GlobalResources)getApplication()).setStatsPlayer(Lobby.this.player);
                 Lobby.this.startActivity(btnStats);
+                break;
+            case R.id.lobby_btn_gameguide:
+                Intent btnGameGuide = new Intent(Lobby.this, GameGuide.class);
+                Lobby.this.startActivity(btnGameGuide);
                 break;
             default:
                 break;
