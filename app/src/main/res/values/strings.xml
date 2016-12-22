@@ -73,7 +73,6 @@
     <string name="game_killers_win">Killers win</string>
     <string name="game_player_role">My Role: %1$s</string>
 
-
     <string name="playercard_menu_get_stats">See Stats</string>
 
     <string name="login_btnLogin2">Sign in</string>
@@ -84,8 +83,13 @@
     <string name="main_btnLogin">Login</string>
     <string name="main_btnRegister">Register</string>
     <string name="main_btnRegister_land">Register</string>
-    <string name="lobby_insertUsername">Username</string>
 
+    <string name="lobby_insertUsername">Username</string>
+    <string name="lobby_friendstatus_online">Online</string>
+    <string name="lobby_friendstatus_offline">Offline</string>
+    <string name="lobby_friendstatus_inqueue">In-queue</string>
+    <string name="lobby_friendstatus_ingame">In-game</string>
+    <string name="lobby_matchMaking_joinmethod_title">Join by the same rank, or join any?</string>
 
     <string name="register_btnConfirm">Confirm</string>
     <string name="register_btnClear">Clear</string>
@@ -134,6 +138,10 @@
     <string name="gameGuide_role6">SNITCH - can find out if someone\'s the killer or not</string>
     <string name="gameGuide_role7">The CITIZENS\' goal is to execute the killer by vote</string>
     <string name="gameGuide_role8">Whoever reaches the goal wins the game</string>
-    <string name="statsWins"></string>
+
+    <string-array name="lobby_matchmaking_joinmethod">
+        <item>Join by rank</item>
+        <item>Join any</item>
+    </string-array>
 
 </resources>
