@@ -61,6 +61,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private boolean mBound = false;
     private MyPlayerAdapter myAdapter;
     private AlertDialog.Builder builder;
+    private AlertDialog.Builder builderFriends;
     private AlertDialog dialog;
     private ActionBarDrawerToggle mDrawerToggle;
     private Timer timer;
@@ -471,8 +472,21 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
             if(user.getStatus() == null){
                 user.setStatus(PlayerStatus.OFFLINE);
             }
-            txtPlayerStatus.setText(user.getStatus().name());
 
+            switch (user.getStatus()){
+                case OFFLINE:
+                    txtPlayerStatus.setText(getString(R.string.lobby_friendstatus_offline));
+                    break;
+                case ONLINE:
+                    txtPlayerStatus.setText(getString(R.string.lobby_friendstatus_online));
+                    break;
+                case INGAME:
+                    txtPlayerStatus.setText(getString(R.string.lobby_friendstatus_ingame));
+                    break;
+                case INQUEUE:
+                    txtPlayerStatus.setText(getString(R.string.lobby_friendstatus_inqueue));
+                    break;
+            }
 
             txtPlayerName.setOnCreateContextMenuListener(this);
             return convertView;
@@ -552,31 +566,31 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void buildAddFriendDialog() {
-        if(builder == null) {
-            builder = new AlertDialog.Builder(this);
-            builder.setView(username);
-            builder.setMessage(getResources().getString(R.string.lobby_addFriend));
-            builder.setCancelable(false);
-            builder.setPositiveButton(getResources().getString(R.string.lobby_addFriend), new DialogInterface.OnClickListener() {
+        if(builderFriends == null) {
+            builderFriends = new AlertDialog.Builder(this);
+            builderFriends.setView(username);
+            builderFriends.setMessage(getResources().getString(R.string.lobby_addFriend));
+            builderFriends.setCancelable(false);
+            builderFriends.setPositiveButton(getResources().getString(R.string.lobby_addFriend), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     final Player player = new Player(username.getText().toString(), "1");
                     //check if string is empty
-                    if(!player.getUsername().isEmpty()) {
+                    if (!player.getUsername().isEmpty()) {
                         username.setText("");
-                    }else {
+                    } else {
                         Toast.makeText(Lobby.this, R.string.general_empty_details, Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     //check if trying to add himself/herself
-                    if(player.getUsername().equals(Lobby.this.player.getUsername())){
+                    if (player.getUsername().equals(Lobby.this.player.getUsername())) {
                         Toast.makeText(Lobby.this, R.string.lobby_friendlist_cant_add_yourself, Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     //check if already befriended
-                    for(Player p : Collections.synchronizedCollection(Lobby.this.player.getFriends())){
-                        if(p.getUsername().equals(player.getUsername())){
+                    for (Player p : Collections.synchronizedCollection(Lobby.this.player.getFriends())) {
+                        if (p.getUsername().equals(player.getUsername())) {
                             Toast.makeText(Lobby.this, R.string.lobby_friendlist_already_exists, Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -594,46 +608,48 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                     }.execute();
                 }
             });
-            builder.setNegativeButton(getResources().getString(R.string.lobby_exitFriend), new DialogInterface.OnClickListener() {
+            builderFriends.setNegativeButton(getResources().getString(R.string.lobby_exitFriend), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
             });
-            dialog = builder.create();
         }
+        dialog = builderFriends.create();
     }
 
     public void buildExitDialog() {
-        builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getString(R.string.lobby_disconnect));
-        builder.setCancelable(false);
+        if(builder == null) {
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getString(R.string.lobby_disconnect));
+            builder.setCancelable(false);
 
-        builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                new AsyncTask<Void, Void, Void>(){
+            builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    new AsyncTask<Void, Void, Void>() {
 
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        DataPacket dp = new DataPacket();
-                        dp.setCommand(Commands.DISCONNECT);
-                        mService.sendPacket(dp);
-                        return null;
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            DataPacket dp = new DataPacket();
+                            dp.setCommand(Commands.DISCONNECT);
+                            mService.sendPacket(dp);
+                            return null;
+                        }
+                    }.execute();
+                    if (timer != null) {
+                        timer.cancel();
+                        timer.purge();
                     }
-                }.execute();
-                if(timer != null){
-                    timer.cancel();
-                    timer.purge();
+                    Lobby.this.finish();
+                    Intent intent = new Intent(Lobby.this, MainActivity.class);
+                    startActivity(intent);
                 }
-                Lobby.this.finish();
-                Intent intent = new Intent(Lobby.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton(getResources().getString(R.string.general_no), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+            });
+            builder.setNegativeButton(getResources().getString(R.string.general_no), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+        }
         dialog = builder.create();
     }
 
@@ -660,10 +676,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                break;
             case R.id.lobby_btn_options:
                 Intent btnOptions = new Intent(Lobby.this,SettingsActivity.class);
-
-                //intent to test gifs on options button
-                //Intent btnOptions = new Intent(Lobby.this,Pop.class);
-
                 Lobby.this.startActivity(btnOptions);
                 break;
             case R.id.lobby_btn_stats:

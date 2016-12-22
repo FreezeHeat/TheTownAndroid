@@ -82,8 +82,12 @@
     <string name="main_btnLogin">Login</string>
     <string name="main_btnRegister">Register</string>
     <string name="main_btnRegister_land">Register</string>
-    <string name="lobby_insertUsername">Username</string>
 
+    <string name="lobby_insertUsername">Username</string>
+    <string name="lobby_friendstatus_online">Online</string>
+    <string name="lobby_friendstatus_offline">Offline</string>
+    <string name="lobby_friendstatus_inqueue">In-queue</string>
+    <string name="lobby_friendstatus_ingame">In-game</string>
 
     <string name="register_btnConfirm">Confirm</string>
     <string name="register_btnClear">Clear</string>
@@ -132,6 +136,5 @@
     <string name="gameGuide_role6">SNITCH - can find out if someone\'s the killer or not</string>
     <string name="gameGuide_role7">The CITIZENS\' goal is to execute the killer by vote</string>
     <string name="gameGuide_role8">Whoever reaches the goal wins the game</string>
-    <string name="statsWins"></string>
 
 </resources>

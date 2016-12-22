@@ -2,6 +2,7 @@
 <resources>
     <string name="friendcard_joinGame">הצטרפות למשחק </string>
     <string name="friendcard_remove">מחיקה</string>
+
     <string name="game_action_upon_dead">השחקן הזה מת</string>
     <string name="game_action_you_dead">אין באפשרותך לעשות דבר, אתה מת </string>
     <string name="game_btnSend">שליחה</string>
@@ -18,6 +19,7 @@
     <string name="game_snitch_identity">התפקיד של %1$s הוא:</string>
     <string name="game_txtSendMessage_hint">הכנס הודעתך כאן</string>
     <string name="game_vote">הצבע</string>
+
     <string name="general_cancel">ביטול</string>
     <string name="general_connection_problem">בעייה בתקשורת עם השרת</string>
     <string name="general_empty_details">לא הוכנס מידע</string>
@@ -26,6 +28,7 @@
     <string name="general_password_too_few_characters">אורך הסיסמא הוא מינימום 6</string>
     <string name="general_password_too_much_characters">אורך הסיסמא הוא מקסימום 30</string>
     <string name="general_server_shutdown">השרת נכבה</string>
+
     <string name="lobby_btn_joinGame">הצטרף למשחק</string>
     <string name="lobby_btn_options">הגדרות</string>
     <string name="lobby_btn_stats">הנתונים שלי</string>
@@ -34,29 +37,37 @@
     <string name="lobby_matchMaking_cancel">ביטול</string>
     <string name="lobby_matchMaking_progress_message">מחפש…</string>
     <string name="lobby_matchMaking_progress_title">מחפש משחק…</string>
+
     <string name="login_already_connected">משתמש זה כבר מחובר למערכת</string>
     <string name="login_btnLogin2">התחברות</string>
     <string name="login_checkboxRemember">לזכור שם משתמש ?</string>
     <string name="login_txtPass">סיסמא</string>
     <string name="login_txtUser">שם משתמש</string>
     <string name="login_wrong_details">הפרטים אינם תואמים</string>
+
     <string name="main_btnLogin">התחברות</string>
     <string name="main_btnRegister">הרשמה</string>
     <string name="main_btnRegister_land">הרשמה</string>
+
     <string name="playercard_menu_get_stats">צפייה בנתוני השחקן</string>
+
     <string name="register_btnClear">נקה</string>
     <string name="register_btnConfirm">אישור</string>
     <string name="register_passwords_do_not_match">הסיסמאות אינן תואמות</string>
     <string name="register_user_already_exists">שם משתמש זה כבר קיים</string>
+
     <string name="splash_socket_connection">יוצר קשר עם השרת</string>
     <string name="splash_socket_failed">שגיאה בהתחברות, מבטל קשר</string>
     <string name="splash_socket_success">נוצר קשר</string>
+
     <string name="statsHeals">ריפואים</string>
     <string name="statsKills">רציחות</string>
     <string name="statsRating">מוניטין</string>
     <string name="statsWins">נצחונות</string>
+
     <string name="accessibility_close_drawer">סגור רשימת חברים</string>
     <string name="accessibility_open_drawer">פתח רשימת חברים</string>
+
     <string name="gameGuide_btn_close">סגור</string>
     <string name="gameGuide_btn_next">הבא</string>
     <string name="gameGuide_gameChat">זהו צ\'אט המשחק, יש הודעות משתמש והודעות של ארועים</string>
@@ -79,7 +90,9 @@
     <string name="gameGuide_timer1">זהו שעון העצר של המשחק שמראה כמה זמן נשאר עד למעבר לשלב הבא</string>
     <string name="gameGuide_timer2">לשים לב שיש שלב הכנה לפני התחלת המשחק, שבו אפשר לצ\'טט ולברר תפקידך</string>
     <string name="gameGuide_timer3">שעון העצר משרת גם כמונה שחקנים, כל משחק דורש 5 שחקנים בשביל לשחק</string>
+
     <string name="friendcard_showStats">נתוני שחקן</string>
+
     <string name="game_attemptedMurder">הרופא ריפא שורד ששרד ניסיון רצח</string>
     <string name="game_citizens_win">האזרחים ניצחו</string>
     <string name="game_executed_other">הוצא להורג %1$s</string>
@@ -92,8 +105,10 @@
     <string name="game_player_role">תפקידי: %1$s</string>
     <string name="game_role_notKiller">לא הרוצח</string>
     <string name="game_txtSendMessage_blocked">חסום לשימוש בלילה</string>
+
     <string name="general_no">לא</string>
     <string name="general_yes">כן</string>
+
     <string name="lobby_addFriend">הוסף חבר</string>
     <string name="lobby_dialog_wrong_details">משתמש לא קיים</string>
     <string name="lobby_exitFriend">יציאה</string>
@@ -101,6 +116,7 @@
     <string name="lobby_friendlist_cant_add_yourself">לא ניתן להוסיף את עצמך</string>
     <string name="lobby_insertUsername">שם משתמש</string>
     <string name="lobby_menu_website">בקר באתר המשחק</string>
+
     <string name="pref_password_changed">סיסמתך שונתה</string>
     <string name="pref_password_empty_or_same">הסיסמא ריקה או שזהה לקודמת</string>
     <string name="pref_summary_bgVolumeBar">שנה את עוצמת מויזקת הרקע</string>
@@ -109,11 +125,18 @@
     <string name="pref_title_bgVolumeBar">מוזיקת רקע</string>
     <string name="pref_title_editPassword">שנה את סיסמתך</string>
     <string name="pref_title_fxVolumeBar">אפקטים קוליים</string>
+
     <string name="register_password">סיסמא</string>
     <string name="register_password_retype">הכנס סיסמתך שנית</string>
+
     <string name="statsLost">הפסדים</string>
     <string name="statsWon">נצחונות</string>
+
     <string name="splash_dialog_btn_defaults">החזר לברירת המחדל</string>
     <string name="splash_dialog_explanation">האם ברצונך לשנות את כתובת ה IP של השרת, ה PORT וכתובת ה WEBSERVICE?</string>
     <string name="splash_socket_startGame">הצלחה - מתחיל את המשחק</string>
+    <string name="lobby_friendstatus_ingame">במשחק</string>
+    <string name="lobby_friendstatus_inqueue">בתור</string>
+    <string name="lobby_friendstatus_offline">לא מחובר</string>
+    <string name="lobby_friendstatus_online">מחובר</string>
 </resources>
