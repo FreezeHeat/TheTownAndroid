@@ -217,6 +217,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             intent.putExtra("type", "FX");
                             intent.putExtra("sound", R.raw.murder);
                             startService(intent);
+
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                         break;
                     case DAY:
@@ -391,7 +397,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         startService(intent);
 
                         try {
-                            Thread.sleep(2500);
+                            Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -721,13 +727,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if(!AudioBackground.isPlaying()) {
-            final Intent myIntent = new Intent(GameActivity.this, AudioBackground.class);
-            myIntent.setClass(GameActivity.this, AudioBackground.class);
-            myIntent.putExtra("type", "BG");
-            myIntent.putExtra("sound", R.raw.bg);
-            startService(myIntent);
-        }
     }
 
     /** Defines callbacks for service binding, passed to bindService() */
