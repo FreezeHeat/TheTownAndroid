@@ -138,9 +138,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                txtGameChat.append(Html.fromHtml(msg));
+                                synchronized (GameActivity.this) {
+                                    txtGameChat.append(Html.fromHtml(msg));
+                                    this.notify();
+                                }
                             }
                         });
+
+                        synchronized (GameActivity.this){
+                            try {
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
                         //Play sound effect
                         intent.setClass(GameActivity.this, AudioBackground.class);
@@ -157,9 +168,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                txtGameChat.append(Html.fromHtml(msg));
+                                synchronized (GameActivity.this) {
+                                    txtGameChat.append(Html.fromHtml(msg));
+                                    this.notify();
+                                }
                             }
                         });
+
+                        synchronized (GameActivity.this){
+                            try {
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
                         //Play sound effect
                         intent.setClass(GameActivity.this, AudioBackground.class);
@@ -176,9 +198,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                txtGameChat.append(Html.fromHtml(msg));
+                                synchronized (GameActivity.this) {
+                                    txtGameChat.append(Html.fromHtml(msg));
+                                    this.notify();
+                                }
                             }
                         });
+
+                        synchronized (GameActivity.this){
+                            try {
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
                         //Play sound effect
                         intent.setClass(GameActivity.this, AudioBackground.class);

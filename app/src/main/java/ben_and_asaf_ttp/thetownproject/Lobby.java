@@ -54,9 +54,9 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private Player player;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    //private AlertDialog dialogHowManyPlayers;
+    private AlertDialog dialogJoinMethod;
     private ProgressDialog dialogProgress;
-    //private int numPlayers = -1;
+    private int numPlayers = -1;
     private GameService mService;
     private boolean mBound = false;
     private MyPlayerAdapter myAdapter;
@@ -100,52 +100,54 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         txtPlayer.setText(player.getUsername());
 
         //How many players dialog that handles the player's request
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(getResources().getText(R.string.lobby_matchMaking_howManyPlayers_title));
-//        builder.setSingleChoiceItems(R.array.lobby_array_how_many_players, -1, new DialogInterface.OnClickListener(){
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                //set value according to the array (QuickJoin[0], 5, 8 or 10)
-//                if(which == 0){
-//
-//                    //if it's quick-join, set default of 0 (which is quick-join in the server)
-//                    Lobby.this.numPlayers = 0;
-//                }else {
-//                    Lobby.this.numPlayers = Integer.decode(getResources().getStringArray(R.array.lobby_array_how_many_players)[which]);
-//                }
-//                Lobby.this.dialogHowManyPlayers.dismiss();
-//                Lobby.this.dialogProgress.show();
-//                new AsyncTask<Void, Void, DataPacket>(){
-//
-//                    @Override
-//                    protected DataPacket doInBackground(Void... params) {
-//                        DataPacket dp = new DataPacket();
-//                        dp.setCommand(Commands.READY);
-//                        dp.setNumber(Lobby.this.numPlayers);
-//                        ClientConnection.getConnection().sendDataPacket(dp);
-//                        dp = ClientConnection.getConnection().receiveDataPacket();
-//                        return dp;
-//                    }
-//
-//                    // this runs on UI thread
-//                    @Override
-//                    protected void onPostExecute(DataPacket dp) {
-//                        if(dp.getCommand() == Commands.OK) {
-//                            ((GlobalResources) getApplication()).setGame(dp.getGame());
-//                            if (((GlobalResources) getApplication()).getGame() != null) {
-//                                dialogProgress.dismiss();
-//                            }
-//                        }
-//                        Intent myIntent = new Intent(Lobby.this, GameActivity.class);
-//                        startActivity(myIntent);
-//                        Lobby.this.finish();
-//                    }
-//                }.execute();
-//            }
-//        });
-//
-//        dialogHowManyPlayers = builder.create();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getText(R.string.lobby_matchMaking_joinmethod_title));
+        builder.setSingleChoiceItems(R.array.lobby_matchmaking_joinmethod, 0, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                switch (which){
+                    case 0:
+                        //Join by rank
+                        Lobby.this.numPlayers = 5;
+                        break;
+
+                    //Join any game
+                    case 1:
+                        Lobby.this.numPlayers = 0;
+                        break;
+                }
+                Lobby.this.dialogJoinMethod.dismiss();
+                Lobby.this.dialogProgress.show();
+                new AsyncTask<Void, Void, Void>(){
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        Lobby.this.dialogProgress.show();
+                        DataPacket dp = new DataPacket();
+                        dp.setCommand(Commands.READY);
+                        dp.setNumber(Lobby.this.numPlayers);
+                        ClientConnection.getConnection().sendDataPacket(dp);
+                        executor.execute(new LobbyLogic());
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        Lobby.this.btnJoinGame.setEnabled(true);
+                        super.onPostExecute(aVoid);
+                    }
+                }.execute();
+            }
+        });
+
+        dialogJoinMethod = builder.create();
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                btnJoinGame.setEnabled(true);
+            }
+        });
 
         //EditText view for the "Add friend" menu
         username = new EditText(this);
@@ -658,21 +660,9 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         switch(v.getId()){
            case R.id.lobby_btn_joinGame:
                btnJoinGame.setEnabled(false);
-               //Use this in-case multi-choice of players is needed, for now only 5
-               //this.dialogHowManyPlayers.show();
-               Lobby.this.dialogProgress.show();
-               new AsyncTask<Void, Void, Void>(){
 
-                   @Override
-                   protected Void doInBackground(Void... params) {
-                       DataPacket dp = new DataPacket();
-                       dp.setCommand(Commands.READY);
-                       dp.setNumber(5);
-                       mService.sendPacket(dp);
-                       executor.execute(new LobbyLogic());
-                       return null;
-                   }
-               }.execute();
+               //Show join method dialog
+               this.dialogJoinMethod.show();
                break;
             case R.id.lobby_btn_options:
                 Intent btnOptions = new Intent(Lobby.this,SettingsActivity.class);
