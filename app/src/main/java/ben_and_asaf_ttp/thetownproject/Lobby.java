@@ -96,6 +96,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         btnJoinGame.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
         btnStats.setOnClickListener(this);
+        btnGameGuide.setOnClickListener(this);
 
         //set the player's name as a greeting
         TextView txtPlayer = (TextView) findViewById(R.id.lobby_txt_player);
@@ -144,7 +145,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         });
 
         dialogJoinMethod = builder.create();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        dialogJoinMethod.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 btnJoinGame.setEnabled(true);

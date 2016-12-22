@@ -64,7 +64,9 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".GameGuide" />
+        <activity android:name=".GameGuide"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
     </application>
 
 </manifest>
