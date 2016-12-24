@@ -366,7 +366,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         final String gameRole = String.format(
                                 getResources().getString(R.string.game_player_role) , roleTxt);
-                        showAnnouncement(gameRole, icon, -1);
+                        showAnnouncement(gameRole, icon, R.raw.action);
 
                         final String readyMsg =  "<font color=\"#0066ff\">*" +
                                 getResources().getString(R.string.game_ready_phase) +
