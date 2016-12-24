@@ -34,27 +34,27 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
         return fx;
     }
 
-    private synchronized void setBg(MediaPlayer bg) {
+    private void setBg(MediaPlayer bg) {
         AudioBackground.bg = bg;
     }
 
-    private synchronized void setFx(MediaPlayer fx) {
+    private void setFx(MediaPlayer fx) {
         AudioBackground.fx = fx;
     }
 
-    private synchronized String getType(){
+    private String getType(){
         return type;
     }
 
-    private synchronized void setType(String type){
+    private void setType(String type){
         AudioBackground.type = type;
     }
 
-    private synchronized int getSound(){
+    private int getSound(){
         return sound;
     }
 
-    private synchronized void setSound(int sound){
+    private void setSound(int sound){
         AudioBackground.sound = sound;
     }
 
@@ -82,19 +82,23 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                     case bgType:
                         final float volBg = myPrefs.getFloat("bgVolume", 1.0f);
                         if( (!isPlaying) && volBg > 0.0f ) {
-                            if (getBg() == null) {
-                                setBg(MediaPlayer.create(AudioBackground.this, getSound()));
-                                getBg().setVolume(volBg, volBg);
-                                getBg().setLooping(true);
-                                getBg().setOnPreparedListener(AudioBackground.this);
+                            synchronized (this){
+                                if (getBg() == null) {
+                                    setBg(MediaPlayer.create(AudioBackground.this, getSound()));
+                                    getBg().setVolume(volBg, volBg);
+                                    getBg().setLooping(true);
+                                    getBg().setOnPreparedListener(AudioBackground.this);
+                                }
                             }
                         }else{
                                 if (volBg <= 0.0f) {
                                     //User wants NO background music
                                     isPlaying = false;
-                                    if(getBg() != null) {
-                                        getBg().release();
-                                        setBg(null);
+                                    synchronized (this) {
+                                        if (getBg() != null) {
+                                            getBg().release();
+                                            setBg(null);
+                                        }
                                     }
                                 }
                         }
@@ -102,14 +106,19 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                     case fxType:
                         final float volFx = myPrefs.getFloat("fxVolume", 1.0f);
                         if(volFx > 0.0f) {
-                            setFx(MediaPlayer.create(AudioBackground.this, getSound()));
-                            getFx().setVolume(volFx, volFx);
-                            getFx().setOnPreparedListener(AudioBackground.this);
+                            synchronized (this) {
+                                setFx(MediaPlayer.create(AudioBackground.this, getSound()));
+                                getFx().setVolume(volFx, volFx);
+                                getFx().setOnPreparedListener(AudioBackground.this);
+                            }
                         }else{
-                            //User wants NO sound effects
-                            if(getFx() != null){
-                                getFx().release();
-                                setFx(null);
+                            synchronized (this) {
+
+                                //User wants NO sound effects
+                                if (getFx() != null) {
+                                    getFx().release();
+                                    setFx(null);
+                                }
                             }
                         }
                         break;
