@@ -153,14 +153,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
 
-        //if there's a username and password
-        String username = myPrefs.getString("username", "");
-        if(!username.equals("")){
-            editUser.setText(username);
-            editPassword.setText(myPrefs.getString("password",""));
-        }else{
-            editUser.setText("");
-            editPassword.setText("");
+        if(editUser.getText().toString().isEmpty() || editPassword.getText().toString().isEmpty()) {
+            //if there's a username and password
+            String username = myPrefs.getString("username", "");
+            if (!username.equals("")) {
+                editUser.setText(username);
+                editPassword.setText(myPrefs.getString("password", ""));
+            } else {
+                editUser.setText("");
+                editPassword.setText("");
+            }
         }
     }
 
