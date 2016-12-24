@@ -286,6 +286,22 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
             DataPacket dp = mService.getPacket();
             Intent myIntent;
 
+
+            if(dp != null) {
+                Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
+            }else{
+                Log.e(this.getClass().getName(), "DataPacket is null");
+                buildConfirmDialog(getResources().getString(R.string.general_connection_problem));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        builder.show();
+                    }
+                });
+                return;
+            }
+
+
             switch(dp.getCommand()){
                 case OK:
                     ((GlobalResources) getApplication()).setGame(dp.getGame());
@@ -570,7 +586,13 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 ClientConnection.getConnection().closeSocket();
             }
         });
-        dialog = builder.create();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog = builder.create();
+            }
+        });
+
     }
 
     public void buildAddFriendDialog() {
