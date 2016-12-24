@@ -362,7 +362,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse(PreferenceManager.getDefaultSharedPreferences(this).getString("serverWs", "127.0.0.1")));
+                intent.setData(Uri.parse(PreferenceManager.getDefaultSharedPreferences(this).getString("serverWs", "http://127.0.0.1")));
                 startActivity(intent);
                 break;
         }

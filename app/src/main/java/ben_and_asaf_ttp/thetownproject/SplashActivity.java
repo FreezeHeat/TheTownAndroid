@@ -80,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 //if the defaults are set
                 if(serverIp.equals(server) && serverPort.equals(port)){
-                    sp.edit().putString("serverWs", webService);
+                    sp.edit().putString("serverWs", webService).apply();
                 }
                 ClientConnection.getConnection().startConnection(serverIp, Integer.decode(serverPort));
             } catch (IOException e) {
