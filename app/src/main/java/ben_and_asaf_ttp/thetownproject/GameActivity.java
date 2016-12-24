@@ -54,19 +54,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txtGameChat;
     private TextView txtGameTimer;
     private ImageView imgvGamePhase;
-    private Executor executor;
-    private GameLogic gameLogic;
     private GameService mService;
     private boolean mBound = false;
     private MyPlayerAdapter myAdapter;
     private CountDownTimer countDownTimer;
     private boolean day;
     private boolean gameStarted;
-    private boolean lock = false;
     private String msg;
     private Intent anim;
     private Intent announce;
     private TextView playerRole;
+    private GameLogic gameLogic;
     private static final int ANIMATION_AND_ANNOUNCE = 1;
 
     @Override
@@ -95,16 +93,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         grid.setAdapter(myAdapter);
         registerForContextMenu(grid);
         day = false;
-
-        executor = new Executor() {
-            @Override
-            public void execute(Runnable command) {
-                new Thread(command).start();
-            }
-        };
     }
 
-    class GameLogic implements Runnable{
+    class GameLogic extends Thread{
 
         @Override
         public void run() {
@@ -127,6 +118,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             builder.show();
                         }
                     });
+                    this.interrupt();
                     return;
                 }
 
@@ -398,12 +390,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         //get refreshed players with stats and game history - check each one for this player
                         msg = getResources().getString(R.string.game_citizens_win);
                         endGame(msg, dp.getPlayers());
+                        this.interrupt();
                         return;
                     case WIN_KILLERS:
 
                         //get refreshed players with stats and game history - check each one for this player
                         msg = getResources().getString(R.string.game_killers_win);
                         endGame(msg, dp.getPlayers());
+                        this.interrupt();
                         return;
                     case GAME_DISBANDED:
                         buildConfirmDialog(getResources().getString(R.string.game_game_disbanded));
@@ -413,6 +407,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 builder.show();
                             }
                         });
+                        this.interrupt();
                         return;
                     case DISCONNECT:
 
@@ -423,6 +418,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         intent.setClass(GameActivity.this, Lobby.class);
                         startActivity(intent);
                         GameActivity.this.finish();
+                        this.interrupt();
                         return;
                     case SERVER_SHUTDOWN:
                         buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
@@ -432,6 +428,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 builder.show();
                             }
                         });
+                        this.interrupt();
                         return;
                 }
             }
@@ -686,7 +683,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             //run game logic
             if(GameService.isRunning) {
-                executor.execute(gameLogic);
+                if(gameLogic.getState() == Thread.State.NEW) {
+                    gameLogic.start();
+                }
             }
         }
 
@@ -885,6 +884,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         if(countDownTimer != null){
             countDownTimer.cancel();
+        }
+        if(gameLogic.isAlive()){
+            gameLogic.interrupt();
         }
         super.onDestroy();
     }
