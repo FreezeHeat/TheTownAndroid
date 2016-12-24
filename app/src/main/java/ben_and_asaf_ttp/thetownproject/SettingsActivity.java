@@ -50,7 +50,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                     @Override
                     public CharSequence filter(CharSequence cs, int start,
                                                int end, Spanned spanned, int dStart, int dEnd) {
-                        // TODO Auto-generated method stub
                         if(cs.equals("")){ // for backspace
                             return cs;
                         }

@@ -10,9 +10,7 @@ import ben_and_asaf_ttp.thetownproject.shared_resources.DataPacket;
 /**
  * An {@link Service} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
- * <p/>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
+ * <p>helper methods</p>.
  */
 public class GameService extends Service {
     public static boolean isRunning = false;
