@@ -139,4 +139,15 @@
     <string name="lobby_friendstatus_inqueue">בתור</string>
     <string name="lobby_friendstatus_offline">לא מחובר</string>
     <string name="lobby_friendstatus_online">מחובר</string>
+    <string name="lobby_btn_gameguide">מדריך המשחק</string>
+    <string name="lobby_matchMaking_joinmethod_title">הצטרף למשחק לפי דרגה, או לכל משחק זמין?</string>
+    <string name="app_name">פרויקט העיירה</string>
+
+    <string-array name="lobby_matchmaking_joinmethod">
+        <item>הצטרף לפי דרגה</item>
+        <item>הצטרף למשחק זמין</item>
+    </string-array>
+    <string name="game_role_citizen">אזרח</string>
+    <string name="game_role_healer">רופא</string>
+    <string name="game_role_snitch">מלשן</string>
 </resources>

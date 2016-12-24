@@ -38,7 +38,9 @@
         android:id="@+id/login_editUser"
         android:layout_gravity="end"
         android:gravity="center"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+        android:inputType="textNoSuggestions"
+        android:imeOptions="flagNoExtractUi"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -58,7 +60,8 @@
         android:textAlignment="center"
         android:textSize="15sp"
         android:layout_weight="10"
-        android:inputType="textPassword"
+        android:inputType="textPassword|textNoSuggestions"
+        android:imeOptions="flagNoExtractUi"
         android:id="@+id/login_editPass"
         android:layout_gravity="center_horizontal"
         android:gravity="center"

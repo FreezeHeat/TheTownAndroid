@@ -12,6 +12,9 @@ import android.preference.EditTextPreference;
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
@@ -40,6 +43,25 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         password = (preferences.getString(APP_PASSWORD, ""));
         final EditTextPreference editTextPass = (EditTextPreference)findPreference(APP_NEWPASSWORD);
         editTextPass.setText(password);
+
+        //Only letters, numbers and underscores (REGEX)
+        editTextPass.getEditText().setFilters(new InputFilter[] {
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if(cs.equals("")){ // for backspace
+                            return cs;
+                        }
+                        if(cs.toString().matches("\\w+")){
+                            return cs;
+                        }
+                        return "";
+                    }
+                }
+        });
+        editTextPass.getEditText().setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,

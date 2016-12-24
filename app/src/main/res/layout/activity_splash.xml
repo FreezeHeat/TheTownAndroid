@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/imgSplashScreen"
         android:src="@drawable/login"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -24,7 +24,8 @@
         android:id="@+id/pbSplashScreen"
         android:indeterminate="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="54dp"
+       android:layout_below="@id/imgSplashScreen"
+        android:layout_marginTop="10dp"
         android:max="100"
         android:progress="0"
         android:layout_centerVertical="true" />
@@ -36,7 +37,8 @@
         android:textSize="20sp"
         android:textColor="@android:color/black"
         android:id="@+id/txtSplashScreen"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/pbSplashScreen"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

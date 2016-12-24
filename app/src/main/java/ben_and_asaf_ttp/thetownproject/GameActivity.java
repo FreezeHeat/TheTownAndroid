@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -30,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -60,7 +62,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private CountDownTimer countDownTimer;
     private boolean day;
     private boolean gameStarted;
-    private boolean online;
+    private boolean lock = false;
     private String msg;
     private Intent anim;
     private Intent announce;
@@ -135,29 +137,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 ": </font><font color=\"#ffffff\">" +
                                 dp.getMessage() +
                                 "</font><br/>";
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                synchronized (GameActivity.this) {
-                                    txtGameChat.append(Html.fromHtml(msg));
-                                    this.notify();
-                                }
-                            }
-                        });
-
-                        synchronized (GameActivity.this){
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        //Play sound effect
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.msg);
-                        startService(intent);
+                        addToChat(Html.fromHtml(msg));
+                        playSoundEffect(R.raw.msg);
                         break;
                     case SEND_MESSAGE_DEAD:
                         msg = "<font color=\"#cc0000\">*DEAD*</font><font color=\"#009933\">" +
@@ -165,29 +146,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 ": </font><font color=\"#ffffff\">"
                                 + dp.getMessage() +
                                 "</font><br/>";
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                synchronized (GameActivity.this) {
-                                    txtGameChat.append(Html.fromHtml(msg));
-                                    this.notify();
-                                }
-                            }
-                        });
-
-                        synchronized (GameActivity.this){
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        //Play sound effect
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.msg);
-                        startService(intent);
+                        addToChat(Html.fromHtml(msg));
+                        playSoundEffect(R.raw.msg);
                         break;
                     case SEND_MESSAGE_KILLER:
                         msg = "<font color=\"#ff3300\">" +
@@ -195,80 +155,45 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 ": </font><font color=\"#ffffff\">" +
                                 dp.getMessage() +
                                 "</font><br/>";
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                synchronized (GameActivity.this) {
-                                    txtGameChat.append(Html.fromHtml(msg));
-                                    this.notify();
-                                }
-                            }
-                        });
-
-                        synchronized (GameActivity.this){
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        //Play sound effect
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.msg);
-                        startService(intent);
+                        addToChat(Html.fromHtml(msg));
+                        playSoundEffect(R.raw.msg);
                         break;
                     case REFRESH_PLAYERS:
 
-                        //refreshed players - who is alive and who's not
-                        game.getPlayers().clear();
-                        game.getPlayers().addAll(dp.getPlayers());
-                        player = game.getPlayers().get(game.getPlayers().indexOf(player));
-                        game.getPlayers().remove(player);
-
                         //Animation if player was murdered
                         if(dp.getPlayer() != null) {
-                            final String message = String.format(
+                            refreshPlayers(dp.getPlayers());
+                            final Spanned message = Html.fromHtml(String.format(
                                     "<font color=\"#0066ff\">*" +
                                             getResources().getString(R.string.game_murdered) +
-                                    "*</font><br/>", dp.getPlayer().getUsername());
-                            anim.putExtra("animation", "file:///android_asset/murder.html");
-                            anim.putExtra("msg", Html.fromHtml(message).toString());
-                            anim.removeExtra("icon");
-                            startActivityForResult(anim, ANIMATION_AND_ANNOUNCE);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    myAdapter.notifyDataSetChanged();
-                                    txtGameChat.append(Html.fromHtml(message));
-                                }
-                            });
+                                    "*</font><br/>", dp.getPlayer().getUsername()));
+                            addToChat(message);
+                            playAnimation("file:///android_asset/murder.html", message.toString(), -1, R.raw.murder);
 
-                            //Play sound effect
-                            intent.setClass(GameActivity.this, AudioBackground.class);
-                            intent.putExtra("type", "FX");
-                            intent.putExtra("sound", R.raw.murder);
-                            startService(intent);
+                            //If the player died indicate it
+                            if(dp.getPlayer().getUsername().equals(player.getUsername())){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        playerRole.append(" (" + getString(R.string.game_player_dead) + ")");
+                                    }
+                                });
+                            }
 
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(2500);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
                         break;
                     case DAY:
-                        //reset target
-                        GameActivity.this.target = null;
 
                         //day cycle - change GUI and chat
                         day = true;
+
                         msg = "<font color=\"#0066ff\">*"+ getResources().getString(R.string.game_day_phase) + "*</font><br/>";
-                        game.getPlayers().clear();
-                        game.getPlayers().addAll(dp.getPlayers());
-                        player = game.getPlayers().get(game.getPlayers().indexOf(player));
-                        game.getPlayers().remove(player);
+                        refreshPlayers(dp.getPlayers());
                         if(GameActivity.this.player.isAlive()) {
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -278,66 +203,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             });
                         }
 
-                        anim.putExtra("animation","file:///android_asset/sun.html");
-                        startActivity(anim);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myAdapter.notifyDataSetChanged();
-                                imgvGamePhase.setImageResource(R.drawable.day);
-                                txtGameChat.append(Html.fromHtml(msg));
-                                txtSendMessage.setText("");
-
-                                //reset button highlight
-                                if(btn_target != null) {
-                                    btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
-                                }
-                                countDownTimer = new CountDownTimer(60000, 1000) {
-                                    @Override
-                                    public void onTick(long millisRemaining) {
-                                        txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        if(GameActivity.this.player.isAlive()) {
-                                            new AsyncTask<Void, Void, Void>() {
-                                                @Override
-                                                protected Void doInBackground(Void... voids) {
-                                                    DataPacket dp = new DataPacket();
-                                                    dp.setCommand(Commands.VOTE);
-                                                    dp.setPlayer(GameActivity.this.target);
-                                                    mService.sendPacket(dp);
-                                                    return null;
-                                                }
-                                            }.execute();
-                                        }
-                                        txtGameTimer.setText("");
-                                    }
-                                }.start();
-                            }
-                        });
-
-                        //Play sound effect
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.morning);
-                        startService(intent);
+                        addToChat(Html.fromHtml(msg));
+                        playAnimation("file:///android_asset/sun.html", null , -1, R.raw.morning);
+                        phaseChange(R.drawable.day, "", 60000, Commands.VOTE);
                         break;
                     case NIGHT:
-                        //fixes problems with player buttons appearing / disappearing in the wrong phases
-                        gameStarted = true;
-
-                        //reset target
-                        GameActivity.this.target = null;
 
                         //night cycle - change GUI and chat
                         day = false;
+
+                        //fixes problems with player buttons appearing / disappearing in the wrong phases
+                        gameStarted = true;
+
                         msg = "<font color=\"#0066ff\">*" + getResources().getString(R.string.game_night_phase) + "*</font><br/>";
-                        game.getPlayers().clear();
-                        game.getPlayers().addAll(dp.getPlayers());
-                        player = game.getPlayers().get(game.getPlayers().indexOf(player));
-                        game.getPlayers().remove(player);
+                        refreshPlayers(dp.getPlayers());
                         if(GameActivity.this.player.isAlive()) {
                             runOnUiThread(new Runnable() {
                                 public void run() {
@@ -346,51 +225,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             });
                         }
 
-                        anim.putExtra("animation","file:///android_asset/moon.html");
-                        startActivity(anim);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myAdapter.notifyDataSetChanged();
-                                txtGameChat.append(Html.fromHtml(msg));
-                                imgvGamePhase.setImageResource(R.drawable.night);
-                                txtSendMessage.setText(R.string.game_txtSendMessage_blocked);
+                        addToChat(Html.fromHtml(msg));
+                        playAnimation("file:///android_asset/moon.html", null, -1, R.raw.night);
+                        final Commands command = GameActivity.this.player.getRole().action(new DataPacket()).getCommand();
+                        phaseChange(R.drawable.night, getString(R.string.game_txtSendMessage_blocked),
+                                    30000, command);
 
-                                //reset button highlight
-                                if(btn_target != null) {
-                                    btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
-                                }
-                                countDownTimer = new CountDownTimer(30000, 1000) {
-                                    @Override
-                                    public void onTick(long millisRemaining) {
-                                        txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        if (GameActivity.this.player.isAlive()) {
-                                            new AsyncTask<Void, Void, Void>() {
-                                                @Override
-                                                protected Void doInBackground(Void... voids) {
-                                                    DataPacket dp = GameActivity.this.player.getRole().action(new DataPacket());
-                                                    dp.setPlayer(GameActivity.this.target);
-                                                    mService.sendPacket(dp);
-                                                    return null;
-                                                }
-                                            }.execute();
-                                        }
-                                        txtGameTimer.setText("");
-                                    }
-                                }.start();
-                            }
-                        });
-
-                        //Play sound effect
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.night);
-                        startService(intent);
-
+                        //This code will be relevant when there are more than 5 players
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
@@ -413,24 +254,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             msg = msg.concat(" " + getResources().getString(R.string.game_role_notKiller));
                         }
                         msg = msg.concat("*</font><br/>");
-                        announce.putExtra("msg", Html.fromHtml(msg).toString());
-                        announce.removeExtra("icon");
-                        startActivity(announce);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                txtGameChat.append(Html.fromHtml(msg));
-                            }
-                        });
-
-                        //Play sound effect
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.action);
-                        startService(intent);
+                        addToChat(Html.fromHtml(msg));
+                        showAnnouncement(Html.fromHtml(msg).toString(), -1, R.raw.action);
 
                         try {
-                            Thread.sleep(5000);
+                            Thread.sleep(2500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -441,49 +269,35 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         msg = "<font color=\"#0066ff\">*";
                         if (player.equals(dp.getPlayer())) {
                            msg = msg.concat(getResources().getString(R.string.game_executed_you));
+
+                            //If the player died, indicate it
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    playerRole.append(" (" + getString(R.string.game_player_dead) + ")");
+                                }
+                            });
                         } else {
                             msg = msg.concat(String.format(
                                     getResources().getString(R.string.game_executed_other),
                                     dp.getPlayer().getUsername()));
                         }
                         msg = msg.concat("*</font><br/>");
-                        anim.putExtra("animation","file:///android_asset/execute.html");
-                        anim.putExtra("msg", Html.fromHtml(msg).toString());
-                        anim.removeExtra("icon");
-                        startActivityForResult(anim, ANIMATION_AND_ANNOUNCE);
+                        addToChat(Html.fromHtml(msg));
+                        playAnimation("file:///android_asset/execute.html" ,Html.fromHtml(msg).toString(), -1, R.raw.action);
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                txtGameChat.append(Html.fromHtml(msg));
-
-
-                            }
-                        });
-
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.action);
-                        startService(intent);
+                        try {
+                            Thread.sleep(2500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case HEAL:
                         msg = "<font color=\"#0066ff\">*" +
                                         getResources().getString(R.string.game_attemptedMurder) +
                                "*</font><br/>";
-                        announce.putExtra("msg", Html.fromHtml(msg).toString());
-                        announce.removeExtra("icon");
-                        startActivity(announce);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                txtGameChat.append(Html.fromHtml(msg));
-                            }
-                        });
-
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.action);
-                        startService(intent);
+                        addToChat(Html.fromHtml(msg));
+                        showAnnouncement(Html.fromHtml(msg).toString(), -1, R.raw.action);
 
                         try {
                             Thread.sleep(2500);
@@ -500,12 +314,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 "*</font><br/>", dp.getPlayer().getUsername());
                         game.getPlayers().add(dp.getPlayer());
                         game.getPlayers().remove(GameActivity.this.player);
+                        addToChat(Html.fromHtml(msg));
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 txtGameTimer.setText((game.getPlayers().size() + 1) + " / " + game.getMaxPlayers());
                                 myAdapter.notifyDataSetChanged();
-                                txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
                         break;
@@ -517,48 +331,46 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 getResources().getString(R.string.game_player_left) +
                                 "*</font><br/>", dp.getPlayer().getUsername());
                         game.getPlayers().remove(dp.getPlayer());
+                        addToChat(Html.fromHtml(msg));
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 txtGameTimer.setText((game.getPlayers().size() + 1) + " / " + game.getMaxPlayers());
                                 myAdapter.notifyDataSetChanged();
-                                txtGameChat.append(Html.fromHtml(msg));
                             }
                         });
                         break;
                     case READY:
 
-                        //game begun (30 seconds wait and starting DAY phase) - get players
-                        game.getPlayers().clear();
-                        game.getPlayers().addAll(dp.getPlayers());
-                        player = game.getPlayers().get(game.getPlayers().indexOf(player));
-                        final String gameRole = String.format(
-                                getResources().getString(R.string.game_player_role) , player.getRole().name());
-                        game.getPlayers().remove(player);
+                        refreshPlayers(dp.getPlayers());
 
                         int icon = -1;
+                        String roleTxt = "";
                         switch (player.getRole()){
                             case KILLER:
                                 icon = R.drawable.killer;
+                                roleTxt = getResources().getString(R.string.game_role_killer);
                                 break;
                             case CITIZEN:
                                 icon = R.drawable.citizen;
+                                roleTxt = getResources().getString(R.string.game_role_citizen);
                                 break;
                             case HEALER:
                                 icon = R.drawable.doctor;
+                                roleTxt = getResources().getString(R.string.game_role_healer);
                                 break;
                             case SNITCH:
                                 icon = R.drawable.snitch;
+                                roleTxt = getResources().getString(R.string.game_role_snitch);
                                 break;
                         }
-                        announce.putExtra("msg", gameRole);
-                        announce.putExtra("icon", icon);
+                        final String gameRole = String.format(
+                                getResources().getString(R.string.game_player_role) , roleTxt);
+                        showAnnouncement(gameRole, icon, -1);
 
                         final String readyMsg =  "<font color=\"#0066ff\">*" +
                                 getResources().getString(R.string.game_ready_phase) +
                                 "*</font><br/>";
-
-                        startActivity(announce);
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -575,82 +387,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 }.start();
 
-                                //first night cycle is when the game truly starts
-                                myAdapter.notifyDataSetChanged();
-                                txtGameChat.append(Html.fromHtml(readyMsg));
+                                //update the player's role
                                 playerRole.setText(gameRole);
                             }
                         });
-
+                        roleTxt = null;
                         break;
                     case WIN_CITIZENS:
 
                         //get refreshed players with stats and game history - check each one for this player
                         msg = getResources().getString(R.string.game_citizens_win);
-
-                        //Update user's stats
-                        GameActivity.this.player = dp.getPlayers().get(dp.getPlayers().indexOf(GameActivity.this.player));
-                        ((GlobalResources)getApplication()).getPlayer().setStats(GameActivity.this.player.getStats());
-
-                        announce.putExtra("msg", msg);
-                        announce.removeExtra("icon");
-                        startActivity(announce);
-
-                        //Play sound effect
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.victory);
-                        startService(intent);
-
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                        intent.setClass(GameActivity.this, Lobby.class);
-                        intent.removeExtra("type");
-                        intent.removeExtra("sound");
-                        startActivity(intent);
-
-                        if(countDownTimer != null){
-                            countDownTimer.cancel();
-                        }
-                        finish();
+                        endGame(msg, dp.getPlayers());
                         return;
                     case WIN_KILLERS:
 
                         //get refreshed players with stats and game history - check each one for this player
                         msg = getResources().getString(R.string.game_killers_win);
-
-                        //Update user's stats
-                        GameActivity.this.player = dp.getPlayers().get(dp.getPlayers().indexOf(GameActivity.this.player));
-                        ((GlobalResources)getApplication()).getPlayer().setStats(GameActivity.this.player.getStats());
-
-                        announce.putExtra("msg", msg);
-                        announce.removeExtra("icon");
-                        startActivity(announce);
-
-                        intent.setClass(GameActivity.this, AudioBackground.class);
-                        intent.putExtra("type", "FX");
-                        intent.putExtra("sound", R.raw.victory);
-                        startService(intent);
-
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                        intent.setClass(GameActivity.this, Lobby.class);
-                        intent.removeExtra("type");
-                        intent.removeExtra("sound");
-                        startActivity(intent);
-
-                        if(countDownTimer != null){
-                            countDownTimer.cancel();
-                        }
-                        finish();
+                        endGame(msg, dp.getPlayers());
                         return;
                     case GAME_DISBANDED:
                         buildConfirmDialog(getResources().getString(R.string.game_game_disbanded));
@@ -662,8 +415,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         });
 
                         intent.setClass(GameActivity.this, Lobby.class);
-                        intent.removeExtra("type");
-                        intent.removeExtra("sound");
                         startActivity(intent);
                         return;
                     case DISCONNECT:
@@ -672,8 +423,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         if(dp.getPlayer() != null) {
                             ((GlobalResources) getApplication()).getPlayer().setStats(dp.getPlayer().getStats());
                         }
-                        Intent myIntent = new Intent(GameActivity.this, Lobby.class);
-                        startActivity(myIntent);
+                        intent.setClass(GameActivity.this, Lobby.class);
+                        startActivity(intent);
                         GameActivity.this.finish();
                         return;
                     case SERVER_SHUTDOWN:
@@ -688,6 +439,171 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+    /**
+     * Add messages to the game chat
+     * @param message The message to append
+     */
+    private void addToChat(final Spanned message){
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                    txtGameChat.append(message);
+            }
+        });
+    }
+
+    /**
+     * Play sound effect
+     * @param soundEffectResource Sound effect resource to play, e.g. R.raw.sound
+     */
+    private void playSoundEffect(final int soundEffectResource){
+        final Intent intent = new Intent(GameActivity.this, AudioBackground.class);
+        intent.putExtra("type", "FX");
+        intent.putExtra("sound", soundEffectResource);
+        startService(intent);
+    }
+
+    /**
+     * Play an animation with or without an announcement and/or an icon
+     * @param animationResource Animation to play
+     * @param message Message to announce (can be null)
+     * @param iconResource Icon to show with announcement (-1 to cancel)
+     * @param soundEffect Sound effect to play with the animation
+     */
+    private void playAnimation(final String animationResource, final String message, final int iconResource, final int soundEffect){
+        anim.putExtra("animation", animationResource);
+        anim.putExtra("sfx", soundEffect);
+        if(message != null){
+            anim.putExtra("msg", message);
+
+            //if there's an icon, add it
+            if(iconResource != -1) {
+                anim.putExtra("icon", iconResource);
+            }else{
+                anim.removeExtra("icon");
+            }
+            startActivityForResult(anim, ANIMATION_AND_ANNOUNCE);
+        }else{
+
+            //In case there's also an announcement, synchronize animation and announcement
+            anim.removeExtra("msg");
+            anim.removeExtra("icon");
+            startActivity(anim);
+        }
+    }
+
+    /**
+     * Shows a game announcement with a message, an icon and a sound effect
+     * @param message The message to announce
+     * @param iconResource The icon to be shown with the message (-1 to cancel)
+     * @param soundEffect The sound effect resource to play (-1 to cancel)
+     */
+    private void showAnnouncement(final String message, final int iconResource, final int soundEffect){
+        announce.putExtra("msg", message);
+        if(iconResource != -1) {
+            announce.putExtra("icon", iconResource);
+        }else{
+            announce.removeExtra("icon");
+        }
+        if(soundEffect != -1){
+            announce.putExtra("sfx", soundEffect);
+        }else{
+            announce.removeExtra("sfx");
+        }
+        startActivity(announce);
+    }
+
+    /**
+     * Update the adapter with the new changes to the players list
+     * @param playersList The new list of players
+     */
+    private void refreshPlayers(final List<Player> playersList){
+        game.getPlayers().clear();
+        game.getPlayers().addAll(playersList);
+        player = game.getPlayers().get(game.getPlayers().indexOf(player));
+        game.getPlayers().remove(player);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                myAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    /**
+     * Change the GUI and update the game window based on the phase
+     * @param phaseImageResource Phase's image resource
+     * @param phaseString Phase's string resource for txtSendMessage
+     * @param delay Phase's timer delay in miliseconds( 1 minute = 60000 )
+     * @param command Phase's command to be sent (Day = VOTE, Night = Player's role action)
+     */
+    private void phaseChange(final int phaseImageResource, final String phaseString, final int delay, final Commands command){
+
+        //reset target
+        GameActivity.this.target = null;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                imgvGamePhase.setImageResource(phaseImageResource);
+                txtSendMessage.setText(phaseString);
+
+                //reset button highlight
+                if (btn_target != null) {
+                    btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                }
+
+                countDownTimer = new CountDownTimer(delay, 1000) {
+                    @Override
+                    public void onTick(long millisRemaining) {
+                        txtGameTimer.setText(String.valueOf(millisRemaining / 1000));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        if (GameActivity.this.player.isAlive()) {
+                            new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected Void doInBackground(Void... voids) {
+                                    DataPacket dp = new DataPacket();
+                                    dp.setCommand(command);
+                                    dp.setPlayer(GameActivity.this.target);
+                                    mService.sendPacket(dp);
+                                    return null;
+                                }
+                            }.execute();
+                        }
+                        txtGameTimer.setText("");
+                    }
+                }.start();
+            }
+        });
+    }
+
+    /**
+     * End the game, display the message based on the result and update the application's player data
+     * and finish the activity
+     * @param message Message to display
+     * @param players Updated player's list
+     */
+    private void endGame(final String message, final List<Player> players){
+
+        //Update user's stats
+        GameActivity.this.player = players.get(players.indexOf(GameActivity.this.player));
+        ((GlobalResources)getApplication()).getPlayer().setStats(GameActivity.this.player.getStats());
+        showAnnouncement(message, -1, R.raw.victory);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        final Intent intent = new Intent(GameActivity.this, Lobby.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -924,7 +840,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void buildExitDialog() {
         if(builder == null) {
             builder = new AlertDialog.Builder(this);
-            if( (player.isAlive()) || (gameStarted) ) {
+            if( (player.isAlive()) && (gameStarted) ) {
                 builder.setMessage(getResources().getText(R.string.game_exitDialog));
             }else{
                 builder.setMessage(getResources().getText(R.string.general_exitDialog));
@@ -933,9 +849,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             builder.setPositiveButton(getResources().getString(R.string.general_yes), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    if(countDownTimer != null) {
-                        countDownTimer.cancel();
-                    }
                     DataPacket dp = new DataPacket();
                     dp.setCommand(Commands.DISCONNECT);
                     mService.sendPacket(dp);
@@ -958,17 +871,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 GameActivity.this.finish();
                 if(!msg.equals(getString(R.string.game_game_disbanded))) {
                     ClientConnection.getConnection().closeSocket();
+                    finish();
                 }
             }
         });
-        if(countDownTimer != null) {
-            countDownTimer.cancel();
-        }
     }
 
     @Override
     public void onBackPressed() {
         buildExitDialog();
         builder.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(countDownTimer != null){
+            countDownTimer.cancel();
+        }
+        super.onDestroy();
     }
 }

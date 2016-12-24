@@ -1,6 +1,7 @@
 package ben_and_asaf_ttp.thetownproject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.webkit.WebView;
@@ -22,6 +23,15 @@ public class Pop extends Activity{
 
         webView = (WebView)findViewById(R.id.webView);
         webView.loadUrl(this.getIntent().getStringExtra("animation"));
+
+        //Play sound effect
+        final int sfx = this.getIntent().getIntExtra("sfx", -1);
+        if(sfx != -1){
+            final Intent intent = new Intent(Pop.this, AudioBackground.class);
+            intent.putExtra("type", "FX");
+            intent.putExtra("sound", sfx);
+            startService(intent);
+        }
 
         Timer t = new Timer();
         t.schedule(new TimerTask() {

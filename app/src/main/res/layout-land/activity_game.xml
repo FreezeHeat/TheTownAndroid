@@ -99,6 +99,8 @@
                 android:scrollbars="vertical"
                 android:fadeScrollbars="false"
                 android:textColor="@android:color/white"
+                android:inputType="textNoSuggestions"
+                android:imeOptions="flagNoExtractUi"
                 android:minLines="2"
                 android:maxLines="2"
                 android:hint="@string/game_txtSendMessage_hint"

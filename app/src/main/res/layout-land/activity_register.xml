@@ -26,6 +26,8 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
+        android:inputType="textNoSuggestions"
+        android:imeOptions="flagNoExtractUi"
         android:id="@+id/register_editUser"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
 
@@ -37,7 +39,8 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:inputType="textPassword"
+        android:inputType="textPassword|textNoSuggestions"
+        android:imeOptions="flagNoExtractUi"
         android:id="@+id/register_editPass"
         android:gravity="center"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
@@ -50,7 +53,8 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:inputType="textPassword"
+        android:inputType="textPassword|textNoSuggestions"
+        android:imeOptions="flagNoExtractUi"
         android:id="@+id/register_editRePass"
         android:gravity="center"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"

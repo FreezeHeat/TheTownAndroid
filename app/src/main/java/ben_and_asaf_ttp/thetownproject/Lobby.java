@@ -29,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -158,6 +159,8 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
         username.setHint(getResources().getText(R.string.lobby_insertUsername));
+
+        //Only letters, numbers and underscores (REGEX)
         username.setFilters(new InputFilter[] {
                 new InputFilter() {
                     @Override
@@ -174,6 +177,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                     }
                 }
         });
+        username.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
         //Add progress dialog when a player waits for a game to be found, he can also cancel this
         dialogProgress = new ProgressDialog(this);
