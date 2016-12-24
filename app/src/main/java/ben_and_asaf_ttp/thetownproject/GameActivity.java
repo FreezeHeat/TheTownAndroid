@@ -181,7 +181,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                             try {
-                                Thread.sleep(2500);
+                                Thread.sleep(8000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -258,7 +258,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         showAnnouncement(Html.fromHtml(msg).toString(), -1, R.raw.action);
 
                         try {
-                            Thread.sleep(2500);
+                            Thread.sleep(4000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -287,7 +287,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         playAnimation("file:///android_asset/execute.html" ,Html.fromHtml(msg).toString(), -1, R.raw.action);
 
                         try {
-                            Thread.sleep(2500);
+                            Thread.sleep(8000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -300,7 +300,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         showAnnouncement(Html.fromHtml(msg).toString(), -1, R.raw.action);
 
                         try {
-                            Thread.sleep(2500);
+                            Thread.sleep(4000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -413,9 +413,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 builder.show();
                             }
                         });
-
-                        intent.setClass(GameActivity.this, Lobby.class);
-                        startActivity(intent);
                         return;
                     case DISCONNECT:
 
@@ -477,20 +474,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         anim.putExtra("animation", animationResource);
         anim.putExtra("sfx", soundEffect);
         if(message != null){
-            anim.putExtra("msg", message);
+            announce.putExtra("msg", message);
 
             //if there's an icon, add it
             if(iconResource != -1) {
-                anim.putExtra("icon", iconResource);
+                announce.putExtra("icon", iconResource);
             }else{
-                anim.removeExtra("icon");
+                announce.removeExtra("icon");
             }
-            startActivityForResult(anim, ANIMATION_AND_ANNOUNCE);
+            startActivityForResult(announce, ANIMATION_AND_ANNOUNCE);
         }else{
 
             //In case there's also an announcement, synchronize animation and announcement
-            anim.removeExtra("msg");
-            anim.removeExtra("icon");
+            announce.removeExtra("msg");
+            announce.removeExtra("icon");
             startActivity(anim);
         }
     }
@@ -597,7 +594,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         showAnnouncement(message, -1, R.raw.victory);
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -647,10 +644,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ANIMATION_AND_ANNOUNCE){
             if(resultCode == RESULT_OK){
-                announce.putExtra("msg", data.getStringExtra("msg"));
-                announce.putExtra("icon", data.getStringExtra("icon"));
+                startActivity(anim);
             }
-            startActivity(announce);
         }
     }
 
@@ -872,6 +867,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 if(!msg.equals(getString(R.string.game_game_disbanded))) {
                     ClientConnection.getConnection().closeSocket();
                     finish();
+                }else{
+                    final Intent intent = new Intent(GameActivity.this, Lobby.class);
+                    startActivity(intent);
                 }
             }
         });

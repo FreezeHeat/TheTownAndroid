@@ -41,7 +41,7 @@ public class Pop extends Activity{
                 setResult(RESULT_OK, getIntent());
                 Pop.this.finish();
             }
-        }, 5000);
+        }, 4000);
 
     }
 }

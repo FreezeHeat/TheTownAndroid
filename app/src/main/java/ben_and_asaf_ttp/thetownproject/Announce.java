@@ -49,6 +49,6 @@ public class Announce extends Activity {
                 setResult(RESULT_OK, getIntent());
                 Announce.this.finish();
             }
-        }, 5000);
+        }, 4000);
     }
 }
