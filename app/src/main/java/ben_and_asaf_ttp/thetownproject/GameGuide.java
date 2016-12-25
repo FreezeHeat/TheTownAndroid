@@ -36,9 +36,6 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
     Button btnPlayerAction;
     ImageView imgvGamePhase;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

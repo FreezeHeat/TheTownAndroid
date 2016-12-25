@@ -4,7 +4,7 @@
     <string name="friendcard_remove">מחיקה</string>
 
     <string name="game_action_upon_dead">השחקן הזה מת</string>
-    <string name="game_action_you_dead">אין באפשרותך לעשות דבר, אתה מת </string>
+    <string name="game_action_you_dead">\"אין באפשרותך לעשות דבר, הינך מת/ה\"</string>
     <string name="game_btnSend">שליחה</string>
     <string name="game_day_phase">בוקר טוב עיירה</string>
     <string name="game_executed_you">הוציא אותך להורג</string>
@@ -23,7 +23,7 @@
     <string name="general_cancel">ביטול</string>
     <string name="general_connection_problem">בעייה בתקשורת עם השרת</string>
     <string name="general_empty_details">לא הוכנס מידע</string>
-    <string name="general_exitDialog">האם אתה בטוח?</string>
+    <string name="general_exitDialog">האם את/ה בטוח?</string>
     <string name="general_ok">אישור</string>
     <string name="general_password_too_few_characters">אורך הסיסמא הוא מינימום 6</string>
     <string name="general_password_too_much_characters">אורך הסיסמא הוא מקסימום 30</string>
@@ -63,7 +63,6 @@
     <string name="statsHeals">ריפואים</string>
     <string name="statsKills">רציחות</string>
     <string name="statsRating">דירוג</string>
-    <string name="statsWins">נצחונות</string>
 
     <string name="accessibility_close_drawer">סגור רשימת חברים</string>
     <string name="accessibility_open_drawer">פתח רשימת חברים</string>
@@ -79,7 +78,7 @@
     <string name="gameGuide_grid1">זוהי רשימת השחקנים, כולם רשומים כאן חוץ ממך</string>
     <string name="gameGuide_grid2">כאן אפשר לראות את שם השחקן, מצבו (חי או מת) ואת כפתור היכולת</string>
     <string name="gameGuide_grid3">היכולת משתנה בהתאם לתפקידך</string>
-    <string name="gameGuide_role1">שחקני המשחק מפוצלים לשתיים, לרוצח ולאזרחים</string>
+    <string name="gameGuide_role1">שחקני המשחק מפוצלים לשניים, לרוצח ולאזרחים</string>
     <string name="gameGuide_role2">הרוצח - מטרתו לרצוח את כל האזרחים</string>
     <string name="gameGuide_role3">האזרחים - קבוצה זו כוללת 3 תפקידים, אזרח, רופא ומלשן</string>
     <string name="gameGuide_role4">אזרח - ללא יכולות בלילה, אך עדיין יכול להצביע ולהשפיע על המשחק</string>
@@ -109,7 +108,7 @@
     <string name="general_no">לא</string>
     <string name="general_yes">כן</string>
 
-    <string name="lobby_addFriend">הוסף חבר</string>
+    <string name="lobby_addFriend">הוספת חבר</string>
     <string name="lobby_dialog_wrong_details">משתמש לא קיים</string>
     <string name="lobby_exitFriend">יציאה</string>
     <string name="lobby_friendlist_already_exists">אתם כבר חברים</string>
@@ -123,7 +122,7 @@
     <string name="pref_summary_editPassword">אפשרות זו תשנה את סיסמתך</string>
     <string name="pref_summary_fxVolumeBar">שנה את עוצמת האפקטים הקוליים</string>
     <string name="pref_title_bgVolumeBar">מוזיקת רקע</string>
-    <string name="pref_title_editPassword">שנה את סיסמתך</string>
+    <string name="pref_title_editPassword">שינוי סיסמתך</string>
     <string name="pref_title_fxVolumeBar">אפקטים קוליים</string>
 
     <string name="register_password">סיסמא</string>
@@ -152,4 +151,6 @@
     <string name="game_role_snitch">מלשן</string>
     <string name="game_you_murdered">נרצחת</string>
     <string name="game_wait">המתו...</string>
+    <string name="gameGuide_stats1">השחקנים הטובים והמעוטרים ביותר מדורגים. במשחק מדורג, השחקנים שישחקו עימך יהיו בדרגה דומה לשלך</string>
+    <string name="gameGuide_stats2">בניצחון מקבלים 2+ לדירוג, בהפסד מקבלים 1+. אם נטשת משחק באמצע, הדירוג שלך יקבל 3-</string>
 </resources>

@@ -551,7 +551,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 imgvGamePhase.setImageResource(phaseImageResource);
-                txtSendMessage.setHint(phaseString);
+                if(player.isAlive() && (!day) ) {
+                    txtSendMessage.setHint(phaseString);
+                }
 
                 //reset button highlight
                 if (btn_target != null) {
