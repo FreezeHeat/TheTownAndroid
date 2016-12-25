@@ -73,7 +73,7 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
                 "</font><br/>" +
                 "<font color=\"#0066ff\">*" + getResources().getString(R.string.game_night_phase) + "*</font><br/>" +
                 list.get(2).getUsername() +
-                ": </font><font color=\"#ffffff\">" +
+                ": </font><font color=\"#009933\">" +
                 "Yep, people died" +
                 "</font><br/>";
 
@@ -262,7 +262,14 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
                 break;
             case 20:
                 showcaseView.setTarget(Target.NONE);
+                showcaseView.setContentText(getString(R.string.gameGuide_stats1));
+                setAlpha(0.1f,grid,txtGameTimer,txtGameChat,playerRole,txtPlayerName,txtPlayerStatus,btnPlayerAction);
+                break;
+            case 21:
+                showcaseView.setContentText(getString(R.string.gameGuide_stats2));
                 showcaseView.setButtonText(getString(R.string.gameGuide_btn_close));
+                break;
+            case 22:
                 showcaseView.hide();
                 finish();
                 return;

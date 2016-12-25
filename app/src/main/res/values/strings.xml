@@ -143,6 +143,8 @@
     <string name="gameGuide_role6">SNITCH - can find out if someone\'s the killer or not</string>
     <string name="gameGuide_role7">The CITIZENS\' goal is to execute the killer by vote</string>
     <string name="gameGuide_role8">Whoever reaches the goal wins the game</string>
+    <string name="gameGuide_stats1">The best and most honorable players are ranked by rating. When you play a ranked game, you will play only players who have similar rating as you.</string>
+    <string name="gameGuide_stats2">Win a game, you gain +2 rating. Lose, you gain +1 rating. If you abandon the game in the middle, you lose -3 rating.</string>
 
     <string-array name="lobby_matchmaking_joinmethod">
         <item>Join by rank</item>
