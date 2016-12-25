@@ -88,6 +88,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         game = ((GlobalResources)getApplication()).getGame();
         player = ((GlobalResources)getApplication()).getPlayer();
+        player.setAlive(false);
         gameLogic = new GameLogic();
         myAdapter = new MyPlayerAdapter(this, R.layout.player_card, game.getPlayers());
         grid.setAdapter(myAdapter);
@@ -155,15 +156,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         //Animation if player was murdered
                         if(dp.getPlayer() != null) {
                             refreshPlayers(dp.getPlayers());
-                            final Spanned message = Html.fromHtml(String.format(
-                                    "<font color=\"#0066ff\">*" +
-                                            getResources().getString(R.string.game_murdered) +
-                                    "*</font><br/>", dp.getPlayer().getUsername()));
-                            addToChat(message);
-                            playAnimation("file:///android_asset/murder.html", message.toString(), -1, R.raw.murder);
 
-                            //If the player died indicate it
-                            if(dp.getPlayer().getUsername().equals(player.getUsername())){
+                            Spanned message;
+
+                            //If this player is dead, show appropriate message
+                            if(!GameActivity.this.player.getUsername().equals(dp.getPlayer().getUsername())) {
+                                message = Html.fromHtml(String.format(
+                                        "<font color=\"#0066ff\">*" +
+                                                getResources().getString(R.string.game_murdered) +
+                                "*</font><br/>", dp.getPlayer().getUsername()));
+                            }else{
+                                message = Html.fromHtml(String.format(
+                                        "<font color=\"#0066ff\">*" +
+                                                getResources().getString(R.string.game_you_murdered) +
+                                                "*</font><br/>", dp.getPlayer().getUsername()));
+
+                                //Indicate that the player is dead
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -171,9 +179,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 });
                             }
+                            addToChat(message);
+                            playAnimation("file:///android_asset/murder.html", message.toString(), -1, R.raw.murder);
 
                             try {
-                                Thread.sleep(8000);
+                                Thread.sleep(8500);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -186,14 +196,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         msg = "<font color=\"#0066ff\">*"+ getResources().getString(R.string.game_day_phase) + "*</font><br/>";
                         refreshPlayers(dp.getPlayers());
-                        if(GameActivity.this.player.isAlive()) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    txtSendMessage.setEnabled(true);
-                                }
-                            });
-                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtSendMessage.setEnabled(true);
+                            }
+                        });
 
                         addToChat(Html.fromHtml(msg));
                         playAnimation("file:///android_asset/sun.html", null , -1, R.raw.morning);
@@ -543,7 +551,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 imgvGamePhase.setImageResource(phaseImageResource);
-                txtSendMessage.setText(phaseString);
+                txtSendMessage.setHint(phaseString);
 
                 //reset button highlight
                 if (btn_target != null) {
@@ -570,7 +578,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             }.execute();
                         }
-                        txtGameTimer.setText("");
+                        txtGameTimer.setText(R.string.game_wait);
                     }
                 }.start();
             }
@@ -786,7 +794,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             GameActivity.this.target = user;
                             GameActivity.this.btn_target = btnPlayerAction;
                             btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_red);
-                            Log.i(GameActivity.this.getClass().getName(), "Target: " + GameActivity.this.target.toString());
                         }
                     } else {
                         Toast.makeText(
@@ -834,7 +841,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void buildExitDialog() {
         if(builder == null) {
             builder = new AlertDialog.Builder(this);
-            if( (player.isAlive()) && (gameStarted) ) {
+            if(player.isAlive()) {
                 builder.setMessage(getResources().getText(R.string.game_exitDialog));
             }else{
                 builder.setMessage(getResources().getText(R.string.general_exitDialog));

@@ -70,6 +70,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private Button btnJoinGame;
     private Button btnGameGuide;
     private Executor executor;
+    private static boolean isRunning = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -282,70 +283,74 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         @Override
         public void run() {
 
-            //start game service
-            DataPacket dp = mService.getPacket();
-            Intent myIntent;
+            //Only if the activity is running
+            if(isRunning) {
+
+                //start game service
+                DataPacket dp = mService.getPacket();
+                Intent myIntent;
 
 
-            if(dp != null) {
+                if (dp != null) {
+                    Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
+                } else {
+                    Log.e(this.getClass().getName(), "DataPacket is null");
+                    buildConfirmDialog(getResources().getString(R.string.general_connection_problem));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.show();
+                        }
+                    });
+                    return;
+                }
+
+
+                switch (dp.getCommand()) {
+                    case OK:
+                        ((GlobalResources) getApplication()).setGame(dp.getGame());
+                        ((GlobalResources) getApplication()).setPlayer(Lobby.this.player);
+                        if (((GlobalResources) getApplication()).getGame() != null) {
+                            dialogProgress.dismiss();
+                        }
+                        if (timer != null) {
+                            timer.cancel();
+                            timer.purge();
+                        }
+                        myIntent = new Intent(Lobby.this, GameActivity.class);
+                        startActivity(myIntent);
+                        Lobby.this.finish();
+                        break;
+                    case REFRESH_FRIENDS:
+                        Lobby.this.player.getFriends().clear();
+                        if (dp.getPlayers() != null) {
+                            Lobby.this.player.getFriends().addAll(dp.getPlayers());
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        break;
+                    case FRIEND_REQUEST:
+                        //TODO: Snackbar with forward to activity that handles friend requests
+                        break;
+                    case SERVER_SHUTDOWN:
+                        buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
+                        dialog.show();
+                        break;
+                    case WRONG_DETAILS:
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Lobby.this, R.string.lobby_dialog_wrong_details, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        break;
+                }
                 Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
-            }else{
-                Log.e(this.getClass().getName(), "DataPacket is null");
-                buildConfirmDialog(getResources().getString(R.string.general_connection_problem));
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        builder.show();
-                    }
-                });
-                return;
             }
-
-
-            switch(dp.getCommand()){
-                case OK:
-                    ((GlobalResources) getApplication()).setGame(dp.getGame());
-                    ((GlobalResources) getApplication()).setPlayer(Lobby.this.player);
-                    if (((GlobalResources) getApplication()).getGame() != null) {
-                        dialogProgress.dismiss();
-                    }
-                    if(timer != null) {
-                        timer.cancel();
-                        timer.purge();
-                    }
-                    myIntent = new Intent(Lobby.this, GameActivity.class);
-                    startActivity(myIntent);
-                    Lobby.this.finish();
-                    break;
-                case REFRESH_FRIENDS:
-                    Lobby.this.player.getFriends().clear();
-                    if(dp.getPlayers() != null) {
-                        Lobby.this.player.getFriends().addAll(dp.getPlayers());
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            myAdapter.notifyDataSetChanged();
-                        }
-                    });
-                    break;
-                case FRIEND_REQUEST:
-                    //TODO: Snackbar with forward to activity that handles friend requests
-                    break;
-                case SERVER_SHUTDOWN:
-                    buildConfirmDialog(getResources().getString(R.string.general_server_shutdown));
-                    dialog.show();
-                    break;
-                case WRONG_DETAILS:
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(Lobby.this, R.string.lobby_dialog_wrong_details, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    break;
-            }
-            Log.i(this.getClass().getName(), "DataPacket received: " + dp.toString());
         }
     }
 
@@ -421,6 +426,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         if(AudioBackground.isPlaying()) {
             AudioBackground.getBg().pause();
         }
+        isRunning = false;
         super.onStop();
     }
 
@@ -456,6 +462,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         // Bind to LocalService
         Intent intent = new Intent(this, GameService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        isRunning = true;
     }
 
     @Override

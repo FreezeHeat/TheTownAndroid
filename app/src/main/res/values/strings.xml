@@ -47,7 +47,7 @@
     <string name="game_txtSendMessage_hint">Enter your message here</string>
     <string name="game_txtSendMessage_blocked">*Blocked in night phase*</string>
     <string name="game_btnSend">Send</string>
-    <string name="game_exitDialog">Are you sure? It will harm your rating..</string>
+    <string name="game_exitDialog">Are you sure? It will harm your rank..</string>
     <string name="game_kill">Kill</string>
     <string name="game_heal">Heal</string>
     <string name="game_snitch">Snitch</string>
@@ -69,12 +69,14 @@
     <string name="game_executed_other">%1$s was executed</string>
     <string name="game_executed_you">You were executed</string>
     <string name="game_murdered">%1$s was murdered</string>
+    <string name="game_you_murdered">You were murdered</string>
     <string name="game_player_joined">%1$s has joined</string>
     <string name="game_player_left">%1$s has left</string>
     <string name="game_game_disbanded">Game was disbanded</string>
     <string name="game_citizens_win">Citizens win</string>
     <string name="game_killers_win">Killers win</string>
     <string name="game_player_role">My Role: %1$s</string>
+    <string name="game_wait">Wait...</string>
 
     <string name="playercard_menu_get_stats">See Stats</string>
 
@@ -101,7 +103,7 @@
     <string name="statsLost">Lost</string>
     <string name="statsKills">Kills</string>
     <string name="statsHeals">Heals</string>
-    <string name="statsRating">Rating</string>
+    <string name="statsRating">Rank</string>
 
     <string name="friendcard_joinGame">Join Game</string>
     <string name="friendcard_showStats">Show Stats</string>

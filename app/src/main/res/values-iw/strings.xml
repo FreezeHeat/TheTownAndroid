@@ -8,7 +8,7 @@
     <string name="game_btnSend">שליחה</string>
     <string name="game_day_phase">בוקר טוב עיירה</string>
     <string name="game_executed_you">הוציא אותך להורג</string>
-    <string name="game_exitDialog">האם את/ה בטוח ? יציאה ממשחק פעיל תפגע בניקוד שלך</string>
+    <string name="game_exitDialog">האם את/ה בטוח ? יציאה ממשחק פעיל תפגע בדירוג שלך</string>
     <string name="game_heal">רפא</string>
     <string name="game_kill">רצח</string>
     <string name="game_night_phase">לילה טוב עיירה</string>
@@ -62,7 +62,7 @@
 
     <string name="statsHeals">ריפואים</string>
     <string name="statsKills">רציחות</string>
-    <string name="statsRating">מוניטין</string>
+    <string name="statsRating">דירוג</string>
     <string name="statsWins">נצחונות</string>
 
     <string name="accessibility_close_drawer">סגור רשימת חברים</string>
@@ -150,4 +150,6 @@
     <string name="game_role_citizen">אזרח</string>
     <string name="game_role_healer">רופא</string>
     <string name="game_role_snitch">מלשן</string>
+    <string name="game_you_murdered">נרצחת</string>
+    <string name="game_wait">המתו...</string>
 </resources>
