@@ -56,17 +56,16 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private AlertDialog dialogJoinMethod;
+    private AlertDialog friendsDialog;
     private ProgressDialog dialogProgress;
     private int numPlayers = -1;
     private GameService mService;
     private boolean mBound = false;
     private MyPlayerAdapter myAdapter;
     private AlertDialog.Builder builder;
-    private AlertDialog.Builder builderFriends;
     private AlertDialog dialog;
     private ActionBarDrawerToggle mDrawerToggle;
     private Timer timer;
-    private EditText username;
     private Button btnJoinGame;
     private Button btnGameGuide;
     private Executor executor;
@@ -104,80 +103,10 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         TextView txtPlayer = (TextView) findViewById(R.id.lobby_txt_player);
         txtPlayer.setText(player.getUsername());
 
-        //How many players dialog that handles the player's request
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getResources().getText(R.string.lobby_matchMaking_joinmethod_title));
-        builder.setSingleChoiceItems(R.array.lobby_matchmaking_joinmethod, 0, new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                switch (which){
-                    case 0:
-                        //Join by rank
-                        Lobby.this.numPlayers = 5;
-                        break;
-
-                    //Join any game
-                    case 1:
-                        Lobby.this.numPlayers = 0;
-                        break;
-                }
-                Lobby.this.dialogJoinMethod.dismiss();
-                Lobby.this.dialogProgress.show();
-                new AsyncTask<Void, Void, Void>(){
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        Lobby.this.dialogProgress.show();
-                        DataPacket dp = new DataPacket();
-                        dp.setCommand(Commands.READY);
-                        dp.setNumber(Lobby.this.numPlayers);
-                        ClientConnection.getConnection().sendDataPacket(dp);
-                        executor.execute(new LobbyLogic());
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        Lobby.this.btnJoinGame.setEnabled(true);
-                        super.onPostExecute(aVoid);
-                    }
-                }.execute();
-            }
-        });
-
+        buildJoinGameDialog();
         dialogJoinMethod = builder.create();
-        dialogJoinMethod.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                btnJoinGame.setEnabled(true);
-            }
-        });
-
-        //EditText view for the "Add friend" menu
-        username = new EditText(this);
-        username.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
-        username.setHint(getResources().getText(R.string.lobby_insertUsername));
-
-        //Only letters, numbers and underscores (REGEX)
-        username.setFilters(new InputFilter[] {
-                new InputFilter() {
-                    @Override
-                    public CharSequence filter(CharSequence cs, int start,
-                                               int end, Spanned spanned, int dStart, int dEnd) {
-                        if(cs.equals("")){ // for backspace
-                            return cs;
-                        }
-                        if(cs.toString().matches("\\w+")){
-                            return cs;
-                        }
-                        return "";
-                    }
-                }
-        });
-        username.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        buildAddFriendDialog();
+        friendsDialog = builder.create();
 
         //Add progress dialog when a player waits for a game to be found, he can also cancel this
         dialogProgress = new ProgressDialog(this);
@@ -376,8 +305,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         }
         switch(item.getItemId()){
             case R.id.lobby_add_friend:
-                buildAddFriendDialog();
-                dialog.show();
+                friendsDialog.show();
                 break;
             case R.id.lobby_menu_website:
                 Intent intent = new Intent();
@@ -603,59 +531,80 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void buildAddFriendDialog() {
-        if(builderFriends == null) {
-            builderFriends = new AlertDialog.Builder(this);
-            builderFriends.setView(username);
-            builderFriends.setMessage(getResources().getString(R.string.lobby_addFriend));
-            builderFriends.setCancelable(false);
-            builderFriends.setPositiveButton(getResources().getString(R.string.lobby_addFriend), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    final Player player = new Player(username.getText().toString(), "1");
-                    //check if string is empty
-                    if (!player.getUsername().isEmpty()) {
-                        username.setText("");
-                    } else {
-                        Toast.makeText(Lobby.this, R.string.general_empty_details, Toast.LENGTH_SHORT).show();
+        //EditText view for the "Add friend" menu
+        final EditText username = new EditText(this);
+        username.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+        username.setHint(getResources().getText(R.string.lobby_insertUsername));
+
+        //Only letters, numbers and underscores (REGEX)
+        username.setFilters(new InputFilter[] {
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        if(cs.equals("")){ // for backspace
+                            return cs;
+                        }
+                        if(cs.toString().matches("\\w+")){
+                            return cs;
+                        }
+                        return "";
+                    }
+                }
+        });
+        username.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+
+        builder = new AlertDialog.Builder(this);
+        builder.setView(username);
+        builder.setMessage(getResources().getString(R.string.lobby_addFriend));
+        builder.setCancelable(false);
+        builder.setPositiveButton(getResources().getString(R.string.lobby_addFriend), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                final Player player = new Player(username.getText().toString(), "1");
+                //check if string is empty
+                if (!player.getUsername().isEmpty()) {
+                    username.setText("");
+                } else {
+                    Toast.makeText(Lobby.this, R.string.general_empty_details, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //check if trying to add himself/herself
+                if (player.getUsername().equals(Lobby.this.player.getUsername())) {
+                    Toast.makeText(Lobby.this, R.string.lobby_friendlist_cant_add_yourself, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //check if already befriended
+                for (Player p : Collections.synchronizedCollection(Lobby.this.player.getFriends())) {
+                    if (p.getUsername().equals(player.getUsername())) {
+                        Toast.makeText(Lobby.this, R.string.lobby_friendlist_already_exists, Toast.LENGTH_SHORT).show();
                         return;
                     }
-
-                    //check if trying to add himself/herself
-                    if (player.getUsername().equals(Lobby.this.player.getUsername())) {
-                        Toast.makeText(Lobby.this, R.string.lobby_friendlist_cant_add_yourself, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    //check if already befriended
-                    for (Player p : Collections.synchronizedCollection(Lobby.this.player.getFriends())) {
-                        if (p.getUsername().equals(player.getUsername())) {
-                            Toast.makeText(Lobby.this, R.string.lobby_friendlist_already_exists, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                    new AsyncTask<Void, Void, Void>() {
-
-                        @Override
-                        protected Void doInBackground(Void... params) {
-                            DataPacket dp = new DataPacket();
-                            dp.setCommand(Commands.ADD_FRIEND);
-                            dp.setPlayer(player);
-                            mService.sendPacket(dp);
-                            return null;
-                        }
-                    }.execute();
                 }
-            });
-            builderFriends.setNegativeButton(getResources().getString(R.string.lobby_exitFriend), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-        }
-        dialog = builderFriends.create();
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        DataPacket dp = new DataPacket();
+                        dp.setCommand(Commands.ADD_FRIEND);
+                        dp.setPlayer(player);
+                        mService.sendPacket(dp);
+                        return null;
+                    }
+                }.execute();
+            }
+        });
+        builder.setNegativeButton(getResources().getString(R.string.lobby_exitFriend), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
     }
 
     public void buildExitDialog() {
-        if(builder == null) {
             builder = new AlertDialog.Builder(this);
             builder.setMessage(getResources().getString(R.string.lobby_disconnect));
             builder.setCancelable(false);
@@ -686,8 +635,59 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                     dialog.cancel();
                 }
             });
-        }
         dialog = builder.create();
+    }
+
+    public void buildJoinGameDialog(){
+
+        //How many players dialog that handles the player's request
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getText(R.string.lobby_matchMaking_joinmethod_title));
+        builder.setSingleChoiceItems(R.array.lobby_matchmaking_joinmethod, 0, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                switch (which){
+                    case 0:
+                        //Join by rank
+                        Lobby.this.numPlayers = 5;
+                        break;
+
+                    //Join any game
+                    case 1:
+                        Lobby.this.numPlayers = 0;
+                        break;
+                }
+                Lobby.this.dialogJoinMethod.dismiss();
+                Lobby.this.dialogProgress.show();
+                new AsyncTask<Void, Void, Void>(){
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        Lobby.this.dialogProgress.show();
+                        DataPacket dp = new DataPacket();
+                        dp.setCommand(Commands.READY);
+                        dp.setNumber(Lobby.this.numPlayers);
+                        ClientConnection.getConnection().sendDataPacket(dp);
+                        executor.execute(new LobbyLogic());
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        Lobby.this.btnJoinGame.setEnabled(true);
+                        super.onPostExecute(aVoid);
+                    }
+                }.execute();
+            }
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                btnJoinGame.setEnabled(true);
+            }
+        });
     }
 
     @Override
