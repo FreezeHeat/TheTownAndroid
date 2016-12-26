@@ -35,6 +35,7 @@
     <string name="lobby_btn_stats">My Stats</string>
     <string name="lobby_matchMaking_progress_title">Searching for a game</string>
     <string name="lobby_matchMaking_progress_message">Searching…</string>
+    <string name="lobby_adding_friend_progress">Adding friend...</string>
     <string name="lobby_matchMaking_cancel">Cancel</string>
     <string name="lobby_disconnect">Are you sure you want to disconnect?</string>
     <string name="lobby_friendlist_add_friend">Add a friend</string>
