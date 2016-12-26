@@ -152,20 +152,35 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         playSoundEffect(R.raw.msg);
                         break;
                     case REFRESH_PLAYERS:
+                        Spanned message = null;
 
-                        //Animation if player was murdered
-                        if(dp.getPlayer() != null) {
+                        //show when no one was voted
+                        if(dp.getPlayer() == null){
+                            if(day && gameStarted){
+                                message = Html.fromHtml(
+                                        "<font color=\"#0066ff\">*" +
+                                                getResources().getString(R.string.game_vote_tie) +
+                                                "*</font><br/>");
+                            }else if( (!day) && gameStarted) {
+                                message = Html.fromHtml(
+                                        "<font color=\"#0066ff\">*" +
+                                                getResources().getString(R.string.game_night_no_murder) +
+                                                "*</font><br/>");
+                            }
+                            addToChat(message);
+
+                        }else {
+
+                            //Animation if player was murdered
                             refreshPlayers(dp.getPlayers());
 
-                            Spanned message;
-
                             //If this player is dead, show appropriate message
-                            if(!GameActivity.this.player.getUsername().equals(dp.getPlayer().getUsername())) {
+                            if (!GameActivity.this.player.getUsername().equals(dp.getPlayer().getUsername())) {
                                 message = Html.fromHtml(String.format(
                                         "<font color=\"#0066ff\">*" +
                                                 getResources().getString(R.string.game_murdered) +
-                                "*</font><br/>", dp.getPlayer().getUsername()));
-                            }else{
+                                                "*</font><br/>", dp.getPlayer().getUsername()));
+                            } else {
                                 message = Html.fromHtml(String.format(
                                         "<font color=\"#0066ff\">*" +
                                                 getResources().getString(R.string.game_you_murdered) +
@@ -179,6 +194,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 });
                             }
+
+
                             addToChat(message);
                             playAnimation("file:///android_asset/murder.html", message.toString(), -1, R.raw.murder);
 
@@ -604,8 +621,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         GameActivity.this.player = players.get(players.indexOf(GameActivity.this.player));
         ((GlobalResources)getApplication()).getPlayer().setStats(GameActivity.this.player.getStats());
         //showAnnouncement(message, -1, R.raw.victory);
+
+        //show who was the killer
+        String killer = "";
+        for(Player p : GameActivity.this.game.getPlayers() ){
+            if(p.getRole() == Roles.KILLER){
+                killer = p.getUsername();
+                break;
+            }
+        }
         playSoundEffect(R.raw.victory);
-        buildConfirmDialog(message);
+        buildConfirmDialog(message + "\n" + getString(R.string.game_end_show_killer) + killer);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

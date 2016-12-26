@@ -18,6 +18,9 @@
     <string name="splash_socket_startGame">Successful - starting the game</string>
     <string name="splash_dialog_btn_defaults">Restore to default</string>
     <string name="splash_dialog_explanation">Do you wish to change the target server\'s IP, PORT and WEBSERVICE address?"</string>
+    <string name="splash_dialog_hint_ip">IP Address</string>
+    <string name="splash_dialog_hint_port">Port Number</string>
+    <string name="splash_dialog_hint_ws">e.g. http://10.0.0.0:8080/Service</string>
 
     <string name="login_wrong_details">Details entered do not match</string>
     <string name="login_already_connected">This user is already connected</string>
@@ -77,6 +80,9 @@
     <string name="game_killers_win">Killers win</string>
     <string name="game_player_role">My Role: %1$s</string>
     <string name="game_wait">Wait...</string>
+    <string name="game_end_show_killer">The killer was: </string>
+    <string name="game_vote_tie">The vote ended in a tie</string>
+    <string name="game_night_no_murder">No one was murdered this time</string>
 
     <string name="playercard_menu_get_stats">See Stats</string>
 
@@ -95,6 +101,7 @@
     <string name="lobby_friendstatus_inqueue">In-queue</string>
     <string name="lobby_friendstatus_ingame">In-game</string>
     <string name="lobby_matchMaking_joinmethod_title">Join by the same rank, or join any?</string>
+    <string name="lobby_friendlist_notify">Friend list was updated</string>
 
     <string name="register_btnConfirm">Confirm</string>
     <string name="register_btnClear">Clear</string>

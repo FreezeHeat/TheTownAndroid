@@ -153,4 +153,11 @@
     <string name="game_wait">המתן...</string>
     <string name="gameGuide_stats1">השחקנים הטובים והמעוטרים ביותר מדורגים. במשחק מדורג, השחקנים שישחקו עימך יהיו בדרגה דומה לשלך</string>
     <string name="gameGuide_stats2">בניצחון מקבלים 2+ לדירוג, בהפסד מקבלים 1+. אם נטשת משחק באמצע, הדירוג שלך יקבל 3-</string>
+    <string name="game_end_show_killer">הרוצח הוא:</string>
+    <string name="game_night_no_murder">אף אחד לא נרצח הפעם</string>
+    <string name="game_vote_tie">ההצבעה הסתיימה בתיקו</string>
+    <string name="lobby_friendlist_notify">רשימת החברים עודכנה</string>
+    <string name="splash_dialog_hint_port">מספר פורט</string>
+    <string name="splash_dialog_hint_ip">כתובת IP</string>
+    <string name="splash_dialog_hint_ws">דוגמא: http://10.0.0.0:8080/Service</string>
 </resources>

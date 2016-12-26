@@ -146,7 +146,7 @@ public class SplashActivity extends AppCompatActivity {
         if(builder == null){
             builder = new AlertDialog.Builder(this);
         }
-        builder.setMessage("Do you wish to change the target server's IP and PORT and target WEBSERVICE address?");
+        builder.setMessage(R.string.splash_dialog_explanation);
         final LinearLayout layout = new LinearLayout(this);
         final EditText ip = new EditText(this);
         final EditText port = new EditText(this);
@@ -154,9 +154,9 @@ public class SplashActivity extends AppCompatActivity {
         ip.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         port.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         ws.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        ip.setHint("IP Address");
-        port.setHint("Port Number");
-        ws.setHint("e.g. http://10.0.0.0:8080/Service");
+        ip.setHint(R.string.splash_dialog_hint_ip);
+        port.setHint(R.string.splash_dialog_hint_port);
+        ws.setHint(R.string.splash_dialog_hint_ws);
 
         final SharedPreferences.Editor editor = sp.edit();
         ip.setText(sp.getString("serverIp", ""));

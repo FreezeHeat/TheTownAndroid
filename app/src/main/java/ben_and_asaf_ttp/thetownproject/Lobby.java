@@ -251,16 +251,20 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                         Lobby.this.finish();
                         break;
                     case REFRESH_FRIENDS:
-                        Lobby.this.player.getFriends().clear();
                         if (dp.getPlayers() != null) {
-                            Lobby.this.player.getFriends().addAll(dp.getPlayers());
-                        }
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myAdapter.notifyDataSetChanged();
+                            if(!Lobby.this.player.getFriends().equals(dp.getPlayers())) {
+                                Lobby.this.player.getFriends().clear();
+                                Lobby.this.player.getFriends().addAll(dp.getPlayers());
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        myAdapter.notifyDataSetChanged();
+                                        Toast.makeText(Lobby.this, R.string.lobby_friendlist_notify, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
-                        });
+                        }
                         break;
                     case FRIEND_REQUEST:
                         //TODO: Snackbar with forward to activity that handles friend requests
