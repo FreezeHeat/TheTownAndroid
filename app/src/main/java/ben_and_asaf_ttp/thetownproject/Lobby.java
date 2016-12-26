@@ -58,6 +58,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private AlertDialog dialogJoinMethod;
     private AlertDialog friendsDialog;
     private ProgressDialog dialogProgress;
+    private ProgressDialog friendDialogProgress;
     private int numPlayers = -1;
     private GameService mService;
     private boolean mBound = false;
@@ -122,6 +123,14 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                         btnJoinGame.setEnabled(true);
                     }
                 });
+
+
+
+        //Add progress dialog when a player waits for friend to be added
+        friendDialogProgress = new ProgressDialog(this);
+        friendDialogProgress.setCancelable(false);
+        friendDialogProgress.setTitle(getResources().getString(R.string.lobby_adding_friend_progress));
+
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -259,6 +268,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                             @Override
                             public void run() {
                                 myAdapter.notifyDataSetChanged();
+                                friendDialogProgress.dismiss();
                             }
                         });
                         break;
@@ -595,6 +605,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                         return null;
                     }
                 }.execute();
+                friendDialogProgress.show();
             }
         });
         builder.setNegativeButton(getResources().getString(R.string.lobby_exitFriend), new DialogInterface.OnClickListener() {
