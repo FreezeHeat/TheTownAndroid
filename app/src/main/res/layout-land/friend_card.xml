@@ -16,7 +16,8 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:layout_weight="50"
-        android:gravity="start" />
+        android:gravity="start"
+        android:textIsSelectable="false"/>
 
     <TextView
         android:text="Player's status"
@@ -26,5 +27,6 @@
         android:id="@+id/friendcard_txt_status"
         android:textColor="@android:color/white"
         android:layout_weight="50"
-        android:gravity="end" />
+        android:gravity="end"
+        android:textIsSelectable="false"/>
 </LinearLayout>

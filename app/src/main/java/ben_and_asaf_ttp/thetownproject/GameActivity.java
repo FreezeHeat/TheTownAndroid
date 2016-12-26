@@ -551,8 +551,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 imgvGamePhase.setImageResource(phaseImageResource);
-                if(player.isAlive() && (!day) ) {
+
+                //Players who are alive should be aware that at night the chat is blocked.
+                //On the other hand, dead players should be able to chat freely
+                if(player.isAlive()) {
                     txtSendMessage.setHint(phaseString);
+                }else{
+                    txtSendMessage.setHint("");
                 }
 
                 //reset button highlight
@@ -598,16 +603,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //Update user's stats
         GameActivity.this.player = players.get(players.indexOf(GameActivity.this.player));
         ((GlobalResources)getApplication()).getPlayer().setStats(GameActivity.this.player.getStats());
-        showAnnouncement(message, -1, R.raw.victory);
-
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        final Intent intent = new Intent(GameActivity.this, Lobby.class);
-        startActivity(intent);
-        finish();
+        //showAnnouncement(message, -1, R.raw.victory);
+        playSoundEffect(R.raw.victory);
+        buildConfirmDialog(message);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                builder.show();
+            }
+        });
     }
 
     @Override
@@ -872,12 +876,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 GameActivity.this.finish();
-                if(!msg.equals(getString(R.string.game_game_disbanded))) {
+                if(msg.equals(getResources().getString(R.string.general_connection_problem)) ||
+                        msg.equals(getResources().getString(R.string.general_server_shutdown)))  {
                     ClientConnection.getConnection().closeSocket();
                     finish();
                 }else{
                     final Intent intent = new Intent(GameActivity.this, Lobby.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
