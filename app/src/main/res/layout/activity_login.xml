@@ -36,7 +36,11 @@
         android:layout_marginBottom="2dp"
         android:gravity="center"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
-        android:inputType="textNoSuggestions" />
+        android:inputType="textNoSuggestions"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/login_editPass"
+        android:maxLength="30"
+        android:singleLine="true"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -57,7 +61,8 @@
         android:id="@+id/login_editPass"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_" />
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+        android:maxLength="30"/>
 
         <CheckBox
             android:layout_width="wrap_content"

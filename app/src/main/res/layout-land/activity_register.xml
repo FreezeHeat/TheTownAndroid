@@ -18,6 +18,7 @@
         android:layout_weight=".3" />
 
     <EditText
+        android:nextFocusDown="@+id/register_editPass"
         android:hint="@string/lobby_insertUsername"
         android:textColorHint="@android:color/white"
         android:layout_width="match_parent"
@@ -27,11 +28,14 @@
         android:textStyle="bold"
         android:gravity="center"
         android:inputType="textNoSuggestions"
-        android:imeOptions="flagNoExtractUi"
+        android:imeOptions="flagNoExtractUi|actionNext"
         android:id="@+id/register_editUser"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+        android:maxLength="30"
+        android:singleLine="true"/>
 
     <EditText
+        android:nextFocusDown="@+id/register_editRePass"
         android:hint="@string/register_password"
         android:textColorHint="@android:color/white"
         android:layout_width="match_parent"
@@ -40,10 +44,12 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:inputType="textPassword|textNoSuggestions"
-        android:imeOptions="flagNoExtractUi"
+        android:imeOptions="flagNoExtractUi|actionNext"
         android:id="@+id/register_editPass"
         android:gravity="center"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"/>
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+        android:maxLength="30"
+        android:singleLine="true"/>
 
     <EditText
         android:hint="@string/register_password_retype"
@@ -58,7 +64,8 @@
         android:id="@+id/register_editRePass"
         android:gravity="center"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp"
+        android:maxLength="30"/>
 
     <LinearLayout
         android:orientation="horizontal"

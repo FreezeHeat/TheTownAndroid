@@ -32,35 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //btnForgot.setOnClickListener(this);
     }
 
-    public void buildExitDialog() {
-        if(builder == null) {
-            builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getText(R.string.general_exitDialog));
-            builder.setCancelable(false);
-            builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    final DataPacket dp = new DataPacket();
-                    dp.setCommand(Commands.DISCONNECT);
-                    ClientConnection.getConnection().sendDataPacket(dp);
-                    ClientConnection.getConnection().closeSocket();
-                    stopService(new Intent(MainActivity.this, AudioBackground.class));
-                    MainActivity.this.finish();
-                }
-            });
-            builder.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        buildExitDialog();
-        builder.create().show();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
