@@ -367,8 +367,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onDestroy() {
-        final Intent intent = new Intent(Lobby.this, AudioBackground.class);
-        stopService(intent);
         super.onDestroy();
     }
 
