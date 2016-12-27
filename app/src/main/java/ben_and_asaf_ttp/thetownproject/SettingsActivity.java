@@ -116,7 +116,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 break;
             case BG_VOLUME: {
                 final float vol = getPreferenceScreen().getSharedPreferences().getFloat(key, 1.0f);
-                AudioBackground.getBg().setVolume(vol, vol);
                 break;
             }
             case FX_VOLUME: {

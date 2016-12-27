@@ -91,7 +91,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                                 }
                             }
                         }else{
-                                if (volBg <= 0.0f) {
+                                if (volBg <= 0.0f || isPlaying()) {
                                     //User wants NO background music
                                     isPlaying = false;
                                     synchronized (this) {
