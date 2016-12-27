@@ -135,6 +135,7 @@ public class ClientConnection {
      */
     @Override
     protected void finalize() throws Throwable {
+        closeSocket();
         super.finalize();
     }
 }
