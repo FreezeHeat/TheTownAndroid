@@ -208,9 +208,9 @@ public enum Commands{
     
      /**
      * Used with the {@code GameThread} thread 
-     * <p>Specifies the the game ended in a draw</p>
+     * <p>Specifies the the vote ended in a draw</p>
      */
-    DRAW,
+    VOTE_DRAW,
     
      /**
      * Used with the {@code GameThread} thread 

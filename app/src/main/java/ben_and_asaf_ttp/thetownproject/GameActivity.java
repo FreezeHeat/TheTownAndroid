@@ -60,6 +60,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private CountDownTimer countDownTimer;
     private boolean day;
     private boolean gameStarted;
+    private boolean nobodyMurdered;
     private String msg;
     private Intent anim;
     private Intent announce;
@@ -94,6 +95,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         grid.setAdapter(myAdapter);
         registerForContextMenu(grid);
         day = false;
+        nobodyMurdered = true;
     }
 
     class GameLogic extends Thread{
@@ -153,23 +155,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case REFRESH_PLAYERS:
                         Spanned message = null;
+                        if(dp.getPlayer() != null) {
 
-                        //show when no one was voted
-                        if(dp.getPlayer() == null){
-                            if(day && gameStarted){
-                                message = Html.fromHtml(
-                                        "<font color=\"#0066ff\">*" +
-                                                getResources().getString(R.string.game_vote_tie) +
-                                                "*</font><br/>");
-                            }else if( (!day) && gameStarted) {
-                                message = Html.fromHtml(
-                                        "<font color=\"#0066ff\">*" +
-                                                getResources().getString(R.string.game_night_no_murder) +
-                                                "*</font><br/>");
-                            }
-                            addToChat(message);
-
-                        }else {
+                            //flag that someone was murdered
+                            nobodyMurdered = false;
 
                             //Animation if player was murdered
                             refreshPlayers(dp.getPlayers());
@@ -210,6 +199,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //day cycle - change GUI and chat
                         day = true;
+
+                        //if someone was murdered
+                        if(nobodyMurdered){
+                            msg = "<font color=\"#0066ff\">*" +
+                                        getResources().getString(R.string.game_night_no_murder) +
+                                    "*</font><br/>";
+                            addToChat(Html.fromHtml(msg));
+                            showAnnouncement(Html.fromHtml(msg).toString(), -1, R.raw.action);
+
+                            try {
+                                Thread.sleep(4000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+
+                            //reset for the next time
+                            nobodyMurdered = true;
+                        }
 
                         msg = "<font color=\"#0066ff\">*"+ getResources().getString(R.string.game_day_phase) + "*</font><br/>";
                         refreshPlayers(dp.getPlayers());
@@ -409,6 +417,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                         roleTxt = null;
+                        break;
+                    case VOTE_DRAW:
+                        msg = "<font color=\"#0066ff\">*" +
+                                getResources().getString(R.string.game_vote_tie) +
+                                "*</font><br/>";
+                        addToChat(Html.fromHtml(msg));
+                        showAnnouncement(Html.fromHtml(msg).toString(), -1, R.raw.action);
+
+                        try {
+                            Thread.sleep(4000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case WIN_CITIZENS:
 
@@ -624,14 +645,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         //show who was the killer
         String killer = "";
-        for(Player p : GameActivity.this.game.getPlayers() ){
-            if(p.getRole() == Roles.KILLER){
-                killer = p.getUsername();
-                break;
+
+        if(GameActivity.this.player.getRole() != Roles.KILLER) {
+            for (Player p : GameActivity.this.game.getPlayers()){
+                if (p.getRole() == Roles.KILLER) {
+                    killer = p.getUsername();
+                    break;
+                }
             }
+        }else{
+            killer = GameActivity.this.player.getUsername();
         }
         playSoundEffect(R.raw.victory);
-        buildConfirmDialog(message + "\n" + getString(R.string.game_end_show_killer) + killer);
+        buildConfirmDialog(message + "\n" + getString(R.string.game_end_show_killer) + " " + killer);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
