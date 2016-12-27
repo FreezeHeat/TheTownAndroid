@@ -67,6 +67,13 @@ public class Player{
 	 */
 	@Expose
 	private boolean alive;
+
+	/**
+	 * How many votes are against this player
+	 */
+	@Expose
+	private int votes;
+
 	/**
 	 * This constructor creates an empty <code>Player</code>
 	 */
@@ -83,6 +90,7 @@ public class Player{
 	 * @param friends Player's friend list
 	 * @param friendsRequests Player's friend requests list
 	 * @param alive Player's status in-game if alive or not
+	 * @param votes How many votes are against this player
 	 * @see Stats
 	 * @see PlayerStatus
 	 * @see Roles
@@ -91,7 +99,7 @@ public class Player{
 	public Player(
 			final String username, final String password,
 			final Stats stats, final PlayerStatus status, final Roles role, final List<Game> gamehistory,
-			final List<Player> friends, final List<Player> friendsRequests, final boolean alive){
+			final List<Player> friends, final List<Player> friendsRequests, final boolean alive, final int votes){
 		this.setUsername(username);
 		this.setPassword(password);
 		this.setStats(stats);
@@ -101,6 +109,7 @@ public class Player{
 		this.setFriends(friends);
 		this.setFriendsRequests(friendsRequests);
 		this.setAlive(alive);
+		this.setVotes(votes);
 	}
 
 	/**
@@ -111,7 +120,7 @@ public class Player{
 	 * @param password the Player's password
 	 */
 	public Player(final String username, final String password){
-		this(username, password, new Stats(), PlayerStatus.OFFLINE, null, null, null, null, false);
+		this(username, password, new Stats(), PlayerStatus.OFFLINE, null, null, null, null, false, 0);
 	}
 
 	/**
@@ -265,6 +274,22 @@ public class Player{
 	public void setAlive(final boolean alive) {
 		this.alive = alive;
 	}
+
+	/**
+     * Get how many votes are against this player
+     * @return How many votes are against this player
+     */
+    public int getVotes() {
+        return votes;
+    }
+
+    /**
+     * Set how many votes are against this player
+     * @param votes Number of votes against this player
+     */
+    public void setVotes(int votes) {
+        this.votes = votes;
+    }
 
 	@Override
 	public boolean equals(final Object o){

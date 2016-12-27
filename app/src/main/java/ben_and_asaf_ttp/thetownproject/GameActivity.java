@@ -184,7 +184,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 });
                             }
 
-
                             addToChat(message);
                             playAnimation("file:///android_asset/murder.html", message.toString(), -1, R.raw.murder);
 
@@ -786,19 +785,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             final TextView txtPlayerName = (TextView) convertView.findViewById(R.id.playerCard_txt_playerUsername);
-            final TextView txtPlayerStatus = (TextView) convertView.findViewById(R.id.playerCard_txt_playerStatus);
             final Button btnPlayerAction = (Button) convertView.findViewById(R.id.playerCard_btn_action);
+            final TextView txtPlayerVotes = (TextView) convertView.findViewById(R.id.playerCard_votes);
             final Roles role = GameActivity.this.player.getRole();
 
             txtPlayerName.setText(user.getUsername());
-            txtPlayerStatus.setText("");
 
             if(gameStarted) {
                 if (user.isAlive()) {
-                    txtPlayerStatus.setText(getResources().getText(R.string.game_player_alive));
                     if(GameActivity.this.player.isAlive()){
                         //Day phase is only for voting, night phase is for actions
                         if (role != null) {
+
+                            //if it's night, set the player's action
                             if (!day) {
                                 btnPlayerAction.setVisibility(View.VISIBLE);
                                 if (role == Roles.KILLER) {
@@ -811,20 +810,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     btnPlayerAction.setVisibility(View.INVISIBLE);
                                 }
                             } else {
+                                // if it's day, switch to vote and check for votes against players
                                 btnPlayerAction.setText(getResources().getText(R.string.game_vote));
                                 btnPlayerAction.setVisibility(View.VISIBLE);
+                                if(user.getVotes() != 0){
+
+                                    //if a someone voted against this player, show how many votes
+                                    txtPlayerVotes.setVisibility(View.VISIBLE);
+                                    txtPlayerVotes.setText(String.valueOf(user.getVotes()));
+                                }
                             }
                         }
                     }else{
+                        //if the player in that position is dead, hide button
                         btnPlayerAction.setVisibility(View.INVISIBLE);
                     }
                 } else {
-                    txtPlayerStatus.setText(getResources().getText(R.string.game_player_dead));
+                    // if the *this* player's dead
+                    txtPlayerName.append(" (" + getResources().getText(R.string.game_player_dead) +")");
                     btnPlayerAction.setVisibility(View.INVISIBLE);
                 }
-                txtPlayerStatus.setVisibility(View.VISIBLE);
             }else{
-                txtPlayerStatus.setVisibility(View.INVISIBLE);
+
+                //game hasn't started yet, hide status and button
                 btnPlayerAction.setVisibility(View.INVISIBLE);
             }
 
