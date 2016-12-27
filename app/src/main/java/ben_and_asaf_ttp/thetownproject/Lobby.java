@@ -367,6 +367,8 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onDestroy() {
+        final Intent intent = new Intent(Lobby.this, AudioBackground.class);
+        stopService(intent);
         super.onDestroy();
     }
 
@@ -377,13 +379,9 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
             unbindService(mConnection);
             mBound = false;
         }
-        if(AudioBackground.isPlaying()) {
-            //media player
-            final Intent myIntent = new Intent(Lobby.this, AudioBackground.class);
-            myIntent.setClass(Lobby.this, AudioBackground.class);
-            myIntent.putExtra("type", "BG");
-            myIntent.putExtra("sound", R.raw.bg);
-            startService(myIntent);
+
+        if(AudioBackground.getBg() != null) {
+            AudioBackground.getBg().pause();
         }
         isRunning = false;
         super.onStop();
@@ -391,8 +389,9 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onResume() {
-        if(!AudioBackground.isPlaying()) {
-            //media player
+        if(AudioBackground.getBg() != null) {
+            AudioBackground.getBg().start();
+        }else{
             final Intent myIntent = new Intent(Lobby.this, AudioBackground.class);
             myIntent.setClass(Lobby.this, AudioBackground.class);
             myIntent.putExtra("type", "BG");

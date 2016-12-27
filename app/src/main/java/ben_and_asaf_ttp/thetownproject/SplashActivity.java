@@ -159,9 +159,9 @@ public class SplashActivity extends AppCompatActivity {
         ws.setHint(R.string.splash_dialog_hint_ws);
 
         final SharedPreferences.Editor editor = sp.edit();
-        ip.setText(sp.getString("serverIp", ""));
-        port.setText(sp.getString("serverPort", ""));
-        ws.setText(sp.getString("serverWs", ""));
+        ip.setText(sp.getString("serverIp", SplashActivity.this.server));
+        port.setText(sp.getString("serverPort", SplashActivity.this.port));
+        ws.setText(sp.getString("serverWs", SplashActivity.this.webService));
 
         layout.addView(ip);
         layout.addView(port);
