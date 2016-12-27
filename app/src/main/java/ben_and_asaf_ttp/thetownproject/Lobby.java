@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -254,19 +255,38 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                         break;
                     case REFRESH_FRIENDS:
                         if (dp.getPlayers() != null) {
-                            if(!Lobby.this.player.getFriends().equals(dp.getPlayers())) {
-                                Lobby.this.player.getFriends().clear();
-                                Lobby.this.player.getFriends().addAll(dp.getPlayers());
 
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        myAdapter.notifyDataSetChanged();
-                                        friendDialogProgress.dismiss();
+                            //check if was updated
+                            final boolean updated = (Lobby.this.player.getFriends().size() != dp.getPlayers().size()) ? true : false;
+
+                            Lobby.this.player.getFriends().clear();
+                            Lobby.this.player.getFriends().addAll(dp.getPlayers());
+
+                            //Sort the list of friends by status
+                            Collections.sort(Lobby.this.player.getFriends(), new Comparator<Player>()
+                            {
+                                public int compare(Player o1, Player o2)
+                                {
+                                    if(o1.getStatus().ordinal() > o2.getStatus().ordinal()){
+                                        return -1;
+                                    }else if(o1.getStatus().ordinal() < o2.getStatus().ordinal()){
+                                        return 1;
+                                    }else{
+                                        return 0;
+                                    }
+                                }
+                            });
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myAdapter.notifyDataSetChanged();
+                                    friendDialogProgress.dismiss();
+                                    if(updated) {
                                         Toast.makeText(Lobby.this, R.string.lobby_friendlist_notify, Toast.LENGTH_SHORT).show();
                                     }
-                                });
-                            }
+                                }
+                            });
                         }
                         break;
                     case FRIEND_REQUEST:
