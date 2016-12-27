@@ -130,12 +130,12 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
             txtPlayerName.setText(user.getUsername());
 
             if (user.isAlive()) {
-                txtPlayerStatus.setText("Alive");
+                txtPlayerStatus.setText(getString(R.string.game_player_alive));
             } else {
-                txtPlayerStatus.setText("Dead");
+                txtPlayerStatus.setText(R.string.game_player_dead);
             }
 
-            btnPlayerAction.setText("KILL");
+            btnPlayerAction.setText(R.string.game_kill);
 
             return convertView;
         }
