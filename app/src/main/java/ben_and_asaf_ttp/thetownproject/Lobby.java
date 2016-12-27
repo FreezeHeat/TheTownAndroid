@@ -288,6 +288,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                             @Override
                             public void run() {
                                 Toast.makeText(Lobby.this, R.string.lobby_dialog_wrong_details, Toast.LENGTH_SHORT).show();
+                                friendDialogProgress.dismiss();
                             }
                         });
                         break;
