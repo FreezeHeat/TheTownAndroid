@@ -84,7 +84,7 @@
     <string name="game_end_show_killer">The killer was: </string>
     <string name="game_vote_tie">The vote ended in a tie</string>
     <string name="game_night_no_murder">No one was murdered this time</string>
-    <string name="game_voted_for" translatable="false">voted for</string>
+    <string name="game_voted_for">voted for</string>
     <string name="game_voted_cancel">cancelled his vote</string>
     <string name="game_vote_blocked">You can\'t vote again yet</string>
 

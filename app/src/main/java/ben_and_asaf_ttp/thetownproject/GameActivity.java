@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
 
@@ -423,11 +424,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         //Vote notifications
                         if(dp.getNumber() == 1 || dp.getNumber() == 3) {
-                            msg = "<font color=\"#0066ff\">*" +
-                                    dp.getPlayers().get(0).getUsername() + " " +
-                                    getString(R.string.game_voted_for) + " " +
-                                    dp.getPlayers().get(1).getUsername() +
-                                    "*</font><br/>";
+                            if(Locale.getDefault().toString().equals("iw_IL")) {
+                                msg = "<font color=\"#0066ff\">*" +
+                                        dp.getPlayers().get(0).getUsername() + " " +
+                                        getString(R.string.game_voted_for) + " " +
+                                        dp.getPlayers().get(1).getUsername() +
+                                        "*</font><br/>";
+                            }else{
+                                msg = "<font color=\"#0066ff\">*" +
+                                        dp.getPlayers().get(1).getUsername() + " " +
+                                        getString(R.string.game_voted_for) + " " +
+                                        dp.getPlayers().get(0).getUsername() +
+                                        "*</font><br/>";
+                            }
                         }else{
                             msg = "<font color=\"#0066ff\">*" +
                                     dp.getPlayers().get(0).getUsername() + " " +
