@@ -70,22 +70,23 @@
     <string name="game_role_citizen">Citizen</string>
     <string name="game_role_healer">Doctor</string>
     <string name="game_role_snitch">Snitch</string>
-    <string name="game_executed_other">%1$s was executed</string>
+    <string name="game_executed_other">was executed</string>
     <string name="game_executed_you">You were executed</string>
-    <string name="game_murdered">%1$s was murdered</string>
+    <string name="game_murdered">was murdered</string>
     <string name="game_you_murdered">You were murdered</string>
-    <string name="game_player_joined">%1$s has joined</string>
-    <string name="game_player_left">%1$s has left</string>
+    <string name="game_player_joined">has joined</string>
+    <string name="game_player_left">has left</string>
     <string name="game_game_disbanded">Game was disbanded</string>
     <string name="game_citizens_win">Citizens win</string>
     <string name="game_killers_win">Killers win</string>
-    <string name="game_player_role">My Role: %1$s</string>
+    <string name="game_player_role">My Role:</string>
     <string name="game_wait">Wait...</string>
     <string name="game_end_show_killer">The killer was: </string>
     <string name="game_vote_tie">The vote ended in a tie</string>
     <string name="game_night_no_murder">No one was murdered this time</string>
-    <string name="game_voted_for">%1$s voted for %2$s (%3$d votes)</string>
-    <string name="game_voted_cancel">%1$s cancelled his vote</string>
+    <string name="game_voted_for" translatable="false">voted for</string>
+    <string name="game_voted_cancel">cancelled his vote</string>
+    <string name="game_vote_blocked">You can\'t vote again yet</string>
 
     <string name="playercard_menu_get_stats">See Stats</string>
 

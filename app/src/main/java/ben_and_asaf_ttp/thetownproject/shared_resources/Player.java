@@ -315,6 +315,7 @@ public class Player{
 		}
 		return "Player [username=" + username + ", password=" + password + ",\nstats=" + stats + ",\n status=" + status
 				+ ", role=" + role + ",\n gameHistory=" + gameHistory + ",\n friends=" + friendList +
-				",\n friendRequests=" /*+ friendsRequests*/ + ",\n alive=" + alive + "]";
+				",\n friendRequests=" /*+ friendsRequests*/ + ",\n alive=" + alive + ",\n votes=" +
+				votes + "]";
 	}
 }

@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.concurrent.Executor;
 
 import ben_and_asaf_ttp.thetownproject.shared_resources.Commands;
@@ -67,6 +68,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private TextView playerRole;
     private GameLogic gameLogic;
     private static final int ANIMATION_AND_ANNOUNCE = 1;
+    private boolean blockButtons = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,15 +167,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                             //If this player is dead, show appropriate message
                             if (!GameActivity.this.player.getUsername().equals(dp.getPlayer().getUsername())) {
-                                message = Html.fromHtml(String.format(
+                                message = Html.fromHtml(
                                         "<font color=\"#0066ff\">*" +
+                                                dp.getPlayer().getUsername() + " " +
                                                 getResources().getString(R.string.game_murdered) +
-                                                "*</font><br/>", dp.getPlayer().getUsername()));
+                                        "*</font><br/>");
                             } else {
-                                message = Html.fromHtml(String.format(
+                                message = Html.fromHtml(
                                         "<font color=\"#0066ff\">*" +
                                                 getResources().getString(R.string.game_you_murdered) +
-                                                "*</font><br/>", dp.getPlayer().getUsername()));
+                                                "*</font><br/>");
 
                                 //Indicate that the player is dead
                                 runOnUiThread(new Runnable() {
@@ -229,7 +232,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                         addToChat(Html.fromHtml(msg));
                         playAnimation("file:///android_asset/sun.html", null , -1, R.raw.morning);
-                        phaseChange(R.drawable.day, "", 60000, Commands.VOTE);
+                        phaseChange(R.drawable.day, "", 90000, Commands.VOTE);
                         break;
                     case NIGHT:
 
@@ -302,9 +305,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
                         } else {
-                            msg = msg.concat(String.format(
-                                    getResources().getString(R.string.game_executed_other),
-                                    dp.getPlayer().getUsername()));
+                            msg = msg.concat(dp.getPlayer().getUsername() + " " +
+                                    getResources().getString(R.string.game_executed_other));
                         }
                         msg = msg.concat("*</font><br/>");
                         addToChat(Html.fromHtml(msg));
@@ -332,10 +334,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     case PLAYER_JOINED:
 
                         //get a player and players (alert about the player and set the players)
-                        msg = String.format(
-                                "<font color=\"#0066ff\">*" +
-                                getResources().getString(R.string.game_player_joined) +
-                                "*</font><br/>", dp.getPlayer().getUsername());
+                        msg = "<font color=\"#0066ff\">*" +
+                                    dp.getPlayer().getUsername() + " " +
+                                    getResources().getString(R.string.game_player_joined) +
+                                "*</font><br/>";
                         game.getPlayers().add(dp.getPlayer());
                         game.getPlayers().remove(GameActivity.this.player);
                         addToChat(Html.fromHtml(msg));
@@ -350,10 +352,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     case PLAYER_LEFT:
 
                         //get the player, alert about him/her
-                        msg = String.format(
-                                "<font color=\"#0066ff\">*" +
+                        msg =   "<font color=\"#0066ff\">*" +
+                                dp.getPlayer().getUsername() + " " +
                                 getResources().getString(R.string.game_player_left) +
-                                "*</font><br/>", dp.getPlayer().getUsername());
+                                "*</font><br/>";
                         game.getPlayers().remove(dp.getPlayer());
                         addToChat(Html.fromHtml(msg));
                         runOnUiThread(new Runnable() {
@@ -388,8 +390,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 roleTxt = getResources().getString(R.string.game_role_snitch);
                                 break;
                         }
-                        final String gameRole = String.format(
-                                getResources().getString(R.string.game_player_role) , roleTxt);
+                        final String gameRole =
+                                getResources().getString(R.string.game_player_role) + " " + roleTxt;
                         showAnnouncement(gameRole, icon, R.raw.action);
 
                         final String readyMsg =  "<font color=\"#0066ff\">*" +
@@ -416,6 +418,40 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                         roleTxt = null;
+                        break;
+                    case VOTE:
+
+                        //Vote notifications
+                        if(dp.getNumber() == 1 || dp.getNumber() == 3) {
+                            msg = "<font color=\"#0066ff\">*" +
+                                    dp.getPlayers().get(0).getUsername() + " " +
+                                    getString(R.string.game_voted_for) + " " +
+                                    dp.getPlayers().get(1).getUsername() +
+                                    "*</font><br/>";
+                        }else{
+                            msg = "<font color=\"#0066ff\">*" +
+                                    dp.getPlayers().get(0).getUsername() + " " +
+                                    getString(R.string.game_voted_cancel) +
+                                    "*</font><br/>";
+                        }
+
+                        //Update votes and players
+                        dp.getPlayers().remove(GameActivity.this.player);
+                        for(Player p : dp.getPlayers()){
+                            final int i = game.getPlayers().indexOf(p);
+                            if(i != -1) {
+                                game.getPlayers().set(i, p);
+                            }
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+                        addToChat(Html.fromHtml(msg));
                         break;
                     case VOTE_DRAW:
                         msg = "<font color=\"#0066ff\">*" +
@@ -616,7 +652,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 protected Void doInBackground(Void... voids) {
                                     DataPacket dp = new DataPacket();
                                     dp.setCommand(command);
-                                    dp.setPlayer(GameActivity.this.target);
+                                    if(day){
+
+                                        //4 states to the server that client finished voting
+                                        dp.setNumber(4);
+                                    }else{
+                                        dp.setPlayer(GameActivity.this.target);
+                                    }
                                     mService.sendPacket(dp);
                                     return null;
                                 }
@@ -813,22 +855,32 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                 // if it's day, switch to vote and check for votes against players
                                 btnPlayerAction.setText(getResources().getText(R.string.game_vote));
                                 btnPlayerAction.setVisibility(View.VISIBLE);
-                                if(user.getVotes() != 0){
-
-                                    //if a someone voted against this player, show how many votes
-                                    txtPlayerVotes.setVisibility(View.VISIBLE);
-                                    txtPlayerVotes.setText(String.valueOf(user.getVotes()));
-                                }
                             }
                         }
                     }else{
-                        //if the player in that position is dead, hide button
+
+                        // if the *this* player's dead
                         btnPlayerAction.setVisibility(View.INVISIBLE);
+                        txtPlayerVotes.setVisibility(View.GONE);
+                    }
+
+                    //show votes
+                    txtPlayerVotes.setText(String.valueOf(user.getVotes()));
+                    if(user.getVotes() != 0){
+
+                        //if a someone voted against this player, show how many votes
+                        txtPlayerVotes.setVisibility(View.VISIBLE);
+                    }else{
+
+                        //hide if there are no votes
+                        txtPlayerVotes.setVisibility(View.GONE);
                     }
                 } else {
-                    // if the *this* player's dead
+
+                    //if the player in that position is dead, hide button
                     txtPlayerName.append(" (" + getResources().getText(R.string.game_player_dead) +")");
                     btnPlayerAction.setVisibility(View.INVISIBLE);
+                    txtPlayerVotes.setVisibility(View.GONE);
                 }
             }else{
 
@@ -840,40 +892,99 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onClick(View v) {
 
-                // Check if the user is alive or not as well as the user the
-                //action is set upon
-                if(GameActivity.this.player.isAlive()) {
-                    if (user.isAlive()) {
+                    // Check if the user is alive or not as well as the user the
+                    //action is set upon
+                    if(GameActivity.this.player.isAlive()) {
 
-                        //If target is the same, set to null and affect GUI
-                        if(GameActivity.this.target != null && GameActivity.this.target.getUsername().equals(user.getUsername())){
-                            GameActivity.this.target = null;
-                            btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_inverted);
-                        }else {
+                        //if buttons are not locked
+                        if (!GameActivity.this.blockButtons) {
+                            final DataPacket dp = new DataPacket();
+                            dp.setCommand(Commands.VOTE);
+                            Log.i("******VOTE***** ", "before: " + GameActivity.this.target);
+                            if (user.isAlive()) {
+                                //If target is the same, set to null and affect GUI
+                                if (GameActivity.this.target != null && GameActivity.this.target.getUsername().equals(user.getUsername())) {
+                                    btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                                    if (day) {
+                                        dp.setNumber(2); //2 states to remove a vote
+                                        dp.setPlayer(GameActivity.this.target);
+                                    }
+                                    GameActivity.this.target = null;
+                                } else {
 
-                            //if target is not the same, affect GUI of previous target if there was any
-                            if(GameActivity.this.target != null){
+                                    //if target is not the same, affect GUI of previous target if there was any
+                                    if (GameActivity.this.target != null) {
 
-                                //change GUI from previous target
-                                GameActivity.this.btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
+                                        //change GUI from previous target
+                                        GameActivity.this.btn_target.setBackgroundResource(R.drawable.border_rectangle_inverted);
+
+                                        //set who was last voted against
+                                        if (day) {
+                                            final ArrayList<Player> lastVoted = new ArrayList<Player>();
+
+                                            //first is the former, second is the new one
+                                            lastVoted.add(GameActivity.this.target);
+                                            lastVoted.add(user);
+                                            dp.setPlayers(lastVoted);
+                                            dp.setNumber(3); //3 states to remove last vote and update to the new vote
+                                        }
+                                        GameActivity.this.target = user;
+                                    } else {
+
+                                        //if target is new
+                                        if (day) {
+                                            dp.setNumber(1); //1 states to add a vote
+                                            dp.setPlayer(user);
+                                        }
+                                    }
+                                    GameActivity.this.target = user;
+                                    GameActivity.this.btn_target = btnPlayerAction;
+                                    btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_red);
+                                    Log.i("******VOTE***** ", "before: " + GameActivity.this.target);
+                                }
+
+                                if (day) {
+                                    new AsyncTask<Void, Void, Void>() {
+
+                                        @Override
+                                        protected void onPreExecute() {
+                                            GameActivity.this.blockButtons = true;
+                                            super.onPreExecute();
+                                        }
+
+                                        @Override
+                                        protected Void doInBackground(Void... voids) {
+                                            mService.sendPacket(dp);
+                                            return null;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Void aVoid) {
+                                            GameActivity.this.blockButtons = false;
+                                            super.onPostExecute(aVoid);
+                                        }
+                                    }.execute();
+                                }
+                            } else {
+                                Toast.makeText(
+                                        GameActivity.this,
+                                        getResources().getText(R.string.game_action_upon_dead),
+                                        Toast.LENGTH_SHORT).show();
                             }
-                            GameActivity.this.target = user;
-                            GameActivity.this.btn_target = btnPlayerAction;
-                            btnPlayerAction.setBackgroundResource(R.drawable.border_rectangle_red);
+                        } else {
+                            Toast.makeText(
+                                    GameActivity.this,
+                                    getResources().getText(R.string.game_action_you_dead),
+                                    Toast.LENGTH_SHORT).show();
                         }
-                    } else {
+                    }else{
+
+                        //if buttons are locked
                         Toast.makeText(
                                 GameActivity.this,
-                                getResources().getText(R.string.game_action_upon_dead),
+                                getResources().getText(R.string.game_vote_blocked),
                                 Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(
-                            GameActivity.this,
-                            getResources().getText(R.string.game_action_you_dead),
-                            Toast.LENGTH_SHORT).show();
-                }
-
                 }
             });
             return convertView;

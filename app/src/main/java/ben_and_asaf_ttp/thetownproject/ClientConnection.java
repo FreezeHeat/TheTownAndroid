@@ -119,8 +119,10 @@ public class ClientConnection {
      */
     public void closeSocket(){
         try {
-            out.close();
-            in.close();
+            if(out != null && in != null) {
+                out.close();
+                in.close();
+            }
             connection.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -94,14 +94,14 @@
 
     <string name="game_attemptedMurder">הרופא ריפא שורד ששרד ניסיון רצח</string>
     <string name="game_citizens_win">האזרחים ניצחו</string>
-    <string name="game_executed_other">הוצא להורג %1$s</string>
+    <string name="game_executed_other">הוצא להורג</string>
     <string name="game_game_disbanded">המשחק פורק</string>
     <string name="game_killers_win">הרוצחים ניצחו</string>
-    <string name="game_murdered">%1$s נרצח</string>
+    <string name="game_murdered">נרצח</string>
     <string name="game_player_alive">חי</string>
-    <string name="game_player_joined">הצטרף למשחק %1$s</string>
-    <string name="game_player_left">עזב את המשחק %1$s</string>
-    <string name="game_player_role">תפקידי: %1$s</string>
+    <string name="game_player_joined">הצטרף למשחק</string>
+    <string name="game_player_left">עזב את המשחק</string>
+    <string name="game_player_role">תפקידי:</string>
     <string name="game_role_notKiller">לא הרוצח</string>
     <string name="game_txtSendMessage_blocked">חסום לשימוש בלילה</string>
 
@@ -161,4 +161,7 @@
     <string name="splash_dialog_hint_ip">כתובת IP</string>
     <string name="splash_dialog_hint_ws">דוגמא: http://10.0.0.0:8080/Service</string>
     <string name="lobby_adding_friend_progress">מוסיף חבר...</string>
+    <string name="game_vote_blocked">אינך יכול להצביע שוב כרגע</string>
+    <string name="game_voted_cancel">ביטל את הצבעתו</string>
+    <string name="game_voted_for">הצביע ל</string>
 </resources>
