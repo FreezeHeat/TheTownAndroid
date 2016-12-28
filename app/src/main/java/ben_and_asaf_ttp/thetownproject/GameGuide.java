@@ -36,6 +36,7 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
     Button btnPlayerAction;
     ImageView imgvGamePhase;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,15 +132,14 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
             if (!user.isAlive()) {
                 txtPlayerName.append(" (" + getString(R.string.game_player_alive) + ")");
             }
-
-            txtPlayerVotes.setVisibility(View.VISIBLE);
+            if (position != 1) {
+                txtPlayerVotes.setVisibility(View.VISIBLE);
+            }
             switch (position){
                 case 0:
                     txtPlayerVotes.setText("3");
                     break;
-                case 1:
-                    txtPlayerVotes.setVisibility(View.GONE);
-                    break;
+
                 case 2:
                     txtPlayerVotes.setText("1");
                     break;
@@ -208,10 +208,9 @@ public class GameGuide extends AppCompatActivity implements View.OnClickListener
                 break;
 
             case 7:
-                showcaseView.setContentText(getString(R.string.gameGuide_gamePhase4));
                 showcaseView.setShowcase(new ViewTarget(grid), true);
                 setAlpha(1f,grid);
-                setAlpha(0.4f,txtGameTimer,txtGameChat,playerRole,txtPlayerName,imgvGamePhase);
+                setAlpha(0.4f,txtGameTimer,txtGameChat,playerRole,txtPlayerName,btnPlayerAction,imgvGamePhase);
                 break;
 
             case 8:
