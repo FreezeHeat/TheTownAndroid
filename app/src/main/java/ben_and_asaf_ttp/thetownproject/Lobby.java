@@ -518,7 +518,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                         }
                     }.execute();
                     mDrawerLayout.closeDrawer(GravityCompat.START);
-                    Lobby.this.dialogProgress.show();
                 }else{
                     Toast.makeText(this, "Friend is not playing",Toast.LENGTH_SHORT).show();
                 }

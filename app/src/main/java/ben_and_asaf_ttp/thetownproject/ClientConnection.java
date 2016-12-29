@@ -83,7 +83,8 @@ public class ClientConnection {
         out = new ObjectOutputStream(connection.getOutputStream());
         in = new ObjectInputStream(connection.getInputStream());
         Log.i(this.getClass().getName(), "Socket connection successful " + hostname+ ":" + port);
-        connection.setSoTimeout(0);
+        connection.setSoTimeout(600000);
+
         dpIn = new DataPacket();
     }
 
@@ -119,10 +120,14 @@ public class ClientConnection {
      */
     public void closeSocket(){
         try {
-            if(out != null && in != null) {
+            if(out != null){
                 out.close();
+            }
+            if(in != null){
                 in.close();
             }
+            connection.shutdownInput();
+            connection.shutdownOutput();
             connection.close();
         } catch (IOException e) {
             e.printStackTrace();

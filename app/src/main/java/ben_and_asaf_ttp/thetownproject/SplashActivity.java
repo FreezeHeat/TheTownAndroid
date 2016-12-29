@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
     private TextView txtSplashScreen;
     private ProgressBar pbSplashScreen;
     private AlertDialog.Builder builder;
-    private final String server = "35.156.51.88";
+    private final String server = "35.156.204.63";
     private final String port = "55555";
     private final String webService = "http://35.156.51.88:8080/TTWS";
     private SharedPreferences sp;
@@ -135,8 +135,8 @@ public class SplashActivity extends AppCompatActivity {
             builder.setCancelable(false);
             builder.setPositiveButton(getResources().getString(R.string.general_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    buildServerDialog();
-                    builder.show();
+                    //buildServerDialog();
+                    //builder.show();
                 }
             });
         }

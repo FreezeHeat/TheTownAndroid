@@ -19,6 +19,7 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
     private static boolean isPlaying;
     SharedPreferences myPrefs;
     private Executor executor;
+    private boolean sameSound;
 
     public AudioBackground() {}
 
@@ -34,28 +35,36 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
         return fx;
     }
 
-    private void setBg(MediaPlayer bg) {
+    private synchronized void setBg(MediaPlayer bg) {
         AudioBackground.bg = bg;
     }
 
-    private void setFx(MediaPlayer fx) {
+    private synchronized void setFx(MediaPlayer fx) {
         AudioBackground.fx = fx;
     }
 
-    private String getType(){
+    private synchronized String getType(){
         return type;
     }
 
-    private void setType(String type){
+    private synchronized void setType(String type){
         AudioBackground.type = type;
     }
 
-    private int getSound(){
+    private synchronized int getSound(){
         return sound;
     }
 
-    private void setSound(int sound){
+    private synchronized void setSound(int sound){
         AudioBackground.sound = sound;
+    }
+
+    public synchronized boolean isSameSound() {
+        return sameSound;
+    }
+
+    public synchronized void setSameSound(boolean sameSound) {
+        this.sameSound = sameSound;
     }
 
     @Override
@@ -82,43 +91,39 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
                     case bgType:
                         final float volBg = myPrefs.getFloat("bgVolume", 1.0f);
                         if( (!isPlaying) && volBg > 0.0f ) {
-                            synchronized (this){
-                                if (getBg() == null) {
-                                    setBg(MediaPlayer.create(AudioBackground.this, getSound()));
-                                    getBg().setVolume(volBg, volBg);
-                                    getBg().setLooping(true);
-                                    getBg().setOnPreparedListener(AudioBackground.this);
-                                }
+                            if (getBg() == null) {
+                                setBg(MediaPlayer.create(AudioBackground.this, getSound()));
+                                getBg().setVolume(volBg, volBg);
+                                getBg().setLooping(true);
+                                getBg().setOnPreparedListener(AudioBackground.this);
                             }
                         }else{
-                                if (volBg <= 0.0f || isPlaying()) {
-                                    //User wants NO background music
-                                    isPlaying = false;
-                                    synchronized (this) {
-                                        if (getBg() != null) {
-                                            getBg().release();
-                                            setBg(null);
-                                        }
-                                    }
+                            if (volBg <= 0.0f || isPlaying()) {
+                                //User wants NO background music
+                                isPlaying = false;
+                                if (getBg() != null) {
+                                    getBg().release();
+                                    setBg(null);
                                 }
+                            }
                         }
                         break;
                     case fxType:
                         final float volFx = myPrefs.getFloat("fxVolume", 1.0f);
                         if(volFx > 0.0f) {
-                            synchronized (this) {
+                            if(!isSameSound()) {
                                 setFx(MediaPlayer.create(AudioBackground.this, getSound()));
                                 getFx().setVolume(volFx, volFx);
                                 getFx().setOnPreparedListener(AudioBackground.this);
+                            }else{
+                                getFx().start();
                             }
                         }else{
-                            synchronized (this) {
 
-                                //User wants NO sound effects
-                                if (getFx() != null) {
-                                    getFx().release();
-                                    setFx(null);
-                                }
+                            //User wants NO sound effects
+                            if (getFx() != null) {
+                                getFx().release();
+                                setFx(null);
                             }
                         }
                         break;
@@ -144,21 +149,8 @@ public class AudioBackground extends Service implements MediaPlayer.OnPreparedLi
     }
 
     @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                switch (getType()){
-                    case bgType:
-                        getBg().start();
-                        isPlaying = true;
-                        break;
-                    case fxType:
-                        getFx().start();
-                        break;
-                }
-            }
-        });
+    public void onPrepared(final MediaPlayer mediaPlayer) {
+        mediaPlayer.start();
     }
 
     @Override
