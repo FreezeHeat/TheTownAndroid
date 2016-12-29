@@ -23,6 +23,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -72,6 +73,7 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     private Button btnGameGuide;
     private Executor executor;
     private static boolean isRunning = true;
+    private int currentlyConnected = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,50 +134,37 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         friendDialogProgress.setCancelable(false);
         friendDialogProgress.setTitle(getResources().getString(R.string.lobby_adding_friend_progress));
 
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                final DataPacket dp = new DataPacket();
+                dp.setCommand(Commands.REFRESH_FRIENDS);
+                mService.sendPacket(dp);
+                executor.execute(new LobbyLogic());
+            }
+        }, 500, ((Lobby.this.player.getFriends().size() == 0) ? 20000 : 10000));
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */
                 R.string.accessibility_open_drawer,  /* "open drawer" description */
                 R.string.accessibility_close_drawer  /* "close drawer" description */
-        ) {
+        ){
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                if(timer != null) {
-                    timer.cancel();
-                }
                 invalidateOptionsMenu();
+                setTitle(getString(R.string.app_name) + "  " +
+                        ((currentlyConnected != -1) ? String.format(getString(R.string.lobby_currently_connected), currentlyConnected) : "") );
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-
-                //When the drawer closes, it cancels the timer
-                timer = new Timer();
-
-                new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-
-                        //run refresh friends every X seconds (delayed start by 500 ms)
-                        // X = 8 if has friends, if not X = 20
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                DataPacket dp = new DataPacket();
-                                dp.setCommand(Commands.REFRESH_FRIENDS);
-                                mService.sendPacket(dp);
-                                executor.execute(new LobbyLogic());
-                            }
-                        }, 500, ((Lobby.this.player.getFriends().size() == 0) ? 20000 : 8000));
-                        return null;
-                    }
-                }.execute();
                 invalidateOptionsMenu();
+                setTitle(getString(R.string.lobby_friendlist_title));
             }
         };
 
@@ -288,6 +277,16 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                                 }
                             });
                         }
+                        currentlyConnected = dp.getNumber();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                                    setTitle(getString(R.string.app_name) + "  " +
+                                            ((currentlyConnected != -1) ? String.format(getString(R.string.lobby_currently_connected), currentlyConnected) : "") );
+                                }
+                            }
+                        });
                         break;
                     case FRIEND_REQUEST:
                         //TODO: Snackbar with forward to activity that handles friend requests
@@ -369,6 +368,10 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     protected void onDestroy() {
         final Intent intent = new Intent(Lobby.this, AudioBackground.class);
         stopService(intent);
+        if(timer != null){
+            timer.cancel();
+            timer.purge();
+        }
         super.onDestroy();
     }
 

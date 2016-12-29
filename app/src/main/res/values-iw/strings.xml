@@ -164,4 +164,6 @@
     <string name="game_vote_blocked">אינך יכול להצביע שוב כרגע</string>
     <string name="game_voted_cancel">ביטל את הצבעתו</string>
     <string name="game_voted_for">הצביע ל</string>
+    <string name="lobby_friendlist_title">רשימת חברים (הוסף חבר בתפריט)</string>
+    <string name="lobby_currently_connected">משתמשים מחוברים: %1$d</string>
 </resources>

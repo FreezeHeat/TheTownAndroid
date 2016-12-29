@@ -106,6 +106,8 @@
     <string name="lobby_friendstatus_ingame">In-game</string>
     <string name="lobby_matchMaking_joinmethod_title">Join by the same rank, or join any?</string>
     <string name="lobby_friendlist_notify">Friend list was updated</string>
+    <string name="lobby_friendlist_title">Friends List (Add friend from the menu)</string>
+    <string name="lobby_currently_connected">Currently connected: %1$d</string>
 
     <string name="register_btnConfirm">Confirm</string>
     <string name="register_btnClear">Clear</string>
