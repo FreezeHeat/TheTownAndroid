@@ -134,17 +134,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         friendDialogProgress.setCancelable(false);
         friendDialogProgress.setTitle(getResources().getString(R.string.lobby_adding_friend_progress));
 
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                final DataPacket dp = new DataPacket();
-                dp.setCommand(Commands.REFRESH_FRIENDS);
-                mService.sendPacket(dp);
-                executor.execute(new LobbyLogic());
-            }
-        }, 500, ((Lobby.this.player.getFriends().size() == 0) ? 20000 : 10000));
-
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */
@@ -368,10 +357,6 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     protected void onDestroy() {
         final Intent intent = new Intent(Lobby.this, AudioBackground.class);
         stopService(intent);
-        if(timer != null){
-            timer.cancel();
-            timer.purge();
-        }
         super.onDestroy();
     }
 
@@ -386,6 +371,13 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
         if(AudioBackground.getBg() != null) {
             AudioBackground.getBg().pause();
         }
+
+        if(timer != null){
+            timer.cancel();
+            timer.purge();
+            timer = null;
+        }
+
         isRunning = false;
         super.onStop();
     }
@@ -425,10 +417,24 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
+        ((GlobalResources)getApplication()).getOpenActivites().add(this);
         // Bind to LocalService
         Intent intent = new Intent(this, GameService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         isRunning = true;
+
+        if(timer == null){
+            timer = new Timer();
+        }
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                final DataPacket dp = new DataPacket();
+                dp.setCommand(Commands.REFRESH_FRIENDS);
+                mService.sendPacket(dp);
+                executor.execute(new LobbyLogic());
+            }
+        }, 500, ((Lobby.this.player.getFriends().size() == 0) ? 20000 : 10000));
     }
 
     @Override
@@ -663,9 +669,9 @@ public class Lobby extends AppCompatActivity implements View.OnClickListener {
                         timer.cancel();
                         timer.purge();
                     }
-                    Lobby.this.finish();
                     Intent intent = new Intent(Lobby.this, MainActivity.class);
                     startActivity(intent);
+                    Lobby.this.finish();
                 }
             });
             builder.setNegativeButton(getResources().getString(R.string.general_no), new DialogInterface.OnClickListener() {

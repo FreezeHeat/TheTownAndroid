@@ -765,6 +765,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
+        ((GlobalResources)getApplication()).getOpenActivites().add(this);
+
         // Bind to LocalService
         Intent intent = new Intent(this, GameService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
@@ -777,6 +779,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
+        }
+
+        final GlobalResources gr = (GlobalResources)getApplication();
+        gr.getOpenActivites().remove(this);
+        if(gr.getOpenActivites().isEmpty()) {
+            ClientConnection.getConnection().closeSocket();
         }
         super.onStop();
     }

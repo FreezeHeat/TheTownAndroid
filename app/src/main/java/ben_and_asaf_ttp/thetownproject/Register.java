@@ -170,9 +170,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onBackPressed() {
-        finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -183,6 +183,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
+        }
+
+        final GlobalResources gr = (GlobalResources)getApplication();
+        gr.getOpenActivites().remove(this);
+        if(gr.getOpenActivites().isEmpty()) {
+            ClientConnection.getConnection().closeSocket();
         }
     }
 
@@ -207,6 +213,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onStart() {
         super.onStart();
+        ((GlobalResources)getApplication()).getOpenActivites().add(this);
+
         // Bind to LocalService
         Intent intent = new Intent(this, GameService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);

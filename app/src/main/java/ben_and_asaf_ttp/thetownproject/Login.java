@@ -112,9 +112,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                     editor.putString("password", "");
                                     editor.apply();
                                 }
-                                Login.this.finish();
                                 Intent myIntent = new Intent(Login.this, Lobby.class);
                                 startActivity(myIntent);
+                                Login.this.finish();
                                 return;
                             case ALREADY_CONNECTED:
                                 Toast.makeText(Login.this, getResources().getText(R.string.login_already_connected), Toast.LENGTH_SHORT).show();
@@ -189,6 +189,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             mBound = false;
         }
         stopService(new Intent(this, GameService.class));
+        final GlobalResources gr = (GlobalResources)getApplication();
+        gr.getOpenActivites().remove(this);
+        if(gr.getOpenActivites().isEmpty()) {
+            ClientConnection.getConnection().closeSocket();
+        }
     }
 
     /** Defines callbacks for service binding, passed to bindService() */
@@ -215,13 +220,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         // Bind to LocalService
         Intent intent = new Intent(this, GameService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        ((GlobalResources)getApplication()).getOpenActivites().add(this);
     }
 
     @Override
     public void onBackPressed() {
-        finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override

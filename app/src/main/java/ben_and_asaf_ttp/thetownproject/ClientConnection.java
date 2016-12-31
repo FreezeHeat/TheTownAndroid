@@ -126,9 +126,11 @@ public class ClientConnection {
             if(in != null){
                 in.close();
             }
-            connection.shutdownInput();
-            connection.shutdownOutput();
-            connection.close();
+            if(!connection.isClosed()) {
+                connection.shutdownInput();
+                connection.shutdownOutput();
+                connection.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
