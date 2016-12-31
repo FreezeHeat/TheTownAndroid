@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         MainActivity.this.finish();
+        ClientConnection.getConnection().closeSocket();
     }
 
     @Override
