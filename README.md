@@ -17,3 +17,5 @@ Features:
 NOTE:
 
 If you wish to operate on your own server, just change the settings in SplashActivity.java and change the variables to your server's IP.
+
+Server's REPO: https://github.com/FreezeHeat/TheTownAndroidServer
