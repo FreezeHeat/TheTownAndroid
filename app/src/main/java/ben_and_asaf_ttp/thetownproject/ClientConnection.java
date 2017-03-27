@@ -127,8 +127,6 @@ public class ClientConnection {
                 in.close();
             }
             if(!connection.isClosed()) {
-                connection.shutdownInput();
-                connection.shutdownOutput();
                 connection.close();
             }
         } catch (IOException e) {

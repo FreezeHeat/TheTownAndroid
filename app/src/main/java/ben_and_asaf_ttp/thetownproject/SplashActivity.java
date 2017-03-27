@@ -24,9 +24,16 @@ public class SplashActivity extends AppCompatActivity {
     private TextView txtSplashScreen;
     private ProgressBar pbSplashScreen;
     private AlertDialog.Builder builder;
-    private final String server = "35.157.4.199";
+
+    //Your server's IP
+    private final String server = "10.0.0.1";
+
+    //Your server's Port
     private final String port = "55555";
-    private final String webService = "http://35.157.4.199:8080/TTWS";
+
+    //Your server's Web page address
+    private final String webService = "http://10.0.0.1:8080/TTWS";
+
     private SharedPreferences sp;
 
     @Override
